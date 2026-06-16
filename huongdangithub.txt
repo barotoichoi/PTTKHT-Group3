@@ -1,0 +1,21 @@
+git clone https://github.com/barotoichoi/PTTKHT-Group3 (clone repo)
+
+git pull origin main (clone code mới nhất từ main)
+
+git branch "branch1" (tạo branch)
+
+git switch "branch1" (chuyển branch)
+
+git status (check trạng thái)
+
+git add file.txt (add 1 file mới vào cloud)
+
+git add . (add tất cả file mới vào cloud)
+
+git commit -m "cmt" (commit nội dung code)
+
+git push (đẩy code lên branch - nếu đang trong branch)
+
+git merge "branch1" (gộp code của branch sau khi push lên vào main chính)
+
+git push origin main (đẩy code lên thẳng main)
