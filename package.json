@@ -1,0 +1,27 @@
+{
+  "name": "pttkht-group3",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/barotoichoi/PTTKHT-Group3.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/barotoichoi/PTTKHT-Group3/issues"
+  },
+  "homepage": "https://github.com/barotoichoi/PTTKHT-Group3#readme",
+  "devDependencies": {
+    "tailwindcss": "^4.3.1"
+  },
+  "dependencies": {
+    "@tailwindcss/cli": "^4.3.1"
+  }
+}
