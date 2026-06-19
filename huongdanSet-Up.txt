@@ -19,3 +19,17 @@ git push (đẩy code lên branch - nếu đang trong branch)
 git merge "branch1" (gộp code của branch sau khi push lên vào main chính)
 
 git push origin main (đẩy code lên thẳng main)
+
+
+// Cài NodeJs
+B1: vào web và tải NodeJs https://nodejs.org/en/download?utm_source=chatgpt.com
+B2: vào cmd kiểm tra bằng lệnh node -v và npm -v 
+B3: nếu hiển thị version thì cài thành công
+
+// Cài TailwindCss
+B1: vào thư mục dự án 
+B2: thanh tìm kiếm gõ cmd hiện bảng cmd tại địa chỉ dự án
+B3: gõ npm init -y (tạo file package.json)
+B4: gõ npm install tailwindcss @tailwindcss/cli
+B5: thông báo thành công
+
