@@ -1,157 +1,108 @@
 # Activity Diagram - UML
 
-## 1. Luồng Đăng nhập
+## 1. Luồng 1 - Đăng nhập & Điều hướng
 
 ```mermaid
 flowchart TB
-    %% Swimlane phân chia Người dùng và Hệ thống
-    subgraph User [Người dùng]
-        A([Start]) --> B[Nhập username/password]
-        B --> C[Nhấn nút Đăng nhập]
+    subgraph User[User]
+        A([Start]) --> B[Nhập tài khoản]
+        B --> C[Nhấn Đăng nhập]
     end
 
-    subgraph System [Hệ thống]
-        C --> D[Kiểm tra username/password]
-        D --> E{Đăng nhập hợp lệ?}
-        E -- Có --> F[Phân quyền người dùng]
-        F --> G{Loại người dùng}
-        G -- Admin --> H[Đi đến trang quản trị]
-        G -- Giảng viên --> I[Đi đến trang giảng viên]
-        G -- Sinh viên --> J[Đi đến trang sinh viên]
-        E -- Không --> K[Hiển thị lỗi đăng nhập]
-        K --> L[Cho người dùng nhập lại]
-        L --> B
+    subgraph System[Hệ thống]
+        C --> D{Xác thực tài khoản}
+        D -->|Không hợp lệ| E[Hiển thị lỗi đăng nhập]
+        E --> B
+        D -->|Hợp lệ| F{Phân quyền người dùng}
+        F -->|Admin| G[Đi đến trang chủ Admin]
+        F -->|Teacher| H[Đi đến trang chủ Teacher]
+        F -->|Student| I[Đi đến trang chủ Student]
     end
 
-    H --> M([End])
-    I --> M
-    J --> M
+    G --> Z([End])
+    H --> Z
+    I --> Z
 ```
 
-## 2. Luồng Quản lý Sinh viên
+## 2. Luồng 2 - Sinh viên: Đăng ký môn & Đóng học phí
 
 ```mermaid
 flowchart TB
-    subgraph User [Người dùng]
-        A([Start]) --> B[Chọn chức năng Quản lý Sinh viên]
-        B --> C{Chọn thao tác}
-        C -- Thêm --> D[Nhập thông tin sinh viên]
-        C -- Sửa --> E[Tìm sinh viên cần sửa]
-        C -- Xóa --> F[Tìm sinh viên cần xóa]
-        C -- Tìm kiếm --> G[Nhập điều kiện tìm kiếm]
+    subgraph Student[Student]
+        S1([Start]) --> S2[Chọn môn học]
+        S2 --> S3[Gửi yêu cầu đăng ký]
     end
 
-    subgraph System [Hệ thống]
-        D --> H[Kiểm tra dữ liệu hợp lệ]
-        H --> I{Dữ liệu hợp lệ?}
-        I -- Có --> J[Lưu sinh viên mới]
-        I -- Không --> K[Hiển thị lỗi nhập liệu]
-        E --> L[Hiển thị thông tin sinh viên]
-        L --> M[Nhập sửa đổi]
-        M --> N[Cập nhật dữ liệu sinh viên]
-        F --> O[Xác nhận xóa]
-        O --> P{Xác nhận?}
-        P -- Có --> Q[Xóa sinh viên]
-        P -- Không --> R[Hủy thao tác]
-        G --> S[Tìm và hiển thị kết quả]
+    subgraph System[Hệ thống]
+        S3 --> T1{Kiểm tra điều kiện học phần}
+        T1 -->|Thỏa điều kiện| T2[Đăng ký thành công]
+        T1 -->|Không thỏa| T3[Thông báo không đủ điều kiện]
+        T3 --> S2
+        T2 --> T4[Tính học phí môn đăng ký]
+        T4 --> S4[Hiển thị học phí]
     end
 
-    J --> T([End])
-    K --> T
-    N --> T
-    Q --> T
-    R --> T
-    S --> T
+    subgraph Student2[Student]
+        S4 --> S5[Thanh toán học phí]
+    end
+
+    subgraph System2[Hệ thống]
+        S5 --> T5[Nhận thanh toán]
+        T5 --> T6{Thanh toán thành công?}
+        T6 -->|Có| T7[Cập nhật trạng thái đăng ký và học phí]
+        T6 -->|Không| T8[Thông báo thanh toán thất bại]
+        T8 --> S5
+        T7 --> Z([End])
+    end
 ```
 
-## 3. Luồng Quản lý Giảng viên
+## 3. Luồng 3 - Giảng viên: Quản lý lớp & Điểm số
 
 ```mermaid
 flowchart TB
-    subgraph User [Người dùng]
-        A([Start]) --> B[Chọn chức năng Quản lý Giảng viên]
-        B --> C{Chọn thao tác}
-        C -- Thêm --> D[Nhập thông tin giảng viên]
-        C -- Sửa --> E[Tìm giảng viên cần sửa]
-        C -- Xóa --> F[Tìm giảng viên cần xóa]
-        C -- Tìm kiếm --> G[Nhập điều kiện tìm kiếm]
+    subgraph Teacher[Teacher]
+        G1([Start]) --> G2[Chọn lớp/khóa học]
+        G2 --> G3{Chọn nghiệp vụ}
+        G3 -->|Tải tài liệu| G4[Upload tài liệu học tập]
+        G3 -->|Quản lý điểm| G5[Chọn sinh viên và thao tác điểm]
     end
 
-    subgraph System [Hệ thống]
-        D --> H[Kiểm tra dữ liệu hợp lệ]
-        H --> I{Dữ liệu hợp lệ?}
-        I -- Có --> J[Lưu giảng viên mới]
-        I -- Không --> K[Hiển thị lỗi nhập liệu]
-        E --> L[Hiển thị thông tin giảng viên]
-        L --> M[Nhập sửa đổi]
-        M --> N[Cập nhật dữ liệu giảng viên]
-        F --> O[Xác nhận xóa]
-        O --> P{Xác nhận?}
-        P -- Có --> Q[Xóa giảng viên]
-        P -- Không --> R[Hủy thao tác]
-        G --> S[Tìm và hiển thị kết quả]
+    subgraph System[Hệ thống]
+        G4 --> H1[Lưu tài liệu học tập]
+        G5 --> H2{Nhập / Sửa / Xóa điểm}
+        H2 -->|Nhập| H3[Lưu điểm mới]
+        H2 -->|Sửa| H4[Cập nhật điểm]
+        H2 -->|Xóa| H5[Xóa điểm]
+        H3 --> H6[Thông báo cập nhật thành công]
+        H4 --> H6
+        H5 --> H6
+        H1 --> H6
+        H6 --> Z([End])
     end
-
-    J --> T([End])
-    K --> T
-    N --> T
-    Q --> T
-    R --> T
-    S --> T
 ```
 
-## 4. Luồng Quản lý Môn học
+## 4. Luồng 4 - Admin: Quản lý Đào tạo
 
 ```mermaid
 flowchart TB
-    subgraph User [Người dùng]
-        A([Start]) --> B[Chọn chức năng Quản lý Môn học]
-        B --> C{Chọn thao tác}
-        C -- Thêm --> D[Nhập thông tin môn học mới]
-        C -- Sửa --> E[Tìm môn học cần sửa]
-        C -- Xóa --> F[Tìm môn học cần xóa]
+    subgraph Admin[Admin]
+        U1([Start]) --> U2[Tạo Khóa học mới]
+        U2 --> U3[Gửi dữ liệu khóa học]
+        U3 --> U4[Phân công giảng viên vào môn học]
     end
 
-    subgraph System [Hệ thống]
-        D --> G[Kiểm tra dữ liệu môn học]
-        G --> H{Dữ liệu hợp lệ?}
-        H -- Có --> I[Lưu môn học mới]
-        H -- Không --> J[Hiển thị lỗi nhập liệu]
-        E --> K[Hiển thị thông tin môn học]
-        K --> L[Nhập sửa đổi]
-        L --> M[Cập nhật môn học]
-        F --> N[Xác nhận xóa]
-        N --> O{Xác nhận?}
-        O -- Có --> P[Xóa môn học]
-        O -- Không --> Q[Hủy thao tác]
+    subgraph System[Hệ thống]
+        U3 --> V1[Lưu Khóa học]
+        V1 --> V2[Xác nhận tạo khóa học]
+        V2 --> U4
+        U4 --> V3[Lưu phân công giảng viên]
+        V3 --> V4{Có gửi thông báo?}
+        V4 -->|Có| V5[Gửi thông báo cho Giảng viên]
+        V4 -->|Có| V6[Gửi thông báo cho Sinh viên]
+        V4 -->|Không| V7[Không gửi thông báo]
+        V5 --> V8
+        V6 --> V8
+        V7 --> V8
+        V8 --> Z([End])
     end
-
-    I --> R([End])
-    J --> R
-    M --> R
-    P --> R
-    Q --> R
-```
-
-## 5. Luồng Nhập điểm
-
-```mermaid
-flowchart TB
-    subgraph User [Giảng viên]
-        A([Start]) --> B[Chọn môn học cần nhập điểm]
-        B --> C[Chọn sinh viên trong lớp]
-        C --> D[Nhập điểm cho sinh viên]
-        D --> E[Nhấn lưu điểm]
-    end
-
-    subgraph System [Hệ thống]
-        E --> F[Kiểm tra điểm hợp lệ]
-        F --> G{Điểm hợp lệ?}
-        G -- Có --> H[Lưu điểm vào hệ thống]
-        G -- Không --> I[Hiển thị lỗi điểm]
-        H --> J[Xác nhận nhập điểm thành công]
-    end
-
-    J --> K([End])
-    I --> K
 ```
