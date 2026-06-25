@@ -88,7 +88,7 @@ flowchart TB
     subgraph Admin[Admin]
         U1([Start]) --> U2[Tạo Khóa học mới]
         U2 --> U3[Gửi dữ liệu khóa học]
-        U3 --> U4[Phân công giảng viên vào môn học]
+        U4[Phân công giảng viên vào môn học]
     end
 
     subgraph System[Hệ thống]
@@ -100,7 +100,7 @@ flowchart TB
         V4 -->|Có| V5[Gửi thông báo cho Giảng viên]
         V4 -->|Có| V6[Gửi thông báo cho Sinh viên]
         V4 -->|Không| V7[Không gửi thông báo]
-        V5 --> V8
+        V5 --> V8[Hoàn tất xử lý]
         V6 --> V8
         V7 --> V8
         V8 --> Z([End])
