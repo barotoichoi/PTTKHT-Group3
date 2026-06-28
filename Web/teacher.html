@@ -287,7 +287,7 @@
         </div>
 
         <!-- Stats Grid -->
-        <div class="grid grid-cols-3 gap-6">
+        <div class="grid grid-cols-4 gap-6">
           <!-- Stat 1 -->
           <div
             class="bg-brand-surface rounded-xl p-6 border border-brand-border shadow-card flex flex-col justify-between h-[140px]"
@@ -417,102 +417,267 @@
               </div>
             </div>
           </div>
-        </div>
-
-        <!-- Chart & Warnings Grid -->
-        <div class="grid grid-cols-3 gap-6">
-          <!-- Chart Area -->
+          <!-- Stat 4 -->
           <div
-            class="col-span-2 bg-brand-surface rounded-xl p-6 border border-brand-border shadow-card relative h-[320px] flex flex-col"
+            class="bg-brand-surface rounded-xl p-6 border border-brand-border shadow-card flex flex-col justify-between h-[140px]"
           >
-            <div class="flex justify-between items-center mb-6">
-              <h3 class="text-[18px] font-semibold text-brand-text">
-                Outstanding Tuition Debt by Cohort
+            <div class="flex justify-between items-start">
+              <h3 class="text-[16px] font-semibold text-brand-text">
+                Total Students
               </h3>
-              <button class="text-brand-text-muted hover:text-brand-text">
-                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+              <div class="bg-[#d8e2ff] p-2 rounded text-brand-secondary">
+                <svg
+                  class="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
                   <path
-                    d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
                   ></path>
                 </svg>
+              </div>
+            </div>
+            <div>
+              <div
+                class="text-[32px] font-bold text-brand-text leading-none mb-2"
+              >
+                128
+              </div>
+              <div class="text-sm text-brand-text-muted">
+                Across all your classes.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ================= Main Grid ================= -->
+        <div class="grid grid-cols-3 gap-6 mt-6">
+          <!-- My Classes -->
+          <div
+            class="col-span-2 bg-white rounded-2xl shadow-sm border border-gray-200"
+          >
+            <div class="flex items-center justify-between px-6 py-5 border-b">
+              <h2 class="text-lg font-semibold">My Classes</h2>
+              <button class="text-sm text-blue-600 hover:underline">
+                View All
               </button>
             </div>
+            <div class="overflow-x-auto">
+              <table class="w-full">
+                <thead class="bg-gray-50">
+                  <tr class="text-sm text-left text-gray-500">
+                    <th class="px-6 py-4">Course</th>
+                    <th>Students</th>
+                    <th>Room</th>
+                    <th class="pr-6">Progress</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- ROW 1 -->
+                  <tr class="border-t hover:bg-gray-50">
+                    <td class="px-6 py-5">
+                      <p class="font-semibold">Database Systems</p>
+                    </td>
+                    <td>43</td>
+                    <td>A203</td>
 
-            <!-- Faux Chart implementation with standard CSS -->
-            <div
-              class="flex-1 relative flex items-end pb-6 text-xs text-gray-400 font-medium"
-            >
-              <!-- Y Axis -->
-              <div
-                class="absolute left-0 top-4 bottom-8 flex flex-col justify-between w-12 text-right pr-4"
-              >
-                <span>$5M</span>
-                <span>$2.5M</span>
-                <span>$0</span>
-              </div>
-              <!-- Chart content area -->
-              <div
-                class="flex-1 ml-12 h-full border-b border-gray-100 flex items-end justify-around relative"
-              >
-                <!-- Faux X Axis labels -->
+                    <td class="pr-6">
+                      <div class="flex items-center gap-3">
+                        <div class="flex-1 h-2 rounded-full bg-gray-200">
+                          <div
+                            class="w-[82%] h-2 rounded-full bg-blue-600"
+                          ></div>
+                        </div>
+                        <span class="text-xs"> 82% </span>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <!-- ROW 2 -->
+                  <tr class="border-t hover:bg-gray-50">
+                    <td class="px-6 py-4 font-medium">
+                      Object Oriented Programming
+                    </td>
+                    <td>38</td>
+                    <td>B105</td>
+                    <td>
+                      <div class="flex items-center gap-2">
+                        <div class="w-24 h-2 rounded-full bg-yellow-200">
+                          <div
+                            class="w-[68%] h-2 rounded-full bg-green-500"
+                          ></div>
+                        </div>
+                        <span class="text-xs"> 68% </span>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr class="border-t hover:bg-gray-50">
+                    <td class="px-6 py-4 font-medium">Web Development</td>
+                    <td>51</td>
+                    <td>C302</td>
+                    <td>
+                      <div class="flex items-center gap-2">
+                        <div class="w-24 h-2 rounded-full bg-gray-200">
+                          <div
+                            class="w-[91%] h-2 rounded-full bg-purple-500"
+                          ></div>
+                        </div>
+                        <span class="text-xs"> 91% </span>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <!-- ================= Today's Schedule ================= -->
+
+          <div class="bg-white rounded-2xl border border-gray-200">
+            <div class="flex items-center justify-between px-6 py-5 border-b">
+              <h2 class="text-lg font-semibold">Today's Schedule</h2>
+
+              <i class="fa-regular fa-calendar text-blue-600"></i>
+            </div>
+
+            <div class="p-5 space-y-4">
+              <!-- Item -->
+
+              <div class="flex gap-4">
                 <div
-                  class="absolute -bottom-6 w-full flex justify-around text-gray-500 font-semibold"
+                  class="w-14 h-14 rounded-xl bg-blue-100 text-blue-700 flex flex-col items-center justify-center"
                 >
-                  <span>2027</span>
-                  <span>2026</span>
-                  <span class="text-brand-text">2025</span>
-                  <span>2024</span>
+                  <span class="text-xs font-medium">09:30</span>
+                </div>
+
+                <div class="flex-1">
+                  <h3 class="font-semibold text-sm">Database Systems</h3>
+
+                  <p class="text-xs text-gray-500 mt-1">Room A203</p>
+                </div>
+              </div>
+
+              <!-- Item -->
+
+              <div class="flex gap-4">
+                <div
+                  class="w-14 h-14 rounded-xl bg-green-100 text-green-700 flex flex-col items-center justify-center"
+                >
+                  <span class="text-xs font-medium">13:00</span>
+                </div>
+
+                <div class="flex-1">
+                  <h3 class="font-semibold text-sm">Web Development</h3>
+
+                  <p class="text-xs text-gray-500 mt-1">Lab C302</p>
+                </div>
+              </div>
+
+              <!-- Item -->
+
+              <div class="flex gap-4">
+                <div
+                  class="w-14 h-14 rounded-xl bg-purple-100 text-purple-700 flex flex-col items-center justify-center"
+                >
+                  <span class="text-xs font-medium">15:30</span>
+                </div>
+
+                <div class="flex-1">
+                  <h3 class="font-semibold text-sm">Office Hours</h3>
+
+                  <p class="text-xs text-gray-500 mt-1">Faculty Office</p>
                 </div>
               </div>
             </div>
           </div>
+        </div>
 
-          <!-- Academic Warnings Area -->
-          <div
-            class="col-span-1 bg-brand-surface rounded-xl p-6 border border-brand-border shadow-card relative overflow-hidden flex flex-col justify-between h-[320px]"
-          >
-            <!-- Background Red Blob -->
-            <div
-              class="absolute -top-12 -right-12 w-48 h-48 bg-brand-error-bg rounded-full opacity-60 pointer-events-none"
-            ></div>
+        <!-- ================= Bottom Section ================= -->
 
-            <div
-              class="relative z-10 flex items-center justify-center gap-2 mt-2"
-            >
-              <svg
-                class="w-6 h-6 text-brand-error"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-                ></path>
-              </svg>
-              <h3 class="text-[18px] font-bold text-brand-error">
-                Academic Warnings
-              </h3>
+        <div class="grid grid-cols-3 gap-5 mt-6">
+          <!-- Announcements -->
+
+          <div class="col-span-2 bg-white rounded-2xl border border-gray-200">
+            <div class="flex items-center justify-between px-6 py-5 border-b">
+              <h2 class="text-lg font-semibold">Recent Announcements</h2>
+
+              <button class="text-sm text-blue-600 hover:underline">
+                View All
+              </button>
             </div>
 
-            <div class="relative z-10 text-center">
-              <div
-                class="text-[64px] font-bold text-brand-error leading-none mb-2"
-              >
-                342
+            <div class="divide-y">
+              <div class="px-6 py-5">
+                <h3 class="font-medium">Final Exam Schedule Published</h3>
+
+                <p class="text-sm text-gray-500 mt-1">
+                  The final examination timetable has been released.
+                </p>
               </div>
-              <p class="text-sm text-brand-text-muted px-4 leading-relaxed">
-                Students currently on probation or at risk.
-              </p>
+
+              <div class="px-6 py-5">
+                <h3 class="font-medium">Grade Submission Deadline</h3>
+
+                <p class="text-sm text-gray-500 mt-1">
+                  Please submit all grades before June 30.
+                </p>
+              </div>
+
+              <div class="px-6 py-5">
+                <h3 class="font-medium">Faculty Meeting</h3>
+
+                <p class="text-sm text-gray-500 mt-1">
+                  Friday 09:00 AM - Meeting Room A.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Actions -->
+
+          <div class="bg-white rounded-2xl border border-gray-200">
+            <div class="px-6 py-5 border-b">
+              <h2 class="text-lg font-semibold">Quick Actions</h2>
             </div>
 
-            <button
-              class="relative z-10 w-full bg-brand-surface-dim text-brand-text py-2.5 rounded-lg font-semibold hover:bg-gray-200 transition-colors text-sm"
-            >
-              Review Case Files
-            </button>
+            <div class="grid grid-cols-2 gap-4 p-5">
+              <button
+                class="rounded-xl border hover:border-blue-500 hover:bg-blue-50 transition p-4"
+              >
+                <i class="fa-solid fa-pen text-blue-600 text-xl"></i>
+
+                <p class="text-sm mt-3">Enter Grades</p>
+              </button>
+
+              <button
+                class="rounded-xl border hover:border-green-500 hover:bg-green-50 transition p-4"
+              >
+                <i class="fa-solid fa-users text-green-600 text-xl"></i>
+
+                <p class="text-sm mt-3">Students</p>
+              </button>
+
+              <button
+                class="rounded-xl border hover:border-orange-500 hover:bg-orange-50 transition p-4"
+              >
+                <i
+                  class="fa-solid fa-file-circle-plus text-orange-500 text-xl"
+                ></i>
+
+                <p class="text-sm mt-3">Assignment</p>
+              </button>
+
+              <button
+                class="rounded-xl border hover:border-purple-500 hover:bg-purple-50 transition p-4"
+              >
+                <i class="fa-solid fa-chart-column text-purple-600 text-xl"></i>
+
+                <p class="text-sm mt-3">Reports</p>
+              </button>
+            </div>
           </div>
         </div>
 
