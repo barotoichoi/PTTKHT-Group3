@@ -1,0 +1,705 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Student Dashboard - EduSync Academy</title>
+    <!-- Inter Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link href="./style.css" rel="stylesheet" />
+  </head>
+  <body
+    class="bg-brand-bg text-brand-text font-sans antialiased flex h-screen overflow-hidden"
+  >
+    <!-- Sidebar -->
+    <aside class="w-[220px] bg-brand-primary text-white flex flex-col shrink-0">
+      <!-- Logo Area -->
+      <div class="p-6 pb-8">
+        <h1 class="text-[28px] font-bold leading-tight tracking-tight">
+          Welcome Back<br />Mr. Bao
+        </h1>
+      </div>
+
+      <!-- Navigation -->
+      <nav class="flex-1 flex flex-col gap-1">
+        <a
+          href="#"
+          class="flex items-center gap-3 px-6 py-4 bg-brand-secondary text-white border-l-4 border-white font-medium"
+        >
+          <svg
+            class="w-5 h-5 opacity-90"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
+            ></path>
+          </svg>
+          Home
+        </a>
+        <a
+          href="#"
+          class="flex items-center gap-3 px-6 py-4 text-gray-300 hover:bg-white/5 transition-colors font-medium border-l-4 border-transparent"
+        >
+          <svg
+            class="w-5 h-5 opacity-70"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+            ></path>
+          </svg>
+          My Classes
+        </a>
+        <a
+          href="#"
+          class="flex items-center gap-3 px-6 py-4 text-gray-300 hover:bg-white/5 transition-colors font-medium border-l-4 border-transparent"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="w-6 h-6 opacity-70"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5m-9-6h.008v.008H12v-.008ZM12 15h.008v.008H12V15Zm0 2.25h.008v.008H12v-.008ZM9.75 15h.008v.008H9.75V15Zm0 2.25h.008v.008H9.75v-.008ZM7.5 15h.008v.008H7.5V15Zm0 2.25h.008v.008H7.5v-.008Zm6.75-4.5h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V15Zm0 2.25h.008v.008h-.008v-.008Zm2.25-4.5h.008v.008H16.5v-.008Zm0 2.25h.008v.008H16.5V15Z"
+            />
+          </svg>
+          Schedules
+        </a>
+        <a
+          href="#"
+          class="flex items-center gap-3 px-6 py-4 text-gray-300 hover:bg-white/5 transition-colors font-medium border-l-4 border-transparent"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="w-6 h-6 opacity-70"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25ZM6.75 12h.008v.008H6.75V12Zm0 3h.008v.008H6.75V15Zm0 3h.008v.008H6.75V18Z"
+            />
+          </svg>
+          Asignments
+        </a>
+        <a
+          href="#"
+          class="flex items-center gap-3 px-6 py-4 text-gray-300 hover:bg-white/5 transition-colors font-medium border-l-4 border-transparent"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="w-6 h-6 opacity-70"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M4.26 10.147a60.438 60.438 0 0 0-.491 6.347A48.62 48.62 0 0 1 12 20.904a48.62 48.62 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.636 50.636 0 0 0-2.658-.813A59.906 59.906 0 0 1 12 3.493a59.903 59.903 0 0 1 10.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0 1 12 13.489a50.702 50.702 0 0 1 7.74-3.342M6.75 15a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm0 0v-3.675A55.378 55.378 0 0 1 12 8.443m-7.007 11.55A5.981 5.981 0 0 0 6.75 15.75v-1.5"
+            />
+          </svg>
+          Grades
+        </a>
+        <a
+          href="#"
+          class="flex items-center gap-3 px-6 py-4 text-gray-300 hover:bg-white/5 transition-colors font-medium border-l-4 border-transparent"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="w-6 h-6 opacity-70"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M8.625 9.75a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375m-13.5 3.01c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-4.183a1.14 1.14 0 0 1 .778-.332 48.294 48.294 0 0 0 5.83-.498c1.585-.233 2.708-1.626 2.708-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z"
+            />
+          </svg>
+          Messages
+        </a>
+        <a
+          href="#"
+          class="flex items-center gap-3 px-6 py-4 text-gray-300 hover:bg-white/5 transition-colors font-medium border-l-4 border-transparent"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="w-6 h-6 opacity-70"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M12 6v12m-3-2.818.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+            />
+          </svg>
+
+          Tuition
+        </a>
+      </nav>
+
+      <!-- Footer Actions -->
+      <div class="p-6 flex flex-col gap-4">
+        <button
+          class="w-full bg-brand-secondary text-white py-2.5 rounded-lg font-semibold hover:bg-blue-700 transition-colors text-sm shadow-sm"
+        >
+          Support Center
+        </button>
+        <a
+          href="#"
+          class="flex items-center gap-2 text-gray-300 hover:text-white transition-colors text-sm font-medium mt-2"
+        >
+          <svg
+            class="w-5 h-5 opacity-70"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+            ></path>
+          </svg>
+          Log Out
+        </a>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 flex flex-col h-screen overflow-y-auto">
+      <!-- Topbar -->
+      <header class="flex items-center justify-between px-8 py-5 shrink-0">
+        <h2 class="text-[20px] font-bold text-brand-text">EduSync Academy</h2>
+        <div class="flex items-center gap-6">
+          <div class="relative">
+            <svg
+              class="w-4 h-4 text-gray-400 absolute left-4 top-1/2 -translate-y-1/2"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              ></path>
+            </svg>
+            <input
+              type="text"
+              placeholder="Search..."
+              class="bg-[#f0edef] text-sm rounded-full pl-10 pr-4 py-2.5 w-64 focus:outline-none focus:ring-2 focus:ring-brand-secondary transition-all"
+            />
+          </div>
+          <button class="text-brand-text-muted hover:text-brand-text">
+            <svg
+              class="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
+              ></path>
+            </svg>
+          </button>
+          <button class="text-brand-text-muted hover:text-brand-text">
+            <svg
+              class="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+              ></path>
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+              ></path>
+            </svg>
+          </button>
+          <div
+            class="h-9 w-9 bg-[#e4e2e3] rounded-full flex items-center justify-center text-sm font-bold text-brand-text border border-gray-300 cursor-pointer"
+          >
+            AD
+          </div>
+        </div>
+      </header>
+
+      <!-- Dashboard Content -->
+      <div class="px-8 pb-8 space-y-6">
+        <!-- Page Title Area -->
+        <div class="flex items-end justify-between pt-4">
+          <div>
+            <h1 class="text-[32px] font-bold text-brand-text tracking-tight">
+              Student Dashboard
+            </h1>
+            <p class="text-brand-text-muted mt-1">
+              Welcome back! Mr. Bao. Here's a quick overview of your classes and
+              assignments.
+            </p>
+          </div>
+          <div
+            class="bg-brand-surface-dim text-brand-text-muted text-xs font-semibold px-3 py-1.5 rounded uppercase tracking-wider"
+          >
+            Last updated: Just now
+          </div>
+        </div>
+
+        <!-- Stats Grid -->
+        <!-- ================= Statistics + Student Profile ================= -->
+
+        <div class="grid grid-cols-12 gap-6 mt-10">
+          <!-- ================= Student Card ================= -->
+
+          <div class="col-span-3">
+            <div class="bg-white rounded-2xl shadow-sm p-6 h-full">
+              <div class="flex flex-col items-center">
+                <img
+                  src="https://i.pravatar.cc/150?img=12"
+                  class="w-28 h-28 rounded-full border-4 border-blue-100 object-cover"
+                />
+
+                <h2 class="mt-4 text-2xl font-bold">Hà Văn Bảo</h2>
+
+                <p class="text-gray-500 mt-1">Student ID: 22110234</p>
+
+                <span
+                  class="mt-3 bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-sm"
+                >
+                  Computer Science
+                </span>
+              </div>
+
+              <div class="mt-8 space-y-5">
+                <div class="flex gap-3 p-2">
+                  <i class="fa-regular fa-envelope text-blue-600 mt-1"></i>
+
+                  <div>
+                    <p class="text-gray-400 text-sm">Email</p>
+
+                    <p class="font-medium">bao@student.edu.vn</p>
+                  </div>
+                </div>
+
+                <div class="flex gap-3 p-2">
+                  <i class="fa-solid fa-phone text-green-600 mt-1"></i>
+
+                  <div>
+                    <p class="text-gray-400 text-sm">Phone</p>
+
+                    <p class="font-medium">0123 456 789</p>
+                  </div>
+                </div>
+
+                <div class="flex gap-3 p-2">
+                  <i
+                    class="fa-solid fa-building-columns text-orange-500 mt-1"
+                  ></i>
+
+                  <div>
+                    <p class="text-gray-400 text-sm">Faculty</p>
+
+                    <p class="font-medium">Information Technology</p>
+                  </div>
+                </div>
+
+                <div class="flex gap-3 p-2">
+                  <i class="fa-solid fa-user-tie text-purple-500 mt-1"></i>
+
+                  <div>
+                    <p class="text-gray-400 text-sm">Advisor</p>
+
+                    <p class="font-medium">Nguyễn Văn A</p>
+                  </div>
+                </div>
+              </div>
+
+              <button
+                class="mt-8 w-full py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold duration-300"
+              >
+                View Profile
+              </button>
+            </div>
+          </div>
+
+          <!-- ================= Right Content ================= -->
+
+          <div class="col-span-9">
+            <div class="grid grid-cols-4 gap-6">
+              <!-- Stat 1 -->
+              <div
+                class="bg-brand-surface rounded-xl p-6 border border-brand-border shadow-card flex flex-col justify-between h-[140px]"
+              >
+                <div class="flex justify-between items-start">
+                  <h3 class="text-[16px] font-semibold text-brand-text">
+                    My Classes
+                  </h3>
+                  <div class="bg-[#d8e2ff] p-2 rounded text-brand-secondary">
+                    <svg
+                      class="w-5 h-5"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"
+                      ></path>
+                    </svg>
+                  </div>
+                </div>
+                <div>
+                  <div
+                    class="text-[32px] font-bold text-brand-text leading-none mb-2"
+                  >
+                    5
+                  </div>
+                  <div
+                    class="text-sm font-medium text-brand-secondary flex items-center gap-1"
+                  >
+                    View all courses ->
+                  </div>
+                </div>
+              </div>
+
+              <!-- Stat 2 -->
+              <div
+                class="bg-brand-surface rounded-xl p-6 border border-brand-border shadow-card flex flex-col justify-between h-[140px]"
+              >
+                <div class="flex justify-between items-start">
+                  <h3 class="text-[16px] font-semibold text-brand-text">
+                    Current GPA
+                  </h3>
+                  <div class="bg-[#d8e2ff] p-2 rounded text-brand-icon">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke-width="1.5"
+                      stroke="currentColor"
+                      class="w-5 h-5"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z"
+                      />
+                    </svg>
+                  </div>
+                </div>
+                <div>
+                  <div
+                    class="text-[32px] font-bold text-brand-text leading-none mb-2"
+                  >
+                    3.45
+                  </div>
+                  <div class="text-sm text-brand-secondary">Good stading</div>
+                </div>
+              </div>
+
+              <!-- Stat 3 -->
+              <div
+                class="bg-brand-surface rounded-xl p-6 border border-brand-border shadow-card flex flex-col justify-between h-[140px]"
+              >
+                <div class="flex justify-between items-start">
+                  <h3 class="text-[16px] font-semibold text-brand-text">
+                    Pending Assignments
+                  </h3>
+                  <div class="bg-[#fadfb8] p-2 rounded text-[#564427]">
+                    <svg
+                      class="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9.5a2.5 2.5 0 00-2.5-2.5H14"
+                      ></path>
+                    </svg>
+                  </div>
+                </div>
+                <div>
+                  <div
+                    class="text-[32px] font-bold text-brand-text leading-none mb-2"
+                  >
+                    3
+                  </div>
+                  <div
+                    class="text-sm font-medium text-brand-secondary flex items-center gap-1"
+                  >
+                    Due Soon
+                  </div>
+                </div>
+              </div>
+              <!-- Stat 4 -->
+              <div
+                class="bg-brand-surface rounded-xl p-6 border border-brand-border shadow-card flex flex-col justify-between h-[140px]"
+              >
+                <div class="flex justify-between items-start">
+                  <h3 class="text-[16px] font-semibold text-brand-text">
+                    Unread Messages
+                  </h3>
+                  <div class="bg-[#d8e2ff] p-2 rounded text-purple-700">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke-width="1.5"
+                      stroke="currentColor"
+                      class="w-5 h--5"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M8.625 9.75a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375m-13.5 3.01c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-4.183a1.14 1.14 0 0 1 .778-.332 48.294 48.294 0 0 0 5.83-.498c1.585-.233 2.708-1.626 2.708-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z"
+                      />
+                    </svg>
+                  </div>
+                </div>
+                <div>
+                  <div
+                    class="text-[32px] font-bold text-brand-text leading-none mb-2"
+                  >
+                    2
+                  </div>
+                  <div class="text-sm text-brand-secondary">
+                    View all messages
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- ================= Main Grid ================= -->
+            <div class="grid grid-cols-3 gap-6 mt-6">
+              <!-- My Classes -->
+              <div
+                class="col-span-2 bg-white rounded-2xl shadow-sm border border-gray-200"
+              >
+                <div
+                  class="flex items-center justify-between px-6 py-5 border-b"
+                >
+                  <h2 class="text-lg font-semibold">My Classes</h2>
+                  <button class="text-sm text-blue-600 hover:underline">
+                    View All
+                  </button>
+                </div>
+                <div class="overflow-x-auto">
+                  <table class="w-full">
+                    <thead class="bg-gray-50">
+                      <tr class="text-sm text-left text-gray-500">
+                        <th class="px-6 py-4">Course</th>
+                        <th>Students</th>
+                        <th>Room</th>
+                        <th class="pr-6">Progress</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <!-- ROW 1 -->
+                      <tr class="border-t hover:bg-gray-50">
+                        <td class="px-6 py-5">
+                          <p class="font-semibold">Database Systems</p>
+                        </td>
+                        <td>43</td>
+                        <td>A203</td>
+
+                        <td class="pr-6">
+                          <div class="flex items-center gap-3">
+                            <div class="flex-1 h-2 rounded-full bg-gray-200">
+                              <div
+                                class="w-[82%] h-2 rounded-full bg-blue-600"
+                              ></div>
+                            </div>
+                            <span class="text-xs"> 82% </span>
+                          </div>
+                        </td>
+                      </tr>
+
+                      <!-- ROW 2 -->
+                      <tr class="border-t hover:bg-gray-50">
+                        <td class="px-6 py-4 font-medium">
+                          Object Oriented Programming
+                        </td>
+                        <td>38</td>
+                        <td>B105</td>
+                        <td>
+                          <div class="flex items-center gap-2">
+                            <div class="w-24 h-2 rounded-full bg-yellow-200">
+                              <div
+                                class="w-[68%] h-2 rounded-full bg-green-500"
+                              ></div>
+                            </div>
+                            <span class="text-xs"> 68% </span>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr class="border-t hover:bg-gray-50">
+                        <td class="px-6 py-4 font-medium">Web Development</td>
+                        <td>51</td>
+                        <td>C302</td>
+                        <td>
+                          <div class="flex items-center gap-2">
+                            <div class="w-24 h-2 rounded-full bg-gray-200">
+                              <div
+                                class="w-[91%] h-2 rounded-full bg-purple-500"
+                              ></div>
+                            </div>
+                            <span class="text-xs"> 91% </span>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <!-- ================= Today's Schedule ================= -->
+
+              <div class="bg-white rounded-2xl border border-gray-200">
+                <div
+                  class="flex items-center justify-between px-6 py-5 border-b"
+                >
+                  <h2 class="text-lg font-semibold">Today's Schedule</h2>
+
+                  <i class="fa-regular fa-calendar text-blue-600"></i>
+                </div>
+
+                <div class="p-5 space-y-4">
+                  <!-- Item -->
+
+                  <div class="flex gap-4">
+                    <div
+                      class="w-14 h-14 rounded-xl bg-blue-100 text-blue-700 flex flex-col items-center justify-center"
+                    >
+                      <span class="text-xs font-medium">09:30</span>
+                    </div>
+
+                    <div class="flex-1">
+                      <h3 class="font-semibold text-sm">Database Systems</h3>
+
+                      <p class="text-xs text-gray-500 mt-1">Room A203</p>
+                    </div>
+                  </div>
+
+                  <!-- Item -->
+
+                  <div class="flex gap-4">
+                    <div
+                      class="w-14 h-14 rounded-xl bg-green-100 text-green-700 flex flex-col items-center justify-center"
+                    >
+                      <span class="text-xs font-medium">13:00</span>
+                    </div>
+
+                    <div class="flex-1">
+                      <h3 class="font-semibold text-sm">Web Development</h3>
+
+                      <p class="text-xs text-gray-500 mt-1">Lab C302</p>
+                    </div>
+                  </div>
+
+                  <!-- Item -->
+
+                  <div class="flex gap-4">
+                    <div
+                      class="w-14 h-14 rounded-xl bg-purple-100 text-purple-700 flex flex-col items-center justify-center"
+                    >
+                      <span class="text-xs font-medium">15:30</span>
+                    </div>
+
+                    <div class="flex-1">
+                      <h3 class="font-semibold text-sm">Office Hours</h3>
+
+                      <p class="text-xs text-gray-500 mt-1">Faculty Office</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ================= Bottom Section ================= -->
+
+        <div class="grid grid-cols-3 gap-5 mt-6">
+          <!-- Announcements -->
+
+          <div class="col-span-3 bg-white rounded-2xl border border-gray-200">
+            <div class="flex items-center justify-between px-6 py-5 border-b">
+              <h2 class="text-lg font-semibold">Recent Announcements</h2>
+
+              <button class="text-sm text-blue-600 hover:underline">
+                View All
+              </button>
+            </div>
+
+            <div class="divide-y">
+              <div class="px-6 py-5">
+                <h3 class="font-medium">Final Exam Schedule Published</h3>
+
+                <p class="text-sm text-gray-500 mt-1">
+                  The final examination timetable has been released.
+                </p>
+              </div>
+
+              <div class="px-6 py-5">
+                <h3 class="font-medium">Grade Submission Deadline</h3>
+
+                <p class="text-sm text-gray-500 mt-1">
+                  Please submit all grades before June 30.
+                </p>
+              </div>
+
+              <div class="px-6 py-5">
+                <h3 class="font-medium">Faculty Meeting</h3>
+
+                <p class="text-sm text-gray-500 mt-1">
+                  Friday 09:00 AM - Meeting Room A.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>
