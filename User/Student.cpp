@@ -381,7 +381,6 @@ std::vector<Student> Student::loadStudentsFromFile(const std::string& filepath)
     std::string line;
     while (std::getline(ifs, line)) {
         if (line.empty()) continue;
-        // skip possible UTF-8 BOM
         if (line.size() >= 3 && static_cast<unsigned char>(line[0]) == 0xEF && static_cast<unsigned char>(line[1]) == 0xBB && static_cast<unsigned char>(line[2]) == 0xBF) {
             line = line.substr(3);
         }
@@ -393,7 +392,6 @@ std::vector<Student> Student::loadStudentsFromFile(const std::string& filepath)
             cols.push_back(token);
         }
 
-        // Expect at least 7 columns; remaining optional: gpa, tuitionOwed
         if (cols.size() < 7) {
             continue;
         }
@@ -404,7 +402,6 @@ std::vector<Student> Student::loadStudentsFromFile(const std::string& filepath)
             if (cols.size() > 7 && !cols[7].empty()) parsedGpa = std::stod(cols[7]);
             if (cols.size() > 8 && !cols[8].empty()) parsedTuition = std::stod(cols[8]);
         } catch (...) {
-            // ignore parse errors and keep defaults
         }
 
         Student s(cols[0], cols[1], cols[2], cols[3], cols[4], cols[5], cols[6], parsedGpa, parsedTuition);
