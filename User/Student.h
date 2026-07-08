@@ -92,6 +92,11 @@ public:
     void payTuition(double amount);
 
     void addPrerequisite(const std::string& courseId, const std::vector<std::string>& requiredCourses);
+    // Load students from a CSV file. Each line should be:
+    // studentId,name,email,major,phone,username,password,gpa,tuitionOwed
+    static std::vector<Student> loadStudentsFromFile(const std::string& filepath);
+    // Load from the default students file under data/students.csv
+    static std::vector<Student> loadDefaultStudents();
 };
 
 #endif

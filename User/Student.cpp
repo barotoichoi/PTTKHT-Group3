@@ -2,14 +2,13 @@
 
 #include <algorithm>
 #include <cmath>
+#include <fstream>
+#include <sstream>
 
 Student::Student()
     : studentId(""), name(""), email(""), major(""), phone(""), username(""), password(""),
       gpa(0.0), tuitionOwed(0.0)
 {
-    prerequisiteMap["CS201"] = {"CS101"};
-    prerequisiteMap["CS301"] = {"CS201", "MA101"};
-    prerequisiteMap["ENG201"] = {"ENG101"};
 }
 
 Student::Student(const std::string& studentId, const std::string& name,
@@ -19,9 +18,6 @@ Student::Student(const std::string& studentId, const std::string& name,
     : studentId(studentId), name(name), email(email), major(major), phone(phone),
       username(username), password(password), gpa(gpa), tuitionOwed(tuitionOwed)
 {
-    prerequisiteMap["CS201"] = {"CS101"};
-    prerequisiteMap["CS301"] = {"CS201", "MA101"};
-    prerequisiteMap["ENG201"] = {"ENG101"};
 }
 
 bool Student::login(const std::string& username, const std::string& password) const
@@ -371,4 +367,54 @@ void Student::payTuition(double amount)
 void Student::addPrerequisite(const std::string& courseId, const std::vector<std::string>& requiredCourses)
 {
     prerequisiteMap[courseId] = requiredCourses;
+}
+
+std::vector<Student> Student::loadStudentsFromFile(const std::string& filepath)
+{
+    std::vector<Student> students;
+    std::ifstream ifs(filepath);
+    if (!ifs.is_open()) {
+        std::cout << "Khong the mo file: " << filepath << std::endl;
+        return students;
+    }
+
+    std::string line;
+    while (std::getline(ifs, line)) {
+        if (line.empty()) continue;
+        // skip possible UTF-8 BOM
+        if (line.size() >= 3 && static_cast<unsigned char>(line[0]) == 0xEF && static_cast<unsigned char>(line[1]) == 0xBB && static_cast<unsigned char>(line[2]) == 0xBF) {
+            line = line.substr(3);
+        }
+
+        std::istringstream ss(line);
+        std::vector<std::string> cols;
+        std::string token;
+        while (std::getline(ss, token, ',')) {
+            cols.push_back(token);
+        }
+
+        // Expect at least 7 columns; remaining optional: gpa, tuitionOwed
+        if (cols.size() < 7) {
+            continue;
+        }
+
+        double parsedGpa = 0.0;
+        double parsedTuition = 0.0;
+        try {
+            if (cols.size() > 7 && !cols[7].empty()) parsedGpa = std::stod(cols[7]);
+            if (cols.size() > 8 && !cols[8].empty()) parsedTuition = std::stod(cols[8]);
+        } catch (...) {
+            // ignore parse errors and keep defaults
+        }
+
+        Student s(cols[0], cols[1], cols[2], cols[3], cols[4], cols[5], cols[6], parsedGpa, parsedTuition);
+        students.push_back(s);
+    }
+
+    return students;
+}
+
+std::vector<Student> Student::loadDefaultStudents()
+{
+    return loadStudentsFromFile("data/students.csv");
 }
