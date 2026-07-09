@@ -1,0 +1,611 @@
+<!doctype html>
+
+<html class="light" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>My Classes - EduSync Academy</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary-fixed-dim": "#adc6ff",
+              secondary: "#565e74",
+              "on-error-container": "#93000a",
+              "on-primary-fixed": "#001a42",
+              "on-tertiary-fixed-variant": "#38485d",
+              "surface-container-lowest": "#ffffff",
+              "error-container": "#ffdad6",
+              "tertiary-fixed-dim": "#b7c8e1",
+              "tertiary-fixed": "#d3e4fe",
+              "surface-variant": "#e0e3e5",
+              outline: "#727785",
+              "on-tertiary": "#ffffff",
+              "secondary-container": "#dae2fd",
+              "surface-tint": "#005ac2",
+              "secondary-fixed-dim": "#bec6e0",
+              "secondary-fixed": "#dae2fd",
+              "on-surface": "#191c1e",
+              "surface-container-high": "#e6e8ea",
+              "on-secondary": "#ffffff",
+              error: "#ba1a1a",
+              "primary-container": "#2170e4",
+              "outline-variant": "#c2c6d6",
+              "on-primary": "#ffffff",
+              "on-secondary-container": "#5c647a",
+              "surface-dim": "#d8dadc",
+              "surface-bright": "#f7f9fb",
+              background: "#f7f9fb",
+              "tertiary-container": "#66768d",
+              "inverse-primary": "#adc6ff",
+              primary: "#0058be",
+              "surface-container-highest": "#e0e3e5",
+              "on-surface-variant": "#424754",
+              "on-tertiary-container": "#fdfcff",
+              "inverse-on-surface": "#eff1f3",
+              "on-background": "#191c1e",
+              "on-secondary-fixed-variant": "#3f465c",
+              "surface-container": "#eceef0",
+              surface: "#f7f9fb",
+              "on-secondary-fixed": "#131b2e",
+              "inverse-surface": "#2d3133",
+              "on-primary-fixed-variant": "#004395",
+              "on-error": "#ffffff",
+              tertiary: "#4d5d73",
+              "primary-fixed": "#d8e2ff",
+              "surface-container-low": "#f2f4f6",
+              "on-tertiary-fixed": "#0b1c30",
+              "on-primary-container": "#fefcff",
+            },
+            borderRadius: {
+              DEFAULT: "0.125rem",
+              lg: "0.25rem",
+              xl: "0.5rem",
+              full: "0.75rem",
+            },
+            spacing: {
+              "container-padding": "2rem",
+              gutter: "1rem",
+              "card-gap": "1.5rem",
+              "sidebar-width": "240px",
+              "table-row-height": "48px",
+            },
+            fontFamily: {
+              "body-lg": ["Inter"],
+              "body-md": ["Inter"],
+              "headline-md": ["Inter"],
+              "headline-lg": ["Inter"],
+              "label-md": ["Inter"],
+              caption: ["Inter"],
+            },
+            fontSize: {
+              "body-lg": [
+                "16px",
+                {
+                  lineHeight: "24px",
+                  fontWeight: "400",
+                },
+              ],
+              "body-md": [
+                "14px",
+                {
+                  lineHeight: "20px",
+                  fontWeight: "400",
+                },
+              ],
+              "headline-md": [
+                "18px",
+                {
+                  lineHeight: "24px",
+                  fontWeight: "600",
+                },
+              ],
+              "headline-lg": [
+                "24px",
+                {
+                  lineHeight: "32px",
+                  fontWeight: "700",
+                },
+              ],
+              "label-md": [
+                "12px",
+                {
+                  lineHeight: "16px",
+                  letterSpacing: "0.02em",
+                  fontWeight: "600",
+                },
+              ],
+              caption: [
+                "12px",
+                {
+                  lineHeight: "16px",
+                  fontWeight: "400",
+                },
+              ],
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+  <body class="bg-background text-on-background font-body-md min-h-screen flex">
+    <!-- SideNavBar -->
+    <aside
+      class="bg-[#0F172A] border-r border-outline-variant w-[240px] h-screen fixed left-0 top-0 flex flex-col py-6 z-50"
+    >
+      <div class="px-6 mb-10">
+        <h1
+          class="font-headline-md text-headline-md font-bold text-white tracking-tight leading-tight"
+        >
+          Student Management System
+        </h1>
+        <p class="text-slate-400 text-[10px] font-caption mt-1">
+          EduSync Academy
+        </p>
+      </div>
+      <nav class="flex-1 px-2 space-y-1 overflow-y-auto custom-scroll">
+        <a
+          class=" text-white font-bold rounded-lg mx-2 my-1 flex items-center px-4 py-3 gap-3 transition-all opacity-90 shadow-md"
+          href="teacher.html"
+        >
+          <span class="material-symbols-outlined" data-icon="home">home</span>
+          <span class="font-body-md text-body-md">Home</span>
+        </a>
+        <a
+          class="bg-primary text-slate-300 mx-2 my-1 flex items-center px-4 py-3 gap-3 transition-colors"
+          href="teacher-myclass.html"
+        >
+          <span class="material-symbols-outlined" data-icon="school"
+            >school</span
+          >
+          <span class="font-body-md text-body-md">My Classes</span>
+        </a>
+        <a
+          class="text-slate-300 hover:text-white mx-2 my-1 flex items-center px-4 py-3 gap-3 hover:bg-slate-800 transition-colors"
+          href="teacher-student.html"
+        >
+          <span class="material-symbols-outlined" data-icon="group">group</span>
+          <span class="font-body-md text-body-md">Students</span>
+        </a>
+        <a
+          class="text-slate-300 hover:text-white mx-2 my-1 flex items-center px-4 py-3 gap-3 hover:bg-slate-800 transition-colors"
+          href="teacher-schedule.html"
+        >
+          <span class="material-symbols-outlined" data-icon="calendar_today"
+            >calendar_today</span
+          >
+          <span class="font-body-md text-body-md">Schedule</span>
+        </a>
+        <a
+          class="text-slate-300 hover:text-white mx-2 my-1 flex items-center px-4 py-3 gap-3 hover:bg-slate-800 transition-colors"
+          href="teacher-assignment.html"
+        >
+          <span class="material-symbols-outlined" data-icon="assignment"
+            >assignment</span
+          >
+          <span class="font-body-md text-body-md">Assignments</span>
+        </a>
+        <a
+          class="text-slate-300 hover:text-white mx-2 my-1 flex items-center px-4 py-3 gap-3 hover:bg-slate-800 transition-colors"
+          href="teacher-grades.html"
+        >
+          <span class="material-symbols-outlined" data-icon="grade">grade</span>
+          <span class="font-body-md text-body-md">Grades</span>
+        </a>
+        <a
+          class="text-slate-300 hover:text-white mx-2 my-1 flex items-center px-4 py-3 gap-3 hover:bg-slate-800 transition-colors"
+          href="teacher-attendance.html"
+        >
+          <span class="material-symbols-outlined" data-icon="event_available"
+            >event_available</span
+          >
+          <span class="font-body-md text-body-md">Attendance</span>
+        </a>
+      </nav>
+      <div class="px-4 mt-auto pt-4 space-y-2">
+        <button
+          class="w-full bg-[#3b82f6] text-white flex items-center justify-center px-4 py-3 transition-colors rounded-lg mb-2 shadow-sm"
+        >
+          <span class="font-body-md text-body-md">Support Center</span>
+        </button>
+        <button
+          class="w-full text-slate-400 hover:text-white flex items-center px-4 py-3 gap-3 hover:bg-slate-800 transition-colors rounded-lg"
+        >
+          <span class="material-symbols-outlined" data-icon="logout"
+            >logout</span
+          >
+          <span class="font-body-md text-body-md">Log Out</span>
+        </button>
+      </div>
+    </aside>
+    <!-- Main Content Area -->
+    <main class="ml-[240px] flex-1 flex flex-col min-h-screen">
+      <!-- TopAppBar -->
+      <header
+        class="fixed top-0 right-0 w-[calc(100%-240px)] z-40 bg-surface border-b border-outline-variant flex justify-between items-center h-16 px-8"
+      >
+        <div class="flex items-center gap-4">
+          <span
+            class="font-headline-sm text-headline-sm font-semibold text-on-surface"
+            >EduSync Academy</span
+          >
+        </div>
+        <div class="flex items-center gap-6">
+          <div class="relative hidden md:block">
+            <span
+              class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[20px]"
+              data-icon="search"
+              >search</span
+            >
+            <input
+              class="pl-10 pr-4 py-2 bg-surface-container-low border border-outline-variant rounded-full text-body-md font-body-md focus:outline-none focus:border-primary w-64"
+              placeholder="Search..."
+              type="text"
+            />
+          </div>
+          <div class="flex items-center gap-4 text-on-surface-variant">
+            <button class="hover:text-primary transition-colors hover:scale-95">
+              <span class="material-symbols-outlined" data-icon="notifications"
+                >notifications</span
+              >
+            </button>
+            <button class="hover:text-primary transition-colors hover:scale-95">
+              <span class="material-symbols-outlined" data-icon="settings"
+                >settings</span
+              >
+            </button>
+            <div
+              class="w-8 h-8 rounded-full bg-surface-container-highest overflow-hidden border border-outline-variant ml-2"
+            >
+              <img
+                alt="Teacher Profile Picture"
+                class="w-full h-full object-cover"
+                data-alt="A professional headshot of a teacher smiling warmly in a well-lit modern classroom setting, conveying trust and competence in a corporate education environment."
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuB9nqivP6SdtbfY00e0U6aII7l50YDTItHAxeewNaaGSX521TbIm1NuyR_BCtOWaBQ2d9hlrYYs4j2bTtmCwN5m-GxOjN96_DOB97SvUU4FxX7s3hoBQbROvIMM-_6DpXMSyMkJPRwIe4OCKLISuBpUxKzT6Kh2I0OueItnPBeG2moXAkX-U1eev81JqlXU_zgykv4APgxHQjIIHgUsmOJ8YWQ4f6617T5paJPOhFMqsXd8Az2n84xF7Q"
+              />
+            </div>
+          </div>
+        </div>
+      </header>
+      <!-- Page Content -->
+      <div class="pt-24 px-8 pb-12 flex-1 overflow-y-auto">
+        <div class="flex justify-between items-end mb-8">
+          <div>
+            <h2
+              class="font-headline-lg text-headline-lg font-bold text-on-surface mb-2"
+            >
+              My Classes
+            </h2>
+            <p class="font-body-md text-body-md text-on-surface-variant">
+              Manage your current semester courses and student progress.
+            </p>
+          </div>
+          <button
+            class="bg-primary text-white font-body-md text-body-md py-2 px-4 rounded-lg hover:bg-on-primary-fixed-variant transition-colors flex items-center gap-2"
+          >
+            <span class="material-symbols-outlined text-[18px]">add</span>
+            Create New Class
+          </button>
+        </div>
+        <!-- Bento Grid Layout for Classes -->
+        <div
+          class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-card-gap"
+        >
+          <!-- Class Card 1 -->
+          <div
+            class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden hover:shadow-md transition-shadow duration-300"
+          >
+            <div
+              class="p-4 border-b border-surface-variant bg-surface-bright flex justify-between items-start"
+            >
+              <div>
+                <span
+                  class="inline-block px-2 py-1 bg-primary-fixed text-on-primary-fixed rounded text-[10px] font-bold tracking-wider mb-2 uppercase"
+                  >CS-101</span
+                >
+                <h3
+                  class="font-headline-md text-headline-md font-bold text-on-surface"
+                >
+                  Database Systems
+                </h3>
+              </div>
+              <div
+                class="w-8 h-8 rounded bg-primary-fixed-dim text-primary flex items-center justify-center opacity-80"
+              >
+                <span class="material-symbols-outlined text-[18px]"
+                  >storage</span
+                >
+              </div>
+            </div>
+            <div class="p-5 space-y-4">
+              <div
+                class="flex justify-between items-center text-body-md font-body-md text-on-surface-variant"
+              >
+                <div class="flex items-center gap-2">
+                  <span
+                    class="material-symbols-outlined text-[18px] text-outline"
+                    >group</span
+                  >
+                  <span>43 Students</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span
+                    class="material-symbols-outlined text-[18px] text-outline"
+                    >meeting_room</span
+                  >
+                  <span>Room A203</span>
+                </div>
+              </div>
+              <div class="space-y-1.5">
+                <div
+                  class="flex justify-between text-caption font-caption text-on-surface-variant"
+                >
+                  <span>Semester Progress</span>
+                  <span class="font-bold text-primary">82%</span>
+                </div>
+                <div
+                  class="h-2 w-full bg-surface-variant rounded-full overflow-hidden"
+                >
+                  <div
+                    class="h-full bg-primary rounded-full"
+                    style="width: 82%"
+                  ></div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="p-4 border-t border-surface-variant bg-surface flex justify-between items-center"
+            >
+              <span class="text-caption font-caption text-on-surface-variant"
+                >Next: Mon 09:30 AM</span
+              >
+              <button
+                class="text-primary font-label-md text-label-md hover:underline"
+              >
+                View Details
+              </button>
+            </div>
+          </div>
+          <!-- Class Card 2 -->
+          <div
+            class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden hover:shadow-md transition-shadow duration-300"
+          >
+            <div
+              class="p-4 border-b border-surface-variant bg-surface-bright flex justify-between items-start"
+            >
+              <div>
+                <span
+                  class="inline-block px-2 py-1 bg-secondary-fixed text-on-secondary-fixed rounded text-[10px] font-bold tracking-wider mb-2 uppercase"
+                  >CS-202</span
+                >
+                <h3
+                  class="font-headline-md text-headline-md font-bold text-on-surface"
+                >
+                  Object Oriented Programming
+                </h3>
+              </div>
+              <div
+                class="w-8 h-8 rounded bg-secondary-fixed-dim text-secondary flex items-center justify-center opacity-80"
+              >
+                <span class="material-symbols-outlined text-[18px]">code</span>
+              </div>
+            </div>
+            <div class="p-5 space-y-4">
+              <div
+                class="flex justify-between items-center text-body-md font-body-md text-on-surface-variant"
+              >
+                <div class="flex items-center gap-2">
+                  <span
+                    class="material-symbols-outlined text-[18px] text-outline"
+                    >group</span
+                  >
+                  <span>38 Students</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span
+                    class="material-symbols-outlined text-[18px] text-outline"
+                    >meeting_room</span
+                  >
+                  <span>Room B105</span>
+                </div>
+              </div>
+              <div class="space-y-1.5">
+                <div
+                  class="flex justify-between text-caption font-caption text-on-surface-variant"
+                >
+                  <span>Semester Progress</span>
+                  <span class="font-bold text-[#10b981]">68%</span>
+                </div>
+                <div
+                  class="h-2 w-full bg-surface-variant rounded-full overflow-hidden flex"
+                >
+                  <div
+                    class="h-full bg-[#10b981] rounded-l-full"
+                    style="width: 68%"
+                  ></div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="p-4 border-t border-surface-variant bg-surface flex justify-between items-center"
+            >
+              <span class="text-caption font-caption text-on-surface-variant"
+                >Next: Tue 11:00 AM</span
+              >
+              <button
+                class="text-primary font-label-md text-label-md hover:underline"
+              >
+                View Details
+              </button>
+            </div>
+          </div>
+          <!-- Class Card 3 -->
+          <div
+            class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden hover:shadow-md transition-shadow duration-300"
+          >
+            <div
+              class="p-4 border-b border-surface-variant bg-surface-bright flex justify-between items-start"
+            >
+              <div>
+                <span
+                  class="inline-block px-2 py-1 bg-tertiary-fixed text-on-tertiary-fixed rounded text-[10px] font-bold tracking-wider mb-2 uppercase"
+                  >WEB-301</span
+                >
+                <h3
+                  class="font-headline-md text-headline-md font-bold text-on-surface"
+                >
+                  Web Development
+                </h3>
+              </div>
+              <div
+                class="w-8 h-8 rounded bg-tertiary-fixed-dim text-tertiary flex items-center justify-center opacity-80"
+              >
+                <span class="material-symbols-outlined text-[18px]"
+                  >language</span
+                >
+              </div>
+            </div>
+            <div class="p-5 space-y-4">
+              <div
+                class="flex justify-between items-center text-body-md font-body-md text-on-surface-variant"
+              >
+                <div class="flex items-center gap-2">
+                  <span
+                    class="material-symbols-outlined text-[18px] text-outline"
+                    >group</span
+                  >
+                  <span>51 Students</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span
+                    class="material-symbols-outlined text-[18px] text-outline"
+                    >meeting_room</span
+                  >
+                  <span>Lab C302</span>
+                </div>
+              </div>
+              <div class="space-y-1.5">
+                <div
+                  class="flex justify-between text-caption font-caption text-on-surface-variant"
+                >
+                  <span>Semester Progress</span>
+                  <span class="font-bold text-[#8b5cf6]">91%</span>
+                </div>
+                <div
+                  class="h-2 w-full bg-surface-variant rounded-full overflow-hidden"
+                >
+                  <div
+                    class="h-full bg-[#8b5cf6] rounded-full"
+                    style="width: 91%"
+                  ></div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="p-4 border-t border-surface-variant bg-surface flex justify-between items-center"
+            >
+              <span class="text-caption font-caption text-on-surface-variant"
+                >Next: Wed 01:00 PM</span
+              >
+              <button
+                class="text-primary font-label-md text-label-md hover:underline"
+              >
+                View Details
+              </button>
+            </div>
+          </div>
+          <!-- Class Card 4 -->
+          <div
+            class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden hover:shadow-md transition-shadow duration-300"
+          >
+            <div
+              class="p-4 border-b border-surface-variant bg-surface-bright flex justify-between items-start"
+            >
+              <div>
+                <span
+                  class="inline-block px-2 py-1 bg-primary-fixed text-on-primary-fixed rounded text-[10px] font-bold tracking-wider mb-2 uppercase"
+                  >MAT-105</span
+                >
+                <h3
+                  class="font-headline-md text-headline-md font-bold text-on-surface"
+                >
+                  Applied Mathematics
+                </h3>
+              </div>
+              <div
+                class="w-8 h-8 rounded bg-primary-fixed-dim text-primary flex items-center justify-center opacity-80"
+              >
+                <span class="material-symbols-outlined text-[18px]"
+                  >calculate</span
+                >
+              </div>
+            </div>
+            <div class="p-5 space-y-4">
+              <div
+                class="flex justify-between items-center text-body-md font-body-md text-on-surface-variant"
+              >
+                <div class="flex items-center gap-2">
+                  <span
+                    class="material-symbols-outlined text-[18px] text-outline"
+                    >group</span
+                  >
+                  <span>29 Students</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span
+                    class="material-symbols-outlined text-[18px] text-outline"
+                    >meeting_room</span
+                  >
+                  <span>Room D404</span>
+                </div>
+              </div>
+              <div class="space-y-1.5">
+                <div
+                  class="flex justify-between text-caption font-caption text-on-surface-variant"
+                >
+                  <span>Semester Progress</span>
+                  <span class="font-bold text-primary">45%</span>
+                </div>
+                <div
+                  class="h-2 w-full bg-surface-variant rounded-full overflow-hidden"
+                >
+                  <div
+                    class="h-full bg-primary rounded-full"
+                    style="width: 45%"
+                  ></div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="p-4 border-t border-surface-variant bg-surface flex justify-between items-center"
+            >
+              <span class="text-caption font-caption text-on-surface-variant"
+                >Next: Thu 10:00 AM</span
+              >
+              <button
+                class="text-primary font-label-md text-label-md hover:underline"
+              >
+                View Details
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>
