@@ -39,6 +39,10 @@ public:
 
     double calculateTuitionFee();
     void updatePaymentStatus(const std::string& paymentStatus);
+
+    bool save();
+    bool deleteRecord();
+    bool find(const std::string& studentId, const std::string& semester);
 };
 
 #endif
