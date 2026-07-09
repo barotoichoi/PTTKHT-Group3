@@ -8,6 +8,8 @@
 
 #include "Teacher.h"
 
+struct sqlite3;
+
 class Student {
 private:
     std::string studentId;
@@ -93,8 +95,12 @@ public:
 
     void addPrerequisite(const std::string& courseId, const std::vector<std::string>& requiredCourses);
    
-    static std::vector<Student> loadStudentsFromFile(const std::string& filepath);
+    static std::vector<Student> loadStudentsFromDatabase(const std::string& dbPath = "student_db.sqlite");
     static std::vector<Student> loadDefaultStudents();
+    bool saveToDatabase(const std::string& dbPath = "student_db.sqlite") const;
+    bool deleteFromDatabase(const std::string& dbPath = "student_db.sqlite") const;
+    static bool initializeDatabase(const std::string& dbPath = "student_db.sqlite");
+    static Student findByUsername(const std::string& username, const std::string& dbPath = "student_db.sqlite");
 };
 
 #endif

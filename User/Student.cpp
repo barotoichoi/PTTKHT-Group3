@@ -2,8 +2,7 @@
 
 #include <algorithm>
 #include <cmath>
-#include <fstream>
-#include <sstream>
+#include <sqlite3.h>
 
 Student::Student()
     : studentId(""), name(""), email(""), major(""), phone(""), username(""), password(""),
@@ -369,49 +368,201 @@ void Student::addPrerequisite(const std::string& courseId, const std::vector<std
     prerequisiteMap[courseId] = requiredCourses;
 }
 
-std::vector<Student> Student::loadStudentsFromFile(const std::string& filepath)
+std::vector<Student> Student::loadStudentsFromDatabase(const std::string& dbPath)
 {
     std::vector<Student> students;
-    std::ifstream ifs(filepath);
-    if (!ifs.is_open()) {
-        std::cout << "Khong the mo file: " << filepath << std::endl;
+    sqlite3* db = nullptr;
+    if (sqlite3_open(dbPath.c_str(), &db) != SQLITE_OK) {
+        std::cout << "Khong the mo co so du lieu: " << dbPath << std::endl;
+        if (db) {
+            sqlite3_close(db);
+        }
         return students;
     }
 
-    std::string line;
-    while (std::getline(ifs, line)) {
-        if (line.empty()) continue;
-        if (line.size() >= 3 && static_cast<unsigned char>(line[0]) == 0xEF && static_cast<unsigned char>(line[1]) == 0xBB && static_cast<unsigned char>(line[2]) == 0xBF) {
-            line = line.substr(3);
-        }
-
-        std::istringstream ss(line);
-        std::vector<std::string> cols;
-        std::string token;
-        while (std::getline(ss, token, ',')) {
-            cols.push_back(token);
-        }
-
-        if (cols.size() < 7) {
-            continue;
-        }
-
-        double parsedGpa = 0.0;
-        double parsedTuition = 0.0;
-        try {
-            if (cols.size() > 7 && !cols[7].empty()) parsedGpa = std::stod(cols[7]);
-            if (cols.size() > 8 && !cols[8].empty()) parsedTuition = std::stod(cols[8]);
-        } catch (...) {
-        }
-
-        Student s(cols[0], cols[1], cols[2], cols[3], cols[4], cols[5], cols[6], parsedGpa, parsedTuition);
-        students.push_back(s);
+    const char* sql = "SELECT studentId, name, email, major, phone, username, password, gpa, tuitionOwed FROM students;";
+    sqlite3_stmt* stmt = nullptr;
+    int result = sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr);
+    if (result != SQLITE_OK) {
+        std::cout << "Loi prepare statement: " << sqlite3_errmsg(db) << std::endl;
+        sqlite3_close(db);
+        return students;
     }
 
+    while ((result = sqlite3_step(stmt)) == SQLITE_ROW) {
+        std::string studentId = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 0));
+        std::string name = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1));
+        std::string email = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2));
+        std::string major = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 3));
+        std::string phone = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 4));
+        std::string username = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 5));
+        std::string password = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 6));
+        double gpa = sqlite3_column_double(stmt, 7);
+        double tuitionOwed = sqlite3_column_double(stmt, 8);
+
+        students.emplace_back(studentId, name, email, major, phone, username, password, gpa, tuitionOwed);
+    }
+
+    if (result != SQLITE_DONE) {
+        std::cout << "Loi khi doc du lieu: " << sqlite3_errmsg(db) << std::endl;
+    }
+
+    sqlite3_finalize(stmt);
+    sqlite3_close(db);
     return students;
 }
 
 std::vector<Student> Student::loadDefaultStudents()
 {
-    return loadStudentsFromFile("data/students.csv");
+    return loadStudentsFromDatabase("student_db.sqlite");
+}
+
+bool Student::initializeDatabase(const std::string& dbPath)
+{
+    sqlite3* db = nullptr;
+    if (sqlite3_open(dbPath.c_str(), &db) != SQLITE_OK) {
+        if (db) {
+            sqlite3_close(db);
+        }
+        return false;
+    }
+
+    const char* sql = "CREATE TABLE IF NOT EXISTS students ("
+                      "studentId TEXT PRIMARY KEY,"
+                      "name TEXT NOT NULL,"
+                      "email TEXT NOT NULL,"
+                      "major TEXT NOT NULL,"
+                      "phone TEXT NOT NULL,"
+                      "username TEXT NOT NULL UNIQUE,"
+                      "password TEXT NOT NULL,"
+                      "gpa REAL NOT NULL DEFAULT 0.0,"
+                      "tuitionOwed REAL NOT NULL DEFAULT 0.0);";
+
+    char* errMsg = nullptr;
+    bool ok = sqlite3_exec(db, sql, nullptr, nullptr, &errMsg) == SQLITE_OK;
+    if (!ok) {
+        std::cout << "Loi tao bang: " << errMsg << std::endl;
+        sqlite3_free(errMsg);
+    }
+
+    sqlite3_close(db);
+    return ok;
+}
+
+bool Student::saveToDatabase(const std::string& dbPath) const
+{
+    if (!initializeDatabase(dbPath)) {
+        return false;
+    }
+
+    sqlite3* db = nullptr;
+    if (sqlite3_open(dbPath.c_str(), &db) != SQLITE_OK) {
+        return false;
+    }
+
+    const char* sql = "INSERT OR REPLACE INTO students (studentId, name, email, major, phone, username, password, gpa, tuitionOwed) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
+    sqlite3_stmt* stmt = nullptr;
+    int result = sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr);
+    if (result != SQLITE_OK) {
+        std::cout << "Loi prepare statement: " << sqlite3_errmsg(db) << std::endl;
+        sqlite3_close(db);
+        return false;
+    }
+
+    // Use bind to prevent SQL injection and handle embedded quotes safely.
+    sqlite3_bind_text(stmt, 1, studentId.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt, 2, name.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt, 3, email.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt, 4, major.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt, 5, phone.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt, 6, username.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt, 7, password.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_double(stmt, 8, gpa);
+    sqlite3_bind_double(stmt, 9, tuitionOwed);
+
+    result = sqlite3_step(stmt);
+    bool ok = result == SQLITE_DONE;
+    if (!ok) {
+        std::cout << "Loi ghi du lieu: " << sqlite3_errmsg(db) << std::endl;
+    }
+
+    sqlite3_finalize(stmt);
+    sqlite3_close(db);
+    return ok;
+}
+
+bool Student::deleteFromDatabase(const std::string& dbPath) const
+{
+    if (!initializeDatabase(dbPath)) {
+        return false;
+    }
+
+    sqlite3* db = nullptr;
+    if (sqlite3_open(dbPath.c_str(), &db) != SQLITE_OK) {
+        return false;
+    }
+
+    const char* sql = "DELETE FROM students WHERE studentId = ?;";
+    sqlite3_stmt* stmt = nullptr;
+    int result = sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr);
+    if (result != SQLITE_OK) {
+        std::cout << "Loi prepare statement: " << sqlite3_errmsg(db) << std::endl;
+        sqlite3_close(db);
+        return false;
+    }
+
+    sqlite3_bind_text(stmt, 1, studentId.c_str(), -1, SQLITE_TRANSIENT);
+
+    result = sqlite3_step(stmt);
+    bool ok = result == SQLITE_DONE;
+    if (!ok) {
+        std::cout << "Loi xoa du lieu: " << sqlite3_errmsg(db) << std::endl;
+    }
+
+    sqlite3_finalize(stmt);
+    sqlite3_close(db);
+    return ok;
+}
+
+Student Student::findByUsername(const std::string& username, const std::string& dbPath)
+{
+    sqlite3* db = nullptr;
+    if (sqlite3_open(dbPath.c_str(), &db) != SQLITE_OK) {
+        return Student();
+    }
+
+    const char* sql = "SELECT studentId, name, email, major, phone, username, password, gpa, tuitionOwed FROM students WHERE username = ?;";
+    sqlite3_stmt* stmt = nullptr;
+    int result = sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr);
+    if (result != SQLITE_OK) {
+        std::cout << "Loi prepare statement: " << sqlite3_errmsg(db) << std::endl;
+        sqlite3_close(db);
+        return Student();
+    }
+
+    sqlite3_bind_text(stmt, 1, username.c_str(), -1, SQLITE_TRANSIENT);
+
+    result = sqlite3_step(stmt);
+    if (result != SQLITE_ROW) {
+        if (result != SQLITE_DONE) {
+            std::cout << "Loi truy van: " << sqlite3_errmsg(db) << std::endl;
+        }
+        sqlite3_finalize(stmt);
+        sqlite3_close(db);
+        return Student();
+    }
+
+    std::string studentId = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 0));
+    std::string name = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1));
+    std::string email = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2));
+    std::string major = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 3));
+    std::string phone = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 4));
+    std::string foundUsername = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 5));
+    std::string password = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 6));
+    double gpa = sqlite3_column_double(stmt, 7);
+    double tuitionOwed = sqlite3_column_double(stmt, 8);
+
+    sqlite3_finalize(stmt);
+    sqlite3_close(db);
+    return Student(studentId, name, email, major, phone, foundUsername, password, gpa, tuitionOwed);
 }
