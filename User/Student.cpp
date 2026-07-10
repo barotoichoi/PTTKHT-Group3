@@ -1,568 +1,613 @@
 #include "Student.h"
 
-#include <algorithm>
-#include <cmath>
-#include <sqlite3.h>
+#include <iomanip>
+#include <iostream>
+#include <sstream>
+#include <windows.h>
+#include <sqlext.h>
+
+using std::cout;
+using std::ostream;
+using std::string;
+using std::vector;
+
+namespace {
+bool checkSqlSuccess(SQLRETURN result) {
+    return result == SQL_SUCCESS || result == SQL_SUCCESS_WITH_INFO;
+}
+
+string getDiagnosticMessage(SQLSMALLINT handleType, SQLHANDLE handle) {
+    std::ostringstream details;
+    SQLSMALLINT record = 1;
+
+    while (true) {
+        SQLCHAR state[6] = {};
+        SQLCHAR message[SQL_MAX_MESSAGE_LENGTH] = {};
+        SQLINTEGER nativeError = 0;
+        SQLSMALLINT messageLength = 0;
+
+        SQLRETURN result = SQLGetDiagRecA(handleType, handle, record, state, &nativeError,
+                                          message, sizeof(message), &messageLength);
+        if (result == SQL_NO_DATA) break;
+        if (!checkSqlSuccess(result)) break;
+
+        if (details.tellp() > 0) details << " | ";
+        details << "[" << state << "] " << message;
+        ++record;
+    }
+
+    const string text = details.str();
+    return text.empty() ? "Unknown SQL Server error" : text;
+}
+
+string nullableDateSql(const string& value) {
+    if (value.empty()) return "NULL";
+    return "'" + value + "'";
+}
+}
 
 Student::Student()
-    : studentId(""), name(""), email(""), major(""), phone(""), username(""), password(""),
-      gpa(0.0), tuitionOwed(0.0)
-{
-}
+    : studentId(""), name(""), gender(""), dob(""), classId(""), email(""),
+      major(""), phone(""), username(""), password(""), gpa(0.0),
+      tuitionOwed(0.0), status("Active") {}
 
-Student::Student(const std::string& studentId, const std::string& name,
-                 const std::string& email, const std::string& major,
-                 const std::string& phone, const std::string& username,
-                 const std::string& password, double gpa, double tuitionOwed)
-    : studentId(studentId), name(name), email(email), major(major), phone(phone),
-      username(username), password(password), gpa(gpa), tuitionOwed(tuitionOwed)
-{
-}
+Student::Student(const string& studentId,
+                 const string& name,
+                 const string& gender,
+                 const string& dob,
+                 const string& classId,
+                 const string& email,
+                 const string& major,
+                 const string& phone,
+                 const string& username,
+                 const string& password,
+                 double gpa,
+                 double tuitionOwed,
+                 const string& status)
+    : studentId(studentId), name(name), gender(gender), dob(dob), classId(classId),
+      email(email), major(major), phone(phone), username(username),
+      password(password), gpa(gpa), tuitionOwed(tuitionOwed), status(status) {}
 
-bool Student::login(const std::string& username, const std::string& password) const
-{
+bool Student::login(const string& username, const string& password) const {
     return this->username == username && this->password == password;
 }
 
-std::string Student::getStudentId() const
-{
-    return studentId;
+void Student::displayInfo() const {
+    cout << "Student ID : " << studentId << '\n';
+    cout << "Name       : " << name << '\n';
+    cout << "Gender     : " << gender << '\n';
+    cout << "DOB        : " << dob << '\n';
+    cout << "Class ID   : " << classId << '\n';
+    cout << "Email      : " << email << '\n';
+    cout << "Major      : " << major << '\n';
+    cout << "Phone      : " << phone << '\n';
+    cout << "Username   : " << username << '\n';
+    cout << "GPA        : " << gpa << '\n';
+    cout << "Tuition    : " << tuitionOwed << '\n';
+    cout << "Status     : " << status << '\n';
 }
 
-void Student::setStudentId(const std::string& studentId)
-{
-    this->studentId = studentId;
+StudentRepository::StudentRepository(const string& connectionString)
+    : environmentHandle(nullptr), connectionHandle(nullptr),
+      connectionString(connectionString) {}
+
+StudentRepository::~StudentRepository() {
+    disconnect();
 }
 
-std::string Student::getName() const
-{
-    return name;
+string StudentRepository::defaultConnectionString() {
+    return "Driver={ODBC Driver 17 for SQL Server};"
+           "Server=localhost;"
+           "Trusted_Connection=yes;";
 }
 
-void Student::setName(const std::string& name)
-{
-    this->name = name;
-}
+bool StudentRepository::connect() {
+    if (connectionHandle != nullptr) return true;
 
-std::string Student::getEmail() const
-{
-    return email;
-}
+    SQLHENV env = nullptr;
+    SQLHDBC dbc = nullptr;
 
-void Student::setEmail(const std::string& email)
-{
-    this->email = email;
-}
+    SQLRETURN result = SQLAllocHandle(SQL_HANDLE_ENV, SQL_NULL_HANDLE, &env);
+    if (!checkSqlSuccess(result)) return false;
 
-std::string Student::getMajor() const
-{
-    return major;
-}
-
-void Student::setMajor(const std::string& major)
-{
-    this->major = major;
-}
-
-std::string Student::getPhone() const
-{
-    return phone;
-}
-
-void Student::setPhone(const std::string& phone)
-{
-    this->phone = phone;
-}
-
-std::string Student::getUsername() const
-{
-    return username;
-}
-
-void Student::setUsername(const std::string& username)
-{
-    this->username = username;
-}
-
-std::string Student::getPassword() const
-{
-    return password;
-}
-
-void Student::setPassword(const std::string& password)
-{
-    this->password = password;
-}
-
-double Student::getGpa() const
-{
-    return gpa;
-}
-
-void Student::setGpa(double gpa)
-{
-    this->gpa = gpa;
-}
-
-double Student::getTuitionOwed() const
-{
-    return tuitionOwed;
-}
-
-void Student::setTuitionOwed(double tuitionOwed)
-{
-    this->tuitionOwed = tuitionOwed;
-}
-
-void Student::printPersonalInfo() const
-{
-    std::cout << "Thong tin ca nhan:" << std::endl;
-    std::cout << "  Ma sinh vien: " << studentId << std::endl;
-    std::cout << "  Ho ten: " << name << std::endl;
-    std::cout << "  Email: " << email << std::endl;
-    std::cout << "  Nganh hoc: " << major << std::endl;
-    std::cout << "  So dien thoai: " << phone << std::endl;
-}
-
-void Student::updatePersonalInfo(const std::string& name, const std::string& email,
-                                 const std::string& major, const std::string& phone)
-{
-    this->name = name;
-    this->email = email;
-    this->major = major;
-    this->phone = phone;
-    std::cout << "Thong tin ca nhan da duoc cap nhat." << std::endl;
-}
-
-void Student::printStudentCard() const
-{
-    std::cout << "The sinh vien" << std::endl;
-    std::cout << "---------------------------" << std::endl;
-    std::cout << "Ma sinh vien: " << studentId << std::endl;
-    std::cout << "Ho ten: " << name << std::endl;
-    std::cout << "Nganh: " << major << std::endl;
-    std::cout << "Email: " << email << std::endl;
-    std::cout << "So dien thoai: " << phone << std::endl;
-    std::cout << "GPA: " << gpa << std::endl;
-}
-
-void Student::printGPA() const
-{
-    double computedGpa = gpa;
-    if (std::fabs(computedGpa) < 1e-9 && !gradebook.empty()) {
-        double total = 0.0;
-        int count = 0;
-        for (const auto& entry : gradebook) {
-            for (const auto& record : entry.second) {
-                total += record.score;
-                ++count;
-            }
-        }
-        if (count > 0) {
-            computedGpa = total / count;
-        }
+    result = SQLSetEnvAttr(env, SQL_ATTR_ODBC_VERSION, reinterpret_cast<void*>(SQL_OV_ODBC3), 0);
+    if (!checkSqlSuccess(result)) {
+        SQLFreeHandle(SQL_HANDLE_ENV, env);
+        return false;
     }
 
-    std::cout << "GPA hien tai: " << computedGpa << std::endl;
-}
-
-void Student::printGradebook() const
-{
-    std::cout << "Bang diem cua sinh vien:" << std::endl;
-    if (gradebook.empty()) {
-        std::cout << "  Chua co diem nao." << std::endl;
-        return;
+    result = SQLAllocHandle(SQL_HANDLE_DBC, env, &dbc);
+    if (!checkSqlSuccess(result)) {
+        SQLFreeHandle(SQL_HANDLE_ENV, env);
+        return false;
     }
 
-    for (const auto& courseEntry : gradebook) {
-        std::cout << "Mon: " << courseEntry.first << std::endl;
-        if (courseEntry.second.empty()) {
-            std::cout << "  Chua co diem." << std::endl;
-            continue;
-        }
-        for (const auto& record : courseEntry.second) {
-            std::cout << "  Hinh thuc: " << record.assessment
-                      << " | Diem: " << record.score << std::endl;
-        }
+    SQLCHAR outConnectionString[1024] = {};
+    SQLSMALLINT outLength = 0;
+    result = SQLDriverConnectA(
+        dbc,
+        nullptr,
+        reinterpret_cast<SQLCHAR*>(connectionString.data()),
+        SQL_NTS,
+        outConnectionString,
+        sizeof(outConnectionString),
+        &outLength,
+        SQL_DRIVER_NOPROMPT
+    );
+
+    if (!checkSqlSuccess(result)) {
+        cout << "SQL Server connect failed: " << getDiagnosticMessage(SQL_HANDLE_DBC, dbc) << '\n';
+        SQLFreeHandle(SQL_HANDLE_DBC, dbc);
+        SQLFreeHandle(SQL_HANDLE_ENV, env);
+        return false;
+    }
+
+    environmentHandle = env;
+    connectionHandle = dbc;
+    return true;
+}
+
+void StudentRepository::disconnect() {
+    if (connectionHandle != nullptr) {
+        SQLDisconnect(static_cast<SQLHDBC>(connectionHandle));
+        SQLFreeHandle(SQL_HANDLE_DBC, static_cast<SQLHDBC>(connectionHandle));
+        connectionHandle = nullptr;
+    }
+
+    if (environmentHandle != nullptr) {
+        SQLFreeHandle(SQL_HANDLE_ENV, static_cast<SQLHENV>(environmentHandle));
+        environmentHandle = nullptr;
     }
 }
 
-void Student::addEnrolledCourse(const CourseInfo& course)
-{
-    enrolledCourses.push_back(course);
-}
+bool StudentRepository::initializeSchema() {
+    if (!executeNonQuery("IF DB_ID('StudentManagement') IS NULL CREATE DATABASE StudentManagement;")) return false;
 
-std::vector<CourseInfo> Student::getEnrolledCourses() const
-{
-    return enrolledCourses;
-}
+    const char* statements[] = {
+        "IF OBJECT_ID('StudentManagement.dbo.Students', 'U') IS NULL "
+        "CREATE TABLE StudentManagement.dbo.Students ("
+        "StudentID NVARCHAR(20) NOT NULL PRIMARY KEY,"
+        "Name NVARCHAR(100) NOT NULL,"
+        "Gender NVARCHAR(20) NULL,"
+        "DOB DATE NULL,"
+        "ClassID NVARCHAR(20) NULL,"
+        "Email NVARCHAR(100) NULL,"
+        "Major NVARCHAR(100) NULL,"
+        "Phone NVARCHAR(20) NULL,"
+        "Username NVARCHAR(50) NOT NULL UNIQUE,"
+        "[Password] NVARCHAR(100) NOT NULL,"
+        "GPA FLOAT NOT NULL DEFAULT 0,"
+        "TuitionOwed FLOAT NOT NULL DEFAULT 0,"
+        "Status NVARCHAR(30) NULL"
+        ");",
 
-void Student::printEnrolledCourses() const
-{
-    std::cout << "Danh sach mon dang hoc:" << std::endl;
-    if (enrolledCourses.empty()) {
-        std::cout << "  Chua dang ky mon nao." << std::endl;
-        return;
-    }
+        "IF COL_LENGTH('StudentManagement.dbo.Students','Major') IS NULL "
+        "ALTER TABLE StudentManagement.dbo.Students ADD Major NVARCHAR(100) NULL;",
 
-    for (const auto& course : enrolledCourses) {
-        std::cout << "  Ma mon: " << course.courseId
-                  << " | Ten mon: " << course.courseName
-                  << " | Hoc ky: " << course.semester
-                  << " | Lop: " << course.classId << std::endl;
-    }
-}
+        "IF COL_LENGTH('StudentManagement.dbo.Students','Username') IS NULL "
+        "ALTER TABLE StudentManagement.dbo.Students ADD Username NVARCHAR(50) NULL;",
 
-void Student::enrollCourse(const CourseInfo& course)
-{
-    for (const auto& enrolledCourse : enrolledCourses) {
-        if (enrolledCourse.courseId == course.courseId) {
-            std::cout << "Ban da dang ky mon nay truoc do." << std::endl;
-            return;
-        }
-    }
+        "IF COL_LENGTH('StudentManagement.dbo.Students','Password') IS NULL "
+        "ALTER TABLE StudentManagement.dbo.Students ADD [Password] NVARCHAR(100) NULL;",
 
-    if (!checkPrerequisites(course.courseId)) {
-        std::cout << "Khong du dieu kien tien quyet de dang ky mon " << course.courseId << "." << std::endl;
-        return;
-    }
+        "IF COL_LENGTH('StudentManagement.dbo.Students','GPA') IS NULL "
+        "ALTER TABLE StudentManagement.dbo.Students ADD GPA FLOAT NOT NULL DEFAULT 0;",
 
-    enrolledCourses.push_back(course);
-    gradebook[course.courseId];
-    tuitionOwed += 1500000.0;
-    notifications.push_back("Dang ky mon " + course.courseId + " thanh cong.");
-    std::cout << "Dang ky mon " << course.courseId << " thanh cong." << std::endl;
-}
+        "IF COL_LENGTH('StudentManagement.dbo.Students','TuitionOwed') IS NULL "
+        "ALTER TABLE StudentManagement.dbo.Students ADD TuitionOwed FLOAT NOT NULL DEFAULT 0;",
 
-void Student::dropCourse(const std::string& courseId)
-{
-    auto courseIt = std::find_if(enrolledCourses.begin(), enrolledCourses.end(),
-                                 [&](const CourseInfo& course) {
-                                     return course.courseId == courseId;
-                                 });
+        "IF OBJECT_ID('StudentManagement.dbo.Courses', 'U') IS NULL "
+        "CREATE TABLE StudentManagement.dbo.Courses ("
+        "CourseID NVARCHAR(20) NOT NULL PRIMARY KEY,"
+        "CourseName NVARCHAR(120) NOT NULL,"
+        "Credits INT NOT NULL,"
+        "TeacherName NVARCHAR(100) NULL,"
+        "Room NVARCHAR(30) NULL,"
+        "Semester NVARCHAR(30) NOT NULL,"
+        "Status NVARCHAR(30) NOT NULL DEFAULT 'Open'"
+        ");",
 
-    if (courseIt == enrolledCourses.end()) {
-        std::cout << "Khong tim thay mon hoc de huy." << std::endl;
-        return;
-    }
+        "IF OBJECT_ID('StudentManagement.dbo.Enrollments', 'U') IS NULL "
+        "CREATE TABLE StudentManagement.dbo.Enrollments ("
+        "EnrollmentID INT IDENTITY(1,1) PRIMARY KEY,"
+        "StudentID NVARCHAR(20) NOT NULL,"
+        "CourseID NVARCHAR(20) NOT NULL,"
+        "Semester NVARCHAR(30) NOT NULL,"
+        "Status NVARCHAR(30) NOT NULL DEFAULT 'Enrolled',"
+        "CreatedAt DATETIME NOT NULL DEFAULT GETDATE(),"
+        "CONSTRAINT UQ_StudentCourseSemester UNIQUE(StudentID, CourseID, Semester)"
+        ");",
 
-    enrolledCourses.erase(courseIt);
-    gradebook.erase(courseId);
-    tuitionOwed = std::max(0.0, tuitionOwed - 1500000.0);
-    notifications.push_back("Da huy mon " + courseId + ".");
-    std::cout << "Da huy mon " << courseId << " thanh cong." << std::endl;
-}
+        "IF OBJECT_ID('StudentManagement.dbo.Schedules', 'U') IS NULL "
+        "CREATE TABLE StudentManagement.dbo.Schedules ("
+        "ScheduleID NVARCHAR(20) NOT NULL PRIMARY KEY,"
+        "CourseID NVARCHAR(20) NOT NULL,"
+        "DayOfWeek NVARCHAR(20) NOT NULL,"
+        "StartTime NVARCHAR(10) NOT NULL,"
+        "EndTime NVARCHAR(10) NOT NULL,"
+        "Room NVARCHAR(30) NULL,"
+        "Semester NVARCHAR(30) NOT NULL"
+        ");",
 
-bool Student::checkPrerequisites(const std::string& courseId) const
-{
-    auto prereqIt = prerequisiteMap.find(courseId);
-    if (prereqIt == prerequisiteMap.end() || prereqIt->second.empty()) {
-        return true;
-    }
+        "IF OBJECT_ID('StudentManagement.dbo.Scores', 'U') IS NULL "
+        "CREATE TABLE StudentManagement.dbo.Scores ("
+        "ScoreID INT IDENTITY(1,1) PRIMARY KEY,"
+        "StudentID NVARCHAR(20) NOT NULL,"
+        "CourseID NVARCHAR(20) NOT NULL,"
+        "Semester NVARCHAR(30) NOT NULL,"
+        "Assignment FLOAT NOT NULL DEFAULT 0,"
+        "Midterm FLOAT NOT NULL DEFAULT 0,"
+        "Final FLOAT NOT NULL DEFAULT 0,"
+        "Average FLOAT NOT NULL DEFAULT 0,"
+        "Grade NVARCHAR(5) NULL,"
+        "CONSTRAINT UQ_StudentScore UNIQUE(StudentID, CourseID, Semester)"
+        ");",
 
-    for (const auto& prereq : prereqIt->second) {
-        auto gradeIt = gradebook.find(prereq);
-        bool completed = false;
-        if (gradeIt != gradebook.end()) {
-            for (const auto& record : gradeIt->second) {
-                if (record.score >= 5.0) {
-                    completed = true;
-                    break;
-                }
-            }
-        }
+        "IF OBJECT_ID('StudentManagement.dbo.CourseMaterials', 'U') IS NULL "
+        "CREATE TABLE StudentManagement.dbo.CourseMaterials ("
+        "MaterialID NVARCHAR(20) NOT NULL PRIMARY KEY,"
+        "CourseID NVARCHAR(20) NOT NULL,"
+        "Title NVARCHAR(150) NOT NULL,"
+        "Url NVARCHAR(255) NULL,"
+        "CreatedAt DATETIME NOT NULL DEFAULT GETDATE()"
+        ");",
 
-        if (!completed) {
-            return false;
-        }
+        "IF OBJECT_ID('StudentManagement.dbo.Notifications', 'U') IS NULL "
+        "CREATE TABLE StudentManagement.dbo.Notifications ("
+        "NotificationID NVARCHAR(20) NOT NULL PRIMARY KEY,"
+        "StudentID NVARCHAR(20) NULL,"
+        "Title NVARCHAR(120) NOT NULL,"
+        "Content NVARCHAR(500) NOT NULL,"
+        "CreatedAt DATETIME NOT NULL DEFAULT GETDATE(),"
+        "IsRead BIT NOT NULL DEFAULT 0,"
+        "Type NVARCHAR(30) NOT NULL DEFAULT 'General'"
+        ");",
+
+        "IF OBJECT_ID('StudentManagement.dbo.Tuitions', 'U') IS NULL "
+        "CREATE TABLE StudentManagement.dbo.Tuitions ("
+        "TuitionID NVARCHAR(20) NOT NULL PRIMARY KEY,"
+        "StudentID NVARCHAR(20) NOT NULL,"
+        "Semester NVARCHAR(30) NOT NULL,"
+        "TotalCredits INT NOT NULL,"
+        "Amount FLOAT NOT NULL,"
+        "PaidAmount FLOAT NOT NULL DEFAULT 0,"
+        "DueDate DATE NULL,"
+        "Status NVARCHAR(30) NOT NULL DEFAULT 'Unpaid'"
+        ");",
+
+        "IF OBJECT_ID('StudentManagement.dbo.Payments', 'U') IS NULL "
+        "CREATE TABLE StudentManagement.dbo.Payments ("
+        "PaymentID INT IDENTITY(1,1) PRIMARY KEY,"
+        "TuitionID NVARCHAR(20) NOT NULL,"
+        "Amount FLOAT NOT NULL,"
+        "PaidAt DATETIME NOT NULL DEFAULT GETDATE(),"
+        "Method NVARCHAR(30) NOT NULL DEFAULT 'Cash'"
+        ");"
+    };
+
+    for (const char* statement : statements) {
+        if (!executeNonQuery(statement)) return false;
     }
 
     return true;
 }
 
-void Student::addScheduleEntry(const ScheduleEntry& entry)
-{
-    schedule.push_back(entry);
+bool StudentRepository::seedSampleData() {
+    cout << "Student sample data is managed by SQL scripts, not hardcoded in C++.\n";
+    return true;
 }
 
-std::vector<ScheduleEntry> Student::getSchedule() const
-{
-    return schedule;
+bool StudentRepository::addStudent(const Student& student) {
+    std::ostringstream sql;
+    sql << "INSERT INTO StudentManagement.dbo.Students "
+        << "(StudentID,Name,Gender,DOB,ClassID,Email,Major,Phone,Username,[Password],GPA,TuitionOwed,Status) VALUES ("
+        << toSqlString(student.studentId) << ","
+        << toSqlString(student.name) << ","
+        << toSqlString(student.gender) << ","
+        << nullableDateSql(escapeSql(student.dob)) << ","
+        << toSqlString(student.classId) << ","
+        << toSqlString(student.email) << ","
+        << toSqlString(student.major) << ","
+        << toSqlString(student.phone) << ","
+        << toSqlString(student.username) << ","
+        << toSqlString(student.password) << ","
+        << student.gpa << ","
+        << student.tuitionOwed << ","
+        << toSqlString(student.status) << ");";
+    return executeNonQuery(sql.str());
 }
 
-void Student::printSchedule() const
-{
-    std::cout << "Thoi khoa bieu:" << std::endl;
-    if (schedule.empty()) {
-        std::cout << "  Chua co lich hoc." << std::endl;
-        return;
+bool StudentRepository::updateStudent(const Student& student) {
+    std::ostringstream sql;
+    sql << "UPDATE StudentManagement.dbo.Students SET "
+        << "Name=" << toSqlString(student.name) << ","
+        << "Gender=" << toSqlString(student.gender) << ","
+        << "DOB=" << nullableDateSql(escapeSql(student.dob)) << ","
+        << "ClassID=" << toSqlString(student.classId) << ","
+        << "Email=" << toSqlString(student.email) << ","
+        << "Major=" << toSqlString(student.major) << ","
+        << "Phone=" << toSqlString(student.phone) << ","
+        << "Username=" << toSqlString(student.username) << ","
+        << "[Password]=" << toSqlString(student.password) << ","
+        << "GPA=" << student.gpa << ","
+        << "TuitionOwed=" << student.tuitionOwed << ","
+        << "Status=" << toSqlString(student.status) << " "
+        << "WHERE StudentID=" << toSqlString(student.studentId) << ";";
+    return executeNonQuery(sql.str());
+}
+
+bool StudentRepository::updatePersonalInfo(const string& studentId,
+                                           const string& email,
+                                           const string& phone,
+                                           const string& password) {
+    std::ostringstream sql;
+    sql << "UPDATE StudentManagement.dbo.Students SET "
+        << "Email=" << toSqlString(email) << ","
+        << "Phone=" << toSqlString(phone);
+    if (!password.empty()) sql << ",[Password]=" << toSqlString(password);
+    sql << " WHERE StudentID=" << toSqlString(studentId) << ";";
+    return executeNonQuery(sql.str());
+}
+
+bool StudentRepository::deleteStudent(const string& studentId) {
+    return executeNonQuery("DELETE FROM StudentManagement.dbo.Students WHERE StudentID=" + toSqlString(studentId) + ";");
+}
+
+bool StudentRepository::findStudentById(const string& studentId, Student& student) {
+    vector<vector<string>> rows = executeQuery(
+        "SELECT StudentID,Name,Gender,CONVERT(VARCHAR(10),DOB,23),ClassID,Email,Major,Phone,Username,[Password],GPA,TuitionOwed,Status "
+        "FROM StudentManagement.dbo.Students WHERE StudentID=" + toSqlString(studentId) + ";", 13);
+    if (rows.empty()) return false;
+
+    const vector<string>& r = rows.front();
+    student = Student(r[0], r[1], r[2], r[3], r[4], r[5], r[6], r[7], r[8], r[9],
+                      toDouble(r[10]), toDouble(r[11]), r[12]);
+    return true;
+}
+
+bool StudentRepository::login(const string& username, const string& password, Student& student) {
+    vector<vector<string>> rows = executeQuery(
+        "SELECT StudentID FROM StudentManagement.dbo.Students WHERE Username=" + toSqlString(username) +
+        " AND [Password]=" + toSqlString(password) + ";", 1);
+    return !rows.empty() && findStudentById(rows.front()[0], student);
+}
+
+vector<Student> StudentRepository::getAllStudents() {
+    vector<Student> students;
+    vector<vector<string>> rows = executeQuery(
+        "SELECT StudentID,Name,Gender,CONVERT(VARCHAR(10),DOB,23),ClassID,Email,Major,Phone,Username,[Password],GPA,TuitionOwed,Status "
+        "FROM StudentManagement.dbo.Students ORDER BY StudentID;", 13);
+    for (const vector<string>& r : rows) {
+        students.emplace_back(r[0], r[1], r[2], r[3], r[4], r[5], r[6], r[7], r[8], r[9],
+                              toDouble(r[10]), toDouble(r[11]), r[12]);
     }
-
-    for (const auto& entry : schedule) {
-        std::cout << "  Ma mon: " << entry.courseId
-                  << " | Lop: " << entry.classId
-                  << " | Thu: " << entry.dayOfWeek
-                  << " | Gio: " << entry.timeRange
-                  << " | Phong: " << entry.room << std::endl;
-    }
-}
-
-void Student::addGrade(const std::string& courseId, const ScoreRecord& record)
-{
-    gradebook[courseId].push_back(record);
-}
-
-std::map<std::string, std::vector<ScoreRecord>> Student::getGradebook() const
-{
-    return gradebook;
-}
-
-void Student::addNotification(const std::string& message)
-{
-    notifications.push_back(message);
-}
-
-std::vector<std::string> Student::getNotifications() const
-{
-    return notifications;
-}
-
-void Student::printNotifications() const
-{
-    std::cout << "Thong bao:" << std::endl;
-    if (notifications.empty()) {
-        std::cout << "  Khong co thong bao." << std::endl;
-        return;
-    }
-
-    for (const auto& message : notifications) {
-        std::cout << "  - " << message << std::endl;
-    }
-}
-
-void Student::printTuitionStatus() const
-{
-    std::cout << "Trang thai hoc phi:" << std::endl;
-    if (tuitionOwed <= 0.0) {
-        std::cout << "  Da nop het hoc phi." << std::endl;
-        return;
-    }
-
-    std::cout << "  So tien con no: " << tuitionOwed << " dong" << std::endl;
-}
-
-void Student::payTuition(double amount)
-{
-    if (amount <= 0.0) {
-        std::cout << "So tien nop khong hop le." << std::endl;
-        return;
-    }
-
-    tuitionOwed = std::max(0.0, tuitionOwed - amount);
-    notifications.push_back("Da nop hoc phi: " + std::to_string(amount) + " dong.");
-    std::cout << "Da nop hoc phi thanh cong." << std::endl;
-}
-
-void Student::addPrerequisite(const std::string& courseId, const std::vector<std::string>& requiredCourses)
-{
-    prerequisiteMap[courseId] = requiredCourses;
-}
-
-std::vector<Student> Student::loadStudentsFromDatabase(const std::string& dbPath)
-{
-    std::vector<Student> students;
-    sqlite3* db = nullptr;
-    if (sqlite3_open(dbPath.c_str(), &db) != SQLITE_OK) {
-        std::cout << "Khong the mo co so du lieu: " << dbPath << std::endl;
-        if (db) {
-            sqlite3_close(db);
-        }
-        return students;
-    }
-
-    const char* sql = "SELECT studentId, name, email, major, phone, username, password, gpa, tuitionOwed FROM students;";
-    sqlite3_stmt* stmt = nullptr;
-    int result = sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr);
-    if (result != SQLITE_OK) {
-        std::cout << "Loi prepare statement: " << sqlite3_errmsg(db) << std::endl;
-        sqlite3_close(db);
-        return students;
-    }
-
-    while ((result = sqlite3_step(stmt)) == SQLITE_ROW) {
-        std::string studentId = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 0));
-        std::string name = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1));
-        std::string email = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2));
-        std::string major = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 3));
-        std::string phone = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 4));
-        std::string username = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 5));
-        std::string password = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 6));
-        double gpa = sqlite3_column_double(stmt, 7);
-        double tuitionOwed = sqlite3_column_double(stmt, 8);
-
-        students.emplace_back(studentId, name, email, major, phone, username, password, gpa, tuitionOwed);
-    }
-
-    if (result != SQLITE_DONE) {
-        std::cout << "Loi khi doc du lieu: " << sqlite3_errmsg(db) << std::endl;
-    }
-
-    sqlite3_finalize(stmt);
-    sqlite3_close(db);
     return students;
 }
 
-std::vector<Student> Student::loadDefaultStudents()
-{
-    return loadStudentsFromDatabase("student_db.sqlite");
+vector<StudentCourse> StudentRepository::getAvailableCourses(const string& semester) {
+    vector<StudentCourse> courses;
+    vector<vector<string>> rows = executeQuery(
+        "SELECT CourseID,CourseName,Credits,TeacherName,Room,Semester,Status "
+        "FROM StudentManagement.dbo.Courses WHERE Semester=" + toSqlString(semester) +
+        " AND Status='Open' ORDER BY CourseID;", 7);
+    for (const vector<string>& r : rows) {
+        courses.push_back({r[0], r[1], toInt(r[2]), r[3], r[4], r[5], r[6]});
+    }
+    return courses;
 }
 
-bool Student::initializeDatabase(const std::string& dbPath)
-{
-    sqlite3* db = nullptr;
-    if (sqlite3_open(dbPath.c_str(), &db) != SQLITE_OK) {
-        if (db) {
-            sqlite3_close(db);
+vector<StudentCourse> StudentRepository::getCurrentCourses(const string& studentId, const string& semester) {
+    vector<StudentCourse> courses;
+    vector<vector<string>> rows = executeQuery(
+        "SELECT c.CourseID,c.CourseName,c.Credits,c.TeacherName,c.Room,e.Semester,e.Status "
+        "FROM StudentManagement.dbo.Enrollments e "
+        "JOIN StudentManagement.dbo.Courses c ON c.CourseID=e.CourseID "
+        "WHERE e.StudentID=" + toSqlString(studentId) + " AND e.Semester=" + toSqlString(semester) +
+        " AND e.Status='Enrolled' ORDER BY c.CourseID;", 7);
+    for (const vector<string>& r : rows) {
+        courses.push_back({r[0], r[1], toInt(r[2]), r[3], r[4], r[5], r[6]});
+    }
+    return courses;
+}
+
+vector<StudentSchedule> StudentRepository::getSchedule(const string& studentId, const string& semester) {
+    vector<StudentSchedule> schedules;
+    vector<vector<string>> rows = executeQuery(
+        "SELECT s.ScheduleID,s.CourseID,c.CourseName,s.DayOfWeek,s.StartTime,s.EndTime,s.Room "
+        "FROM StudentManagement.dbo.Schedules s "
+        "JOIN StudentManagement.dbo.Courses c ON c.CourseID=s.CourseID "
+        "JOIN StudentManagement.dbo.Enrollments e ON e.CourseID=s.CourseID AND e.Semester=s.Semester "
+        "WHERE e.StudentID=" + toSqlString(studentId) + " AND e.Semester=" + toSqlString(semester) +
+        " AND e.Status='Enrolled' ORDER BY s.DayOfWeek,s.StartTime;", 7);
+    for (const vector<string>& r : rows) {
+        schedules.push_back({r[0], r[1], r[2], r[3], r[4], r[5], r[6]});
+    }
+    return schedules;
+}
+
+vector<StudentScore> StudentRepository::getScores(const string& studentId, const string& semester) {
+    vector<StudentScore> scores;
+    vector<vector<string>> rows = executeQuery(
+        "SELECT sc.CourseID,c.CourseName,sc.Assignment,sc.Midterm,sc.Final,sc.Average,sc.Grade "
+        "FROM StudentManagement.dbo.Scores sc "
+        "JOIN StudentManagement.dbo.Courses c ON c.CourseID=sc.CourseID "
+        "WHERE sc.StudentID=" + toSqlString(studentId) + " AND sc.Semester=" + toSqlString(semester) +
+        " ORDER BY sc.CourseID;", 7);
+    for (const vector<string>& r : rows) {
+        scores.push_back({r[0], r[1], toDouble(r[2]), toDouble(r[3]), toDouble(r[4]), toDouble(r[5]), r[6]});
+    }
+    return scores;
+}
+
+vector<CourseMaterial> StudentRepository::getNewCourseMaterials(const string& studentId) {
+    vector<CourseMaterial> materials;
+    vector<vector<string>> rows = executeQuery(
+        "SELECT m.MaterialID,m.CourseID,c.CourseName,m.Title,m.Url,CONVERT(VARCHAR(19),m.CreatedAt,120) "
+        "FROM StudentManagement.dbo.CourseMaterials m "
+        "JOIN StudentManagement.dbo.Courses c ON c.CourseID=m.CourseID "
+        "JOIN StudentManagement.dbo.Enrollments e ON e.CourseID=m.CourseID "
+        "WHERE e.StudentID=" + toSqlString(studentId) + " AND e.Status='Enrolled' "
+        "ORDER BY m.CreatedAt DESC;", 6);
+    for (const vector<string>& r : rows) {
+        materials.push_back({r[0], r[1], r[2], r[3], r[4], r[5]});
+    }
+    return materials;
+}
+
+vector<StudentNotification> StudentRepository::getTuitionNotifications(const string& studentId) {
+    vector<StudentNotification> notifications;
+    vector<vector<string>> rows = executeQuery(
+        "SELECT NotificationID,ISNULL(StudentID,''),Title,Content,CONVERT(VARCHAR(19),CreatedAt,120),IsRead "
+        "FROM StudentManagement.dbo.Notifications "
+        "WHERE Type='Tuition' AND (StudentID IS NULL OR StudentID=" + toSqlString(studentId) + ") "
+        "ORDER BY CreatedAt DESC;", 6);
+    for (const vector<string>& r : rows) {
+        notifications.push_back({r[0], r[1], r[2], r[3], r[4], r[5] == "1"});
+    }
+    return notifications;
+}
+
+bool StudentRepository::enrollCourse(const string& studentId, const string& courseId, const string& semester) {
+    std::ostringstream sql;
+    sql << "IF EXISTS (SELECT 1 FROM StudentManagement.dbo.Enrollments WHERE StudentID=" << toSqlString(studentId)
+        << " AND CourseID=" << toSqlString(courseId) << " AND Semester=" << toSqlString(semester) << ") "
+        << "UPDATE StudentManagement.dbo.Enrollments SET Status='Enrolled' WHERE StudentID=" << toSqlString(studentId)
+        << " AND CourseID=" << toSqlString(courseId) << " AND Semester=" << toSqlString(semester) << "; "
+        << "ELSE INSERT INTO StudentManagement.dbo.Enrollments (StudentID,CourseID,Semester,Status) VALUES ("
+        << toSqlString(studentId) << "," << toSqlString(courseId) << "," << toSqlString(semester) << ",'Enrolled');";
+    return executeNonQuery(sql.str());
+}
+
+bool StudentRepository::cancelEnrollment(const string& studentId, const string& courseId, const string& semester) {
+    return executeNonQuery(
+        "UPDATE StudentManagement.dbo.Enrollments SET Status='Cancelled' WHERE StudentID=" + toSqlString(studentId) +
+        " AND CourseID=" + toSqlString(courseId) + " AND Semester=" + toSqlString(semester) + ";");
+}
+
+bool StudentRepository::printTuitionStatement(const string& studentId, const string& semester, ostream& output) {
+    vector<vector<string>> rows = executeQuery(
+        "SELECT TuitionID,StudentID,Semester,TotalCredits,Amount,PaidAmount,CONVERT(VARCHAR(10),DueDate,23),Status "
+        "FROM StudentManagement.dbo.Tuitions WHERE StudentID=" + toSqlString(studentId) +
+        " AND Semester=" + toSqlString(semester) + ";", 8);
+    if (rows.empty()) return false;
+
+    const vector<string>& r = rows.front();
+    output << "===== TUITION STATEMENT =====\n";
+    output << "Tuition ID : " << r[0] << '\n';
+    output << "Student ID : " << r[1] << '\n';
+    output << "Semester   : " << r[2] << '\n';
+    output << "Credits    : " << r[3] << '\n';
+    output << "Amount     : " << r[4] << '\n';
+    output << "Paid       : " << r[5] << '\n';
+    output << "Due date   : " << r[6] << '\n';
+    output << "Status     : " << r[7] << '\n';
+    return true;
+}
+
+vector<StudentTuition> StudentRepository::getTuitionRecords(const string& studentId) {
+    vector<StudentTuition> tuitions;
+    vector<vector<string>> rows = executeQuery(
+        "SELECT TuitionID,StudentID,Semester,TotalCredits,Amount,PaidAmount,CONVERT(VARCHAR(10),DueDate,23),Status "
+        "FROM StudentManagement.dbo.Tuitions WHERE StudentID=" + toSqlString(studentId) +
+        " ORDER BY Semester DESC;", 8);
+    for (const vector<string>& r : rows) {
+        tuitions.push_back({r[0], r[1], r[2], toInt(r[3]), toDouble(r[4]), toDouble(r[5]), r[6], r[7]});
+    }
+    return tuitions;
+}
+
+vector<StudentTuition> StudentRepository::getUnpaidTuitionRecords(const string& studentId) {
+    vector<StudentTuition> tuitions;
+    vector<vector<string>> rows = executeQuery(
+        "SELECT TuitionID,StudentID,Semester,TotalCredits,Amount,PaidAmount,CONVERT(VARCHAR(10),DueDate,23),Status "
+        "FROM StudentManagement.dbo.Tuitions WHERE StudentID=" + toSqlString(studentId) +
+        " AND Status <> 'Paid' ORDER BY DueDate;", 8);
+    for (const vector<string>& r : rows) {
+        tuitions.push_back({r[0], r[1], r[2], toInt(r[3]), toDouble(r[4]), toDouble(r[5]), r[6], r[7]});
+    }
+    return tuitions;
+}
+
+bool StudentRepository::payTuition(const string& tuitionId, double amount) {
+    std::ostringstream sql;
+    sql << "INSERT INTO StudentManagement.dbo.Payments (TuitionID,Amount,Method) VALUES ("
+        << toSqlString(tuitionId) << "," << amount << ",'Cash'); "
+        << "UPDATE StudentManagement.dbo.Tuitions SET PaidAmount=PaidAmount+" << amount
+        << ", Status=CASE WHEN PaidAmount+" << amount << " >= Amount THEN 'Paid' ELSE 'Partial' END "
+        << "WHERE TuitionID=" << toSqlString(tuitionId) << ";";
+    return executeNonQuery(sql.str());
+}
+
+bool StudentRepository::executeNonQuery(const string& sql) {
+    if (!connect()) return false;
+
+    SQLHSTMT statement = nullptr;
+    SQLRETURN result = SQLAllocHandle(SQL_HANDLE_STMT, static_cast<SQLHDBC>(connectionHandle), &statement);
+    if (!checkSqlSuccess(result)) return false;
+
+    result = SQLExecDirectA(statement, reinterpret_cast<SQLCHAR*>(const_cast<char*>(sql.c_str())), SQL_NTS);
+    if (!checkSqlSuccess(result)) {
+        cout << "SQL command failed: " << getDiagnosticMessage(SQL_HANDLE_STMT, statement) << '\n';
+        cout << "Failed SQL: " << sql << '\n';
+        SQLFreeHandle(SQL_HANDLE_STMT, statement);
+        return false;
+    }
+
+    SQLFreeHandle(SQL_HANDLE_STMT, statement);
+    return true;
+}
+
+vector<vector<string>> StudentRepository::executeQuery(const string& sql, int columnCount) {
+    vector<vector<string>> rows;
+    if (!connect()) return rows;
+
+    SQLHSTMT statement = nullptr;
+    SQLRETURN result = SQLAllocHandle(SQL_HANDLE_STMT, static_cast<SQLHDBC>(connectionHandle), &statement);
+    if (!checkSqlSuccess(result)) return rows;
+
+    result = SQLExecDirectA(statement, reinterpret_cast<SQLCHAR*>(const_cast<char*>(sql.c_str())), SQL_NTS);
+    if (!checkSqlSuccess(result)) {
+        cout << "SQL query failed: " << getDiagnosticMessage(SQL_HANDLE_STMT, statement) << '\n';
+        cout << "Failed SQL: " << sql << '\n';
+        SQLFreeHandle(SQL_HANDLE_STMT, statement);
+        return rows;
+    }
+
+    while (SQLFetch(statement) == SQL_SUCCESS) {
+        vector<string> row;
+        for (SQLUSMALLINT column = 1; column <= static_cast<SQLUSMALLINT>(columnCount); ++column) {
+            char buffer[512] = {};
+            SQLLEN indicator = 0;
+            SQLGetData(statement, column, SQL_C_CHAR, buffer, sizeof(buffer), &indicator);
+            row.push_back(indicator == SQL_NULL_DATA ? "" : string(buffer));
         }
-        return false;
+        rows.push_back(row);
     }
 
-    const char* sql = "CREATE TABLE IF NOT EXISTS students ("
-                      "studentId TEXT PRIMARY KEY,"
-                      "name TEXT NOT NULL,"
-                      "email TEXT NOT NULL,"
-                      "major TEXT NOT NULL,"
-                      "phone TEXT NOT NULL,"
-                      "username TEXT NOT NULL UNIQUE,"
-                      "password TEXT NOT NULL,"
-                      "gpa REAL NOT NULL DEFAULT 0.0,"
-                      "tuitionOwed REAL NOT NULL DEFAULT 0.0);";
-
-    char* errMsg = nullptr;
-    bool ok = sqlite3_exec(db, sql, nullptr, nullptr, &errMsg) == SQLITE_OK;
-    if (!ok) {
-        std::cout << "Loi tao bang: " << errMsg << std::endl;
-        sqlite3_free(errMsg);
-    }
-
-    sqlite3_close(db);
-    return ok;
+    SQLFreeHandle(SQL_HANDLE_STMT, statement);
+    return rows;
 }
 
-bool Student::saveToDatabase(const std::string& dbPath) const
-{
-    if (!initializeDatabase(dbPath)) {
-        return false;
+string StudentRepository::escapeSql(const string& value) {
+    string escaped;
+    escaped.reserve(value.size());
+    for (char ch : value) {
+        escaped += ch;
+        if (ch == '\'') escaped += '\'';
     }
-
-    sqlite3* db = nullptr;
-    if (sqlite3_open(dbPath.c_str(), &db) != SQLITE_OK) {
-        return false;
-    }
-
-    const char* sql = "INSERT OR REPLACE INTO students (studentId, name, email, major, phone, username, password, gpa, tuitionOwed) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
-    sqlite3_stmt* stmt = nullptr;
-    int result = sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr);
-    if (result != SQLITE_OK) {
-        std::cout << "Loi prepare statement: " << sqlite3_errmsg(db) << std::endl;
-        sqlite3_close(db);
-        return false;
-    }
-
-    // Use bind to prevent SQL injection and handle embedded quotes safely.
-    sqlite3_bind_text(stmt, 1, studentId.c_str(), -1, SQLITE_TRANSIENT);
-    sqlite3_bind_text(stmt, 2, name.c_str(), -1, SQLITE_TRANSIENT);
-    sqlite3_bind_text(stmt, 3, email.c_str(), -1, SQLITE_TRANSIENT);
-    sqlite3_bind_text(stmt, 4, major.c_str(), -1, SQLITE_TRANSIENT);
-    sqlite3_bind_text(stmt, 5, phone.c_str(), -1, SQLITE_TRANSIENT);
-    sqlite3_bind_text(stmt, 6, username.c_str(), -1, SQLITE_TRANSIENT);
-    sqlite3_bind_text(stmt, 7, password.c_str(), -1, SQLITE_TRANSIENT);
-    sqlite3_bind_double(stmt, 8, gpa);
-    sqlite3_bind_double(stmt, 9, tuitionOwed);
-
-    result = sqlite3_step(stmt);
-    bool ok = result == SQLITE_DONE;
-    if (!ok) {
-        std::cout << "Loi ghi du lieu: " << sqlite3_errmsg(db) << std::endl;
-    }
-
-    sqlite3_finalize(stmt);
-    sqlite3_close(db);
-    return ok;
+    return escaped;
 }
 
-bool Student::deleteFromDatabase(const std::string& dbPath) const
-{
-    if (!initializeDatabase(dbPath)) {
-        return false;
-    }
-
-    sqlite3* db = nullptr;
-    if (sqlite3_open(dbPath.c_str(), &db) != SQLITE_OK) {
-        return false;
-    }
-
-    const char* sql = "DELETE FROM students WHERE studentId = ?;";
-    sqlite3_stmt* stmt = nullptr;
-    int result = sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr);
-    if (result != SQLITE_OK) {
-        std::cout << "Loi prepare statement: " << sqlite3_errmsg(db) << std::endl;
-        sqlite3_close(db);
-        return false;
-    }
-
-    sqlite3_bind_text(stmt, 1, studentId.c_str(), -1, SQLITE_TRANSIENT);
-
-    result = sqlite3_step(stmt);
-    bool ok = result == SQLITE_DONE;
-    if (!ok) {
-        std::cout << "Loi xoa du lieu: " << sqlite3_errmsg(db) << std::endl;
-    }
-
-    sqlite3_finalize(stmt);
-    sqlite3_close(db);
-    return ok;
+string StudentRepository::toSqlString(const string& value) {
+    return "N'" + escapeSql(value) + "'";
 }
 
-Student Student::findByUsername(const std::string& username, const std::string& dbPath)
-{
-    sqlite3* db = nullptr;
-    if (sqlite3_open(dbPath.c_str(), &db) != SQLITE_OK) {
-        return Student();
-    }
+double StudentRepository::toDouble(const string& value) {
+    if (value.empty()) return 0.0;
+    return std::stod(value);
+}
 
-    const char* sql = "SELECT studentId, name, email, major, phone, username, password, gpa, tuitionOwed FROM students WHERE username = ?;";
-    sqlite3_stmt* stmt = nullptr;
-    int result = sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr);
-    if (result != SQLITE_OK) {
-        std::cout << "Loi prepare statement: " << sqlite3_errmsg(db) << std::endl;
-        sqlite3_close(db);
-        return Student();
-    }
-
-    sqlite3_bind_text(stmt, 1, username.c_str(), -1, SQLITE_TRANSIENT);
-
-    result = sqlite3_step(stmt);
-    if (result != SQLITE_ROW) {
-        if (result != SQLITE_DONE) {
-            std::cout << "Loi truy van: " << sqlite3_errmsg(db) << std::endl;
-        }
-        sqlite3_finalize(stmt);
-        sqlite3_close(db);
-        return Student();
-    }
-
-    std::string studentId = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 0));
-    std::string name = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1));
-    std::string email = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2));
-    std::string major = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 3));
-    std::string phone = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 4));
-    std::string foundUsername = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 5));
-    std::string password = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 6));
-    double gpa = sqlite3_column_double(stmt, 7);
-    double tuitionOwed = sqlite3_column_double(stmt, 8);
-
-    sqlite3_finalize(stmt);
-    sqlite3_close(db);
-    return Student(studentId, name, email, major, phone, foundUsername, password, gpa, tuitionOwed);
+int StudentRepository::toInt(const string& value) {
+    if (value.empty()) return 0;
+    return std::stoi(value);
 }
