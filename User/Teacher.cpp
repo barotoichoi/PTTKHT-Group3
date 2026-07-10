@@ -1,4 +1,7 @@
+
 #include "Teacher.h"
+
+class Teacher;
 
 Teacher::Teacher()
     : teacherId(""), name(""), email(""), department(""), phone(""), username(""), password("")

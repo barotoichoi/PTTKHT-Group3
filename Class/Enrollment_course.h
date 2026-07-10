@@ -31,6 +31,10 @@ public:
 
     void addCourse();
     void cancelCourse();
+
+    bool save();
+    bool deleteRecord();
+    bool find(const std::string& studentId, const std::string& courseId, const std::string& semester);
 };
 
 #endif

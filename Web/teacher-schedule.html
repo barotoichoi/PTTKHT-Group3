@@ -1,0 +1,810 @@
+<!doctype html>
+
+<html class="light" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Schedules - EduSync Academy</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary-fixed-dim": "#adc6ff",
+              secondary: "#565e74",
+              "on-error-container": "#93000a",
+              "on-primary-fixed": "#001a42",
+              "on-tertiary-fixed-variant": "#38485d",
+              "surface-container-lowest": "#ffffff",
+              "error-container": "#ffdad6",
+              "tertiary-fixed-dim": "#b7c8e1",
+              "tertiary-fixed": "#d3e4fe",
+              "surface-variant": "#e0e3e5",
+              outline: "#727785",
+              "on-tertiary": "#ffffff",
+              "secondary-container": "#dae2fd",
+              "surface-tint": "#005ac2",
+              "secondary-fixed-dim": "#bec6e0",
+              "secondary-fixed": "#dae2fd",
+              "on-surface": "#191c1e",
+              "surface-container-high": "#e6e8ea",
+              "on-secondary": "#ffffff",
+              error: "#ba1a1a",
+              "primary-container": "#2170e4",
+              "outline-variant": "#c2c6d6",
+              "on-primary": "#ffffff",
+              "on-secondary-container": "#5c647a",
+              "surface-dim": "#d8dadc",
+              "surface-bright": "#f7f9fb",
+              background: "#f7f9fb",
+              "tertiary-container": "#66768d",
+              "inverse-primary": "#adc6ff",
+              primary: "#0058be",
+              "surface-container-highest": "#e0e3e5",
+              "on-surface-variant": "#424754",
+              "on-tertiary-container": "#fdfcff",
+              "inverse-on-surface": "#eff1f3",
+              "on-background": "#191c1e",
+              "on-secondary-fixed-variant": "#3f465c",
+              "surface-container": "#eceef0",
+              surface: "#f7f9fb",
+              "on-secondary-fixed": "#131b2e",
+              "inverse-surface": "#2d3133",
+              "on-primary-fixed-variant": "#004395",
+              "on-error": "#ffffff",
+              tertiary: "#4d5d73",
+              "primary-fixed": "#d8e2ff",
+              "surface-container-low": "#f2f4f6",
+              "on-tertiary-fixed": "#0b1c30",
+              "on-primary-container": "#fefcff",
+            },
+            borderRadius: {
+              DEFAULT: "0.125rem",
+              lg: "0.25rem",
+              xl: "0.5rem",
+              full: "0.75rem",
+            },
+            spacing: {
+              "container-padding": "2rem",
+              gutter: "1rem",
+              "card-gap": "1.5rem",
+              "sidebar-width": "240px",
+              "table-row-height": "48px",
+            },
+            fontFamily: {
+              "body-lg": ["Inter"],
+              "body-md": ["Inter"],
+              "headline-md": ["Inter"],
+              "headline-lg": ["Inter"],
+              "label-md": ["Inter"],
+              caption: ["Inter"],
+            },
+            fontSize: {
+              "body-lg": [
+                "16px",
+                {
+                  lineHeight: "24px",
+                  fontWeight: "400",
+                },
+              ],
+              "body-md": [
+                "14px",
+                {
+                  lineHeight: "20px",
+                  fontWeight: "400",
+                },
+              ],
+              "headline-md": [
+                "18px",
+                {
+                  lineHeight: "24px",
+                  fontWeight: "600",
+                },
+              ],
+              "headline-lg": [
+                "24px",
+                {
+                  lineHeight: "32px",
+                  fontWeight: "700",
+                },
+              ],
+              "label-md": [
+                "12px",
+                {
+                  lineHeight: "16px",
+                  letterSpacing: "0.02em",
+                  fontWeight: "600",
+                },
+              ],
+              caption: [
+                "12px",
+                {
+                  lineHeight: "16px",
+                  fontWeight: "400",
+                },
+              ],
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      .material-symbols-outlined {
+        font-variation-settings:
+          "FILL" 0,
+          "wght" 400,
+          "GRAD" 0,
+          "opsz" 24;
+      }
+      .custom-scrollbar::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: #c2c6d6;
+        border-radius: 4px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: #727785;
+      }
+    </style>
+  </head>
+  <body
+    class="bg-background text-on-background font-body-md h-screen overflow-hidden flex selection:bg-primary-fixed selection:text-on-primary-fixed"
+  >
+    <!-- SideNavBar -->
+    <aside
+      class="bg-[#0F172A] border-r border-outline-variant w-[240px] h-screen fixed left-0 top-0 flex flex-col py-6 z-50"
+    >
+      <div class="px-6 mb-10">
+        <h1
+          class="font-headline-md text-headline-md font-bold text-white tracking-tight leading-tight"
+        >
+          Student Management System
+        </h1>
+        <p class="text-slate-400 text-[10px] font-caption mt-1">
+          EduSync Academy
+        </p>
+      </div>
+      <nav class="flex-1 px-2 space-y-1 overflow-y-auto custom-scroll">
+        <a
+          class=" text-white font-bold rounded-lg mx-2 my-1 flex items-center px-4 py-3 gap-3 transition-all opacity-90 shadow-md"
+          href="teacher.html"
+        >
+          <span class="material-symbols-outlined" data-icon="home">home</span>
+          <span class="font-body-md text-body-md">Home</span>
+        </a>
+        <a
+          class="text-slate-300 hover:text-white mx-2 my-1 flex items-center px-4 py-3 gap-3 hover:bg-slate-800 transition-colors"
+          href="teacher-myclass.html"
+        >
+          <span class="material-symbols-outlined" data-icon="school"
+            >school</span
+          >
+          <span class="font-body-md text-body-md">My Classes</span>
+        </a>
+        <a
+          class="text-slate-300 hover:text-white mx-2 my-1 flex items-center px-4 py-3 gap-3 hover:bg-slate-800 transition-colors"
+          href="teacher-student.html"
+        >
+          <span class="material-symbols-outlined" data-icon="group">group</span>
+          <span class="font-body-md text-body-md">Students</span>
+        </a>
+        <a
+          class="bg-primary text-slate-300  mx-2 my-1 flex items-center px-4 py-3 gap-3 transition-colors"
+          href="teacher-schedule.html"
+        >
+          <span class="material-symbols-outlined" data-icon="calendar_today"
+            >calendar_today</span
+          >
+          <span class="font-body-md text-body-md">Schedule</span>
+        </a>
+        <a
+          class="text-slate-300 hover:text-white mx-2 my-1 flex items-center px-4 py-3 gap-3 hover:bg-slate-800 transition-colors"
+          href="teacher-assignment.html"
+        >
+          <span class="material-symbols-outlined" data-icon="assignment"
+            >assignment</span
+          >
+          <span class="font-body-md text-body-md">Assignments</span>
+        </a>
+        <a
+          class="text-slate-300 hover:text-white mx-2 my-1 flex items-center px-4 py-3 gap-3 hover:bg-slate-800 transition-colors"
+          href="teacher-grades.html"
+        >
+          <span class="material-symbols-outlined" data-icon="grade">grade</span>
+          <span class="font-body-md text-body-md">Grades</span>
+        </a>
+        <a
+          class="text-slate-300 hover:text-white mx-2 my-1 flex items-center px-4 py-3 gap-3 hover:bg-slate-800 transition-colors"
+          href="teacher-attendance.html"
+        >
+          <span class="material-symbols-outlined" data-icon="event_available"
+            >event_available</span
+          >
+          <span class="font-body-md text-body-md">Attendance</span>
+        </a>
+      </nav>
+      <div class="px-4 mt-auto pt-4 space-y-2">
+        <button
+          class="w-full bg-[#3b82f6] text-white flex items-center justify-center px-4 py-3 transition-colors rounded-lg mb-2 shadow-sm"
+        >
+          <span class="font-body-md text-body-md">Support Center</span>
+        </button>
+        <button
+          class="w-full text-slate-400 hover:text-white flex items-center px-4 py-3 gap-3 hover:bg-slate-800 transition-colors rounded-lg"
+        >
+          <span class="material-symbols-outlined" data-icon="logout"
+            >logout</span
+          >
+          <span class="font-body-md text-body-md">Log Out</span>
+        </button>
+      </div>
+    </aside>
+    <!-- Main Content Area -->
+    <div
+      class="flex-1 ml-0 md:ml-[240px] flex flex-col h-screen overflow-hidden bg-background"
+    >
+      <!-- TopAppBar -->
+      <header
+        class="h-16 bg-surface border-b border-outline-variant flex justify-between items-center px-8 shrink-0 z-40 sticky top-0"
+      >
+        <div class="flex items-center gap-4">
+          <h2
+            class="font-headline-sm text-[20px] font-semibold text-on-surface"
+          >
+            EduSync Academy
+          </h2>
+        </div>
+        <div class="flex items-center gap-6">
+          <div class="relative hidden sm:block">
+            <span
+              class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]"
+              >search</span
+            >
+            <input
+              class="pl-10 pr-4 py-2 bg-surface-container-low border border-outline-variant rounded-full text-body-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent w-64 transition-all"
+              placeholder="Search..."
+              type="text"
+            />
+          </div>
+          <div class="flex items-center gap-3">
+            <button
+              class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-colors relative"
+            >
+              <span class="material-symbols-outlined">notifications</span>
+              <span
+                class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full"
+              ></span>
+            </button>
+            <button
+              class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-colors"
+            >
+              <span class="material-symbols-outlined">settings</span>
+            </button>
+            <div
+              class="w-8 h-8 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-label-md font-bold ml-2 border border-outline-variant cursor-pointer"
+            >
+              AD
+            </div>
+          </div>
+        </div>
+      </header>
+      <!-- Page Content -->
+      <main class="flex-1 overflow-y-auto custom-scrollbar p-8">
+        <div class="flex justify-between items-end mb-8">
+          <div>
+            <h1
+              class="font-headline-lg text-headline-lg text-on-surface tracking-tight mb-2"
+            >
+              Schedule
+            </h1>
+            <p class="font-body-md text-on-surface-variant">
+              Manage your weekly classes and office hours.
+            </p>
+          </div>
+          <div class="flex items-center gap-4">
+            <div
+              class="flex items-center bg-surface-container-lowest border border-outline-variant rounded-lg p-1 shadow-sm"
+            >
+              <button
+                class="px-4 py-1.5 rounded-md text-on-surface-variant hover:bg-surface-container-low transition-colors font-label-md"
+              >
+                Day
+              </button>
+              <button
+                class="px-4 py-1.5 rounded-md bg-primary-container text-on-primary-container font-label-md shadow-sm"
+              >
+                Week
+              </button>
+              <button
+                class="px-4 py-1.5 rounded-md text-on-surface-variant hover:bg-surface-container-low transition-colors font-label-md"
+              >
+                Month
+              </button>
+            </div>
+            <button
+              class="px-4 py-2 bg-surface-container-lowest border border-outline-variant rounded-lg font-label-md text-on-surface hover:bg-surface-container-low transition-colors shadow-sm"
+            >
+              Today
+            </button>
+            <div
+              class="flex items-center gap-2 bg-surface-container-lowest border border-outline-variant rounded-lg p-1 shadow-sm"
+            >
+              <button
+                class="w-8 h-8 flex items-center justify-center text-on-surface-variant hover:bg-surface-container-low rounded-md transition-colors"
+              >
+                <span class="material-symbols-outlined text-[20px]"
+                  >chevron_left</span
+                >
+              </button>
+              <span class="font-label-md text-on-surface px-2"
+                >Oct 16 - 22, 2023</span
+              >
+              <button
+                class="w-8 h-8 flex items-center justify-center text-on-surface-variant hover:bg-surface-container-low rounded-md transition-colors"
+              >
+                <span class="material-symbols-outlined text-[20px]"
+                  >chevron_right</span
+                >
+              </button>
+            </div>
+          </div>
+        </div>
+        <!-- Calendar Container -->
+        <div
+          class="bg-surface-container-lowest border border-outline-variant rounded-xl shadow-sm overflow-hidden flex flex-col"
+        >
+          <!-- Days Header -->
+          <div
+            class="grid grid-cols-[80px_1fr_1fr_1fr_1fr_1fr] border-b border-outline-variant bg-surface sticky top-0 z-10"
+          >
+            <div
+              class="p-4 flex items-center justify-center border-r border-outline-variant/50"
+            >
+              <span class="text-caption text-on-surface-variant font-medium"
+                >GMT-4</span
+              >
+            </div>
+            <div
+              class="p-4 flex flex-col items-center justify-center border-r border-outline-variant/50 gap-1"
+            >
+              <span
+                class="text-caption text-on-surface-variant uppercase tracking-wider"
+                >Mon</span
+              >
+              <span class="font-headline-md text-on-surface">16</span>
+            </div>
+            <div
+              class="p-4 flex flex-col items-center justify-center border-r border-outline-variant/50 gap-1 bg-primary/5"
+            >
+              <span
+                class="text-caption text-primary uppercase tracking-wider font-semibold"
+                >Tue</span
+              >
+              <span
+                class="font-headline-md text-primary font-bold bg-primary-container text-on-primary-container w-8 h-8 rounded-full flex items-center justify-center"
+                >17</span
+              >
+            </div>
+            <div
+              class="p-4 flex flex-col items-center justify-center border-r border-outline-variant/50 gap-1"
+            >
+              <span
+                class="text-caption text-on-surface-variant uppercase tracking-wider"
+                >Wed</span
+              >
+              <span class="font-headline-md text-on-surface">18</span>
+            </div>
+            <div
+              class="p-4 flex flex-col items-center justify-center border-r border-outline-variant/50 gap-1"
+            >
+              <span
+                class="text-caption text-on-surface-variant uppercase tracking-wider"
+                >Thu</span
+              >
+              <span class="font-headline-md text-on-surface">19</span>
+            </div>
+            <div class="p-4 flex flex-col items-center justify-center gap-1">
+              <span
+                class="text-caption text-on-surface-variant uppercase tracking-wider"
+                >Fri</span
+              >
+              <span class="font-headline-md text-on-surface">20</span>
+            </div>
+          </div>
+          <!-- Time Grid -->
+          <div
+            class="relative bg-surface-container-lowest"
+            style="height: 800px; overflow-y: auto"
+          >
+            <div class="grid grid-cols-[80px_1fr_1fr_1fr_1fr_1fr] relative">
+              <!-- Time Labels Column -->
+              <div class="border-r border-outline-variant/50 relative">
+                <!-- 8 AM -->
+                <div
+                  class="h-24 border-b border-outline-variant/20 relative group"
+                >
+                  <span
+                    class="absolute -top-3 right-3 text-caption text-on-surface-variant bg-surface-container-lowest px-1"
+                    >08:00</span
+                  >
+                </div>
+                <!-- 9 AM -->
+                <div
+                  class="h-24 border-b border-outline-variant/20 relative group"
+                >
+                  <span
+                    class="absolute -top-3 right-3 text-caption text-on-surface-variant bg-surface-container-lowest px-1"
+                    >09:00</span
+                  >
+                </div>
+                <!-- 10 AM -->
+                <div
+                  class="h-24 border-b border-outline-variant/20 relative group"
+                >
+                  <span
+                    class="absolute -top-3 right-3 text-caption text-on-surface-variant bg-surface-container-lowest px-1"
+                    >10:00</span
+                  >
+                </div>
+                <!-- 11 AM -->
+                <div
+                  class="h-24 border-b border-outline-variant/20 relative group"
+                >
+                  <span
+                    class="absolute -top-3 right-3 text-caption text-on-surface-variant bg-surface-container-lowest px-1"
+                    >11:00</span
+                  >
+                </div>
+                <!-- 12 PM -->
+                <div
+                  class="h-24 border-b border-outline-variant/20 relative group"
+                >
+                  <span
+                    class="absolute -top-3 right-3 text-caption text-on-surface-variant bg-surface-container-lowest px-1"
+                    >12:00</span
+                  >
+                </div>
+                <!-- 1 PM -->
+                <div
+                  class="h-24 border-b border-outline-variant/20 relative group"
+                >
+                  <span
+                    class="absolute -top-3 right-3 text-caption text-on-surface-variant bg-surface-container-lowest px-1"
+                    >13:00</span
+                  >
+                </div>
+                <!-- 2 PM -->
+                <div
+                  class="h-24 border-b border-outline-variant/20 relative group"
+                >
+                  <span
+                    class="absolute -top-3 right-3 text-caption text-on-surface-variant bg-surface-container-lowest px-1"
+                    >14:00</span
+                  >
+                </div>
+                <!-- 3 PM -->
+                <div
+                  class="h-24 border-b border-outline-variant/20 relative group"
+                >
+                  <span
+                    class="absolute -top-3 right-3 text-caption text-on-surface-variant bg-surface-container-lowest px-1"
+                    >15:00</span
+                  >
+                </div>
+                <!-- 4 PM -->
+                <div
+                  class="h-24 border-b border-outline-variant/20 relative group"
+                >
+                  <span
+                    class="absolute -top-3 right-3 text-caption text-on-surface-variant bg-surface-container-lowest px-1"
+                    >16:00</span
+                  >
+                </div>
+              </div>
+              <!-- Monday Column -->
+              <div class="border-r border-outline-variant/50 relative">
+                <!-- Grid lines -->
+                <div class="h-24 border-b border-outline-variant/20"></div>
+                <div class="h-24 border-b border-outline-variant/20"></div>
+                <div class="h-24 border-b border-outline-variant/20"></div>
+                <div class="h-24 border-b border-outline-variant/20"></div>
+                <div class="h-24 border-b border-outline-variant/20"></div>
+                <div class="h-24 border-b border-outline-variant/20"></div>
+                <div class="h-24 border-b border-outline-variant/20"></div>
+                <div class="h-24 border-b border-outline-variant/20"></div>
+                <div class="h-24 border-b border-outline-variant/20"></div>
+                <!-- Event 1 (09:00 - 10:30) -->
+                <div
+                  class="absolute top-[96px] left-1 right-1 h-[140px] bg-secondary-container border-l-4 border-primary rounded-md p-2 shadow-sm overflow-hidden hover:shadow-md transition-shadow cursor-pointer"
+                >
+                  <h4
+                    class="font-label-md text-on-secondary-container leading-tight mb-1"
+                  >
+                    Database Systems
+                    <span class="font-normal opacity-90">(CS-301)</span>
+                  </h4>
+                  <p
+                    class="text-caption text-on-secondary-container/80 flex items-center gap-1 mb-1"
+                  >
+                    <span class="material-symbols-outlined text-[14px]"
+                      >schedule</span
+                    >
+                    09:00 - 10:30
+                  </p>
+                  <p
+                    class="text-caption text-on-secondary-container/80 flex items-center gap-1"
+                  >
+                    <span class="material-symbols-outlined text-[14px]"
+                      >location_on</span
+                    >
+                    Room A203
+                  </p>
+                </div>
+                <!-- Event 2 (13:00 - 14:30) -->
+                <div
+                  class="absolute top-[480px] left-1 right-1 h-[140px] bg-tertiary-fixed border-l-4 border-[#10b981] rounded-md p-2 shadow-sm overflow-hidden hover:shadow-md transition-shadow cursor-pointer"
+                >
+                  <h4
+                    class="font-label-md text-on-tertiary-fixed leading-tight mb-1"
+                  >
+                    Web Development
+                    <span class="font-normal opacity-90">(WEB-201)</span>
+                  </h4>
+                  <p
+                    class="text-caption text-on-tertiary-fixed/80 flex items-center gap-1 mb-1"
+                  >
+                    <span class="material-symbols-outlined text-[14px]"
+                      >schedule</span
+                    >
+                    13:00 - 14:30
+                  </p>
+                  <p
+                    class="text-caption text-on-tertiary-fixed/80 flex items-center gap-1"
+                  >
+                    <span class="material-symbols-outlined text-[14px]"
+                      >location_on</span
+                    >
+                    Lab C302
+                  </p>
+                </div>
+              </div>
+              <!-- Tuesday Column (Today) -->
+              <div
+                class="border-r border-outline-variant/50 relative bg-primary/5"
+              >
+                <!-- Grid lines -->
+                <div class="h-24 border-b border-outline-variant/20"></div>
+                <div class="h-24 border-b border-outline-variant/20"></div>
+                <div class="h-24 border-b border-outline-variant/20"></div>
+                <div class="h-24 border-b border-outline-variant/20"></div>
+                <div class="h-24 border-b border-outline-variant/20"></div>
+                <div class="h-24 border-b border-outline-variant/20"></div>
+                <div class="h-24 border-b border-outline-variant/20"></div>
+                <div class="h-24 border-b border-outline-variant/20"></div>
+                <div class="h-24 border-b border-outline-variant/20"></div>
+                <!-- Current Time Indicator (e.g. 10:45) -->
+                <div
+                  class="absolute top-[260px] left-0 right-0 h-[2px] bg-error z-20 flex items-center"
+                >
+                  <div
+                    class="w-2 h-2 rounded-full bg-error absolute -left-1"
+                  ></div>
+                </div>
+                <!-- Event 3 (11:00 - 12:30) -->
+                <div
+                  class="absolute top-[288px] left-1 right-1 h-[140px] bg-[#fef3c7] border-l-4 border-[#f59e0b] rounded-md p-2 shadow-sm overflow-hidden hover:shadow-md transition-shadow cursor-pointer"
+                >
+                  <h4 class="font-label-md text-[#92400e] leading-tight mb-1">
+                    Object Oriented Prog.
+                    <span class="font-normal opacity-90">(OOP-102)</span>
+                  </h4>
+                  <p
+                    class="text-caption text-[#92400e]/80 flex items-center gap-1 mb-1"
+                  >
+                    <span class="material-symbols-outlined text-[14px]"
+                      >schedule</span
+                    >
+                    11:00 - 12:30
+                  </p>
+                  <p
+                    class="text-caption text-[#92400e]/80 flex items-center gap-1"
+                  >
+                    <span class="material-symbols-outlined text-[14px]"
+                      >location_on</span
+                    >
+                    Room B105
+                  </p>
+                </div>
+                <!-- Event 4 (15:30 - 17:00) -->
+                <div
+                  class="absolute top-[720px] left-1 right-1 h-[140px] bg-[#f3e8ff] border-l-4 border-[#a855f7] rounded-md p-2 shadow-sm overflow-hidden hover:shadow-md transition-shadow cursor-pointer opacity-80"
+                >
+                  <h4 class="font-label-md text-[#6b21a8] leading-tight mb-1">
+                    Office Hours
+                  </h4>
+                  <p
+                    class="text-caption text-[#6b21a8]/80 flex items-center gap-1 mb-1"
+                  >
+                    <span class="material-symbols-outlined text-[14px]"
+                      >schedule</span
+                    >
+                    15:30 - 17:00
+                  </p>
+                  <p
+                    class="text-caption text-[#6b21a8]/80 flex items-center gap-1"
+                  >
+                    <span class="material-symbols-outlined text-[14px]"
+                      >location_on</span
+                    >
+                    Faculty Office
+                  </p>
+                </div>
+              </div>
+              <!-- Wednesday Column -->
+              <div class="border-r border-outline-variant/50 relative">
+                <!-- Grid lines -->
+                <div class="h-24 border-b border-outline-variant/20"></div>
+                <div class="h-24 border-b border-outline-variant/20"></div>
+                <div class="h-24 border-b border-outline-variant/20"></div>
+                <div class="h-24 border-b border-outline-variant/20"></div>
+                <div class="h-24 border-b border-outline-variant/20"></div>
+                <div class="h-24 border-b border-outline-variant/20"></div>
+                <div class="h-24 border-b border-outline-variant/20"></div>
+                <div class="h-24 border-b border-outline-variant/20"></div>
+                <div class="h-24 border-b border-outline-variant/20"></div>
+                <!-- Event 5 (09:00 - 10:30) -->
+                <div
+                  class="absolute top-[96px] left-1 right-1 h-[140px] bg-secondary-container border-l-4 border-primary rounded-md p-2 shadow-sm overflow-hidden hover:shadow-md transition-shadow cursor-pointer"
+                >
+                  <h4
+                    class="font-label-md text-on-secondary-container leading-tight mb-1"
+                  >
+                    Database Systems
+                    <span class="font-normal opacity-90">(CS-301)</span>
+                  </h4>
+                  <p
+                    class="text-caption text-on-secondary-container/80 flex items-center gap-1 mb-1"
+                  >
+                    <span class="material-symbols-outlined text-[14px]"
+                      >schedule</span
+                    >
+                    09:00 - 10:30
+                  </p>
+                  <p
+                    class="text-caption text-on-secondary-container/80 flex items-center gap-1"
+                  >
+                    <span class="material-symbols-outlined text-[14px]"
+                      >location_on</span
+                    >
+                    Room A203
+                  </p>
+                </div>
+              </div>
+              <!-- Thursday Column -->
+              <div class="border-r border-outline-variant/50 relative">
+                <!-- Grid lines -->
+                <div class="h-24 border-b border-outline-variant/20"></div>
+                <div class="h-24 border-b border-outline-variant/20"></div>
+                <div class="h-24 border-b border-outline-variant/20"></div>
+                <div class="h-24 border-b border-outline-variant/20"></div>
+                <div class="h-24 border-b border-outline-variant/20"></div>
+                <div class="h-24 border-b border-outline-variant/20"></div>
+                <div class="h-24 border-b border-outline-variant/20"></div>
+                <div class="h-24 border-b border-outline-variant/20"></div>
+                <div class="h-24 border-b border-outline-variant/20"></div>
+                <!-- Event 6 (11:00 - 12:30) -->
+                <div
+                  class="absolute top-[288px] left-1 right-1 h-[140px] bg-[#fef3c7] border-l-4 border-[#f59e0b] rounded-md p-2 shadow-sm overflow-hidden hover:shadow-md transition-shadow cursor-pointer"
+                >
+                  <h4 class="font-label-md text-[#92400e] leading-tight mb-1">
+                    Object Oriented Prog.
+                    <span class="font-normal opacity-90">(OOP-102)</span>
+                  </h4>
+                  <p
+                    class="text-caption text-[#92400e]/80 flex items-center gap-1 mb-1"
+                  >
+                    <span class="material-symbols-outlined text-[14px]"
+                      >schedule</span
+                    >
+                    11:00 - 12:30
+                  </p>
+                  <p
+                    class="text-caption text-[#92400e]/80 flex items-center gap-1"
+                  >
+                    <span class="material-symbols-outlined text-[14px]"
+                      >location_on</span
+                    >
+                    Room B105
+                  </p>
+                </div>
+              </div>
+              <!-- Friday Column -->
+              <div class="relative">
+                <!-- Grid lines -->
+                <div class="h-24 border-b border-outline-variant/20"></div>
+                <div class="h-24 border-b border-outline-variant/20"></div>
+                <div class="h-24 border-b border-outline-variant/20"></div>
+                <div class="h-24 border-b border-outline-variant/20"></div>
+                <div class="h-24 border-b border-outline-variant/20"></div>
+                <div class="h-24 border-b border-outline-variant/20"></div>
+                <div class="h-24 border-b border-outline-variant/20"></div>
+                <div class="h-24 border-b border-outline-variant/20"></div>
+                <div class="h-24 border-b border-outline-variant/20"></div>
+                <!-- Event 7 (13:00 - 14:30) -->
+                <div
+                  class="absolute top-[480px] left-1 right-1 h-[140px] bg-tertiary-fixed border-l-4 border-[#10b981] rounded-md p-2 shadow-sm overflow-hidden hover:shadow-md transition-shadow cursor-pointer"
+                >
+                  <h4
+                    class="font-label-md text-on-tertiary-fixed leading-tight mb-1"
+                  >
+                    Web Development
+                    <span class="font-normal opacity-90">(WEB-201)</span>
+                  </h4>
+                  <p
+                    class="text-caption text-on-tertiary-fixed/80 flex items-center gap-1 mb-1"
+                  >
+                    <span class="material-symbols-outlined text-[14px]"
+                      >schedule</span
+                    >
+                    13:00 - 14:30
+                  </p>
+                  <p
+                    class="text-caption text-on-tertiary-fixed/80 flex items-center gap-1"
+                  >
+                    <span class="material-symbols-outlined text-[14px]"
+                      >location_on</span
+                    >
+                    Lab C302
+                  </p>
+                </div>
+                <!-- Event 8 (15:00 - 16:30) Faculty Meeting -->
+                <div
+                  class="absolute top-[672px] left-1 right-1 h-[140px] bg-surface-container-high border-l-4 border-outline rounded-md p-2 shadow-sm overflow-hidden hover:shadow-md transition-shadow cursor-pointer border-dashed"
+                >
+                  <h4 class="font-label-md text-on-surface leading-tight mb-1">
+                    Department Meeting
+                  </h4>
+                  <p
+                    class="text-caption text-on-surface-variant flex items-center gap-1 mb-1"
+                  >
+                    <span class="material-symbols-outlined text-[14px]"
+                      >schedule</span
+                    >
+                    15:00 - 16:30
+                  </p>
+                  <p
+                    class="text-caption text-on-surface-variant flex items-center gap-1"
+                  >
+                    <span class="material-symbols-outlined text-[14px]"
+                      >location_on</span
+                    >
+                    Conference Rm
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

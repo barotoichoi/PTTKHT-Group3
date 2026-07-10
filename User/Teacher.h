@@ -81,14 +81,30 @@ public:
     bool login(const std::string& username, const std::string& password) const;
 
     std::string getTeacherId() const;
+    void setTeacherId(const std::string& teacherId);
+
     std::string getName() const;
+    void setName(const std::string& name);
+
     std::string getEmail() const;
+    void setEmail(const std::string& email);
+
     std::string getDepartment() const;
+    void setDepartment(const std::string& department);
+
     std::string getPhone() const;
+    void setPhone(const std::string& phone);
+
+    std::string getUsername() const;
+    void setUsername(const std::string& username);
+
+    std::string getPassword() const;
+    void setPassword(const std::string& password);
 
     void printPersonalInfo() const;
     void updatePersonalInfo(const std::string& name, const std::string& email,
                             const std::string& department, const std::string& phone);
+    void printTeacherCard() const;
 
     void addAssignedCourse(const CourseInfo& course);
     std::vector<CourseInfo> getAssignedCourses() const;
@@ -100,6 +116,7 @@ public:
     void printStudentsInClass(const std::string& classId) const;
 
     void addScheduleEntry(const ScheduleEntry& entry);
+    std::vector<ScheduleEntry> getSchedule() const;
     void printSchedule() const;
 
     void addScore(const std::string& courseId, const std::string& studentId,
@@ -114,6 +131,7 @@ public:
     void printCourseContent(const std::string& courseId) const;
 
     void addNotification(const std::string& message);
+    std::vector<std::string> getNotifications() const;
     void printNotifications() const;
 };
 
