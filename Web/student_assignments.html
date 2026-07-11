@@ -1,0 +1,483 @@
+<!doctype html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>EduSync Academy - Assignments</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface-container-highest": "#d3e4fe",
+              "tertiary-fixed": "#e0e3e5",
+              "primary-fixed": "#dce1ff",
+              tertiary: "#414546",
+              error: "#ba1a1a",
+              "secondary-fixed-dim": "#bec6e0",
+              "surface-container-low": "#eff4ff",
+              secondary: "#565e74",
+              surface: "#f8f9ff",
+              "on-secondary-fixed-variant": "#3f465c",
+              "tertiary-container": "#595c5e",
+              "on-primary": "#ffffff",
+              "on-surface": "#0b1c30",
+              "on-secondary-fixed": "#131b2e",
+              "on-primary-fixed": "#001551",
+              "primary-fixed-dim": "#b7c4ff",
+              "surface-bright": "#f8f9ff",
+              "on-tertiary": "#ffffff",
+              "inverse-surface": "#213145",
+              "on-secondary-container": "#5c647a",
+              "surface-container-lowest": "#ffffff",
+              primary: "#0037b0",
+              "surface-variant": "#d3e4fe",
+              "on-secondary": "#ffffff",
+              "inverse-primary": "#b7c4ff",
+              "secondary-container": "#dae2fd",
+              "surface-container-high": "#dce9ff",
+              "on-tertiary-container": "#d2d4d6",
+              "on-surface-variant": "#434655",
+              "on-background": "#0b1c30",
+              "primary-container": "#1d4ed8",
+              "on-tertiary-fixed": "#191c1e",
+              outline: "#747686",
+              "on-error-container": "#93000a",
+              "outline-variant": "#c4c5d7",
+              "secondary-fixed": "#dae2fd",
+              "surface-dim": "#cbdbf5",
+              background: "#f8f9ff",
+              "surface-tint": "#2151da",
+              "on-error": "#ffffff",
+              "on-primary-fixed-variant": "#0039b5",
+              "tertiary-fixed-dim": "#c4c7c9",
+              "on-tertiary-fixed-variant": "#444749",
+              "surface-container": "#e5eeff",
+              "error-container": "#ffdad6",
+              "on-primary-container": "#cad3ff",
+              "inverse-on-surface": "#eaf1ff",
+            },
+            borderRadius: {
+              DEFAULT: "0.25rem",
+              lg: "0.5rem",
+              xl: "0.75rem",
+              full: "9999px",
+            },
+            spacing: {
+              lg: "32px",
+              "container-max": "1440px",
+              sm: "16px",
+              md: "24px",
+              xs: "8px",
+              xl: "48px",
+              gutter: "24px",
+              base: "4px",
+            },
+            fontFamily: {
+              display: ["Hanken Grotesk"],
+              "body-md": ["Hanken Grotesk"],
+              "headline-md": ["Hanken Grotesk"],
+              "headline-lg": ["Hanken Grotesk"],
+              "label-sm": ["Hanken Grotesk"],
+              "label-md": ["Hanken Grotesk"],
+              "body-lg": ["Hanken Grotesk"],
+            },
+            fontSize: {
+              display: [
+                "30px",
+                {
+                  lineHeight: "38px",
+                  letterSpacing: "-0.02em",
+                  fontWeight: "700",
+                },
+              ],
+              "body-md": ["14px", { lineHeight: "20px", fontWeight: "400" }],
+              "headline-md": [
+                "20px",
+                { lineHeight: "28px", fontWeight: "600" },
+              ],
+              "headline-lg": [
+                "24px",
+                { lineHeight: "32px", fontWeight: "700" },
+              ],
+              "label-sm": ["11px", { lineHeight: "14px", fontWeight: "600" }],
+              "label-md": [
+                "12px",
+                {
+                  lineHeight: "16px",
+                  letterSpacing: "0.01em",
+                  fontWeight: "500",
+                },
+              ],
+              "body-lg": ["16px", { lineHeight: "24px", fontWeight: "400" }],
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      body {
+        background-color: #f8fafc;
+      }
+      .nav-item-active {
+        background-color: #1d4ed8;
+        color: #ffffff;
+        font-weight: 600;
+        border-radius: 8px;
+      }
+      .nav-item-inactive {
+        color: #e0e3e5;
+        transition: color 200ms;
+      }
+      .nav-item-inactive:hover {
+        color: #ffffff;
+        background-color: rgba(29, 78, 216, 0.2);
+      }
+      .card-shadow {
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.05);
+      }
+    </style>
+  </head>
+  <body
+    class="font-body-md text-on-surface bg-background antialiased flex overflow-hidden h-screen"
+  >
+    <!-- SideNavBar -->
+    <nav
+      class="fixed h-full w-[260px] left-0 top-0 flex flex-col bg-on-background dark:bg-on-background shadow-md z-20"
+    >
+      <div class="flex flex-col justify-between h-screen p-md">
+        <div>
+          <!-- Header -->
+          <div class="mb-xl">
+            <h1
+              class="text-headline-lg font-headline-lg text-on-primary mb-base"
+            >
+              Welcome Back
+            </h1>
+            <p class="text-body-md font-body-md text-on-primary opacity-80">
+              Mr. Bao
+            </p>
+          </div>
+          <!-- Tabs -->
+          <ul class="space-y-xs">
+            <li class="">
+              <a
+                class="flex items-center px-sm py-3 hover:bg-primary/20 hover:text-white text-on-primary rounded-lg font-semibold transition-colors"
+                href="student.html"
+              >
+                <span
+                  class="material-symbols-outlined mr-sm"
+                  style="font-variation-settings: &quot;FILL&quot; 0"
+                  >home</span
+                >
+                <span class="text-label-md font-label-md">Home</span>
+              </a>
+            </li>
+            <li class="">
+              <a
+                class="flex items-center px-sm py-3 text-tertiary-fixed hover:bg-primary/20 hover:text-white transition-colors rounded-lg"
+                href="student_classes.html"
+              >
+                <span
+                  class="material-symbols-outlined mr-sm"
+                  style="font-variation-settings: &quot;FILL&quot; 0"
+                  >school</span
+                >
+                <span class="text-label-md font-label-md">My Classes</span>
+              </a>
+            </li>
+            <li class="">
+              <a
+                class="flex items-center px-sm py-3 text-tertiary-fixed hover:bg-primary/20 hover:text-white transition-colors rounded-lg"
+                href="student_schedules.html"
+              >
+                <span
+                  class="material-symbols-outlined mr-sm"
+                  style="font-variation-settings: &quot;FILL&quot; 0"
+                  >calendar_today</span
+                >
+                <span class="text-label-md font-label-md">Schedules</span>
+              </a>
+            </li>
+            <li class="">
+              <a
+                class="flex items-center px-sm py-3 text-tertiary-fixed bg-primary transition-colors rounded-lg"
+                href="student_assignments.html"
+              >
+                <span
+                  class="material-symbols-outlined mr-sm"
+                  style="font-variation-settings: &quot;FILL&quot; 0"
+                  >assignment</span
+                >
+                <span class="text-label-md font-label-md">Assignments</span>
+              </a>
+            </li>
+            <li class="">
+              <a
+                class="flex items-center px-sm py-3 text-tertiary-fixed hover:bg-primary/20 hover:text-white transition-colors rounded-lg"
+                href="student_grades.html"
+              >
+                <span
+                  class="material-symbols-outlined mr-sm"
+                  style="font-variation-settings: &quot;FILL&quot; 0"
+                  >star_outline</span
+                >
+                <span class="text-label-md font-label-md">Grades</span>
+              </a>
+            </li>
+            <li class="">
+              <a
+                class="flex items-center px-sm py-3 text-tertiary-fixed hover:bg-primary/20 hover:text-white transition-colors rounded-lg"
+                href="student_tuition.html"
+              >
+                <span
+                  class="material-symbols-outlined mr-sm"
+                  style="font-variation-settings: &quot;FILL&quot; 0"
+                  >account_balance_wallet</span
+                >
+                <span class="text-label-md font-label-md">Tuition</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <!-- Footer & CTA -->
+        <div>
+          <button
+            class="w-full bg-primary-container text-on-primary py-2 rounded-lg font-label-md text-label-md mb-md hover:bg-primary transition-colors"
+          >
+            Support Center
+          </button>
+          <ul>
+            <li class="">
+              <a
+                class="flex items-center px-sm py-2 text-tertiary-fixed hover:text-white transition-colors"
+                href="login.html"
+              >
+                <span
+                  class="material-symbols-outlined mr-sm"
+                  style="font-variation-settings: &quot;FILL&quot; 0"
+                  >logout</span
+                >
+                <span class="text-label-md font-label-md">Log Out</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <!-- Main Content Area -->
+    <div class="flex-1 flex flex-col ml-[260px] h-screen overflow-hidden">
+      <!-- TopNavBar -->
+      <header
+        class="bg-surface dark:bg-surface flex justify-between items-center h-16 px-lg w-full shrink-0 z-10 relative"
+      >
+        <div class="font-headline-md text-headline-md text-on-surface">
+          EduSync Academy
+        </div>
+        <div class="flex items-center gap-lg">
+          <div class="relative hidden sm:block">
+            <span
+              class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline-variant text-sm"
+              >search</span
+            >
+            <input
+              class="bg-[#F1F5F9] border-none rounded-full py-2 pl-10 pr-4 text-body-md focus:ring-2 focus:ring-primary focus:bg-white transition-all w-64 placeholder:text-outline-variant"
+              placeholder="Search..."
+              type="text"
+            />
+          </div>
+          <div class="flex items-center gap-md">
+            <button
+              class="text-on-surface-variant hover:text-primary transition-colors hover:scale-105 transform duration-200"
+            >
+              <span class="material-symbols-outlined">notifications</span>
+            </button>
+            <button
+              class="text-on-surface-variant hover:text-primary transition-colors hover:scale-105 transform duration-200"
+            >
+              <span class="material-symbols-outlined">settings</span>
+            </button>
+            <div
+              class="w-8 h-8 rounded-full bg-surface-container-highest flex items-center justify-center font-bold text-primary overflow-hidden border border-outline-variant/30 cursor-pointer"
+            >
+              AD
+            </div>
+          </div>
+        </div>
+      </header>
+      <!-- Page Canvas -->
+      <main class="flex-1 overflow-y-auto p-lg bg-[#F8FAFC]">
+        <div class="max-w-container-max mx-auto w-full">
+          <!-- Page Header -->
+          <div
+            class="mb-lg flex flex-col md:flex-row md:items-end justify-between gap-4"
+          >
+            <div>
+              <h1 class="font-display text-display text-on-surface mb-2">
+                Bài tập &amp; Nhiệm vụ
+              </h1>
+              <p class="font-body-md text-body-md text-on-surface-variant">
+                Quản lý và theo dõi tiến độ bài tập của bạn.
+              </p>
+            </div>
+          </div>
+          <!-- Tabs -->
+          <div class="border-b border-outline-variant mb-md flex gap-lg">
+            <button
+              class="pb-xs font-label-md text-label-md text-primary border-b-2 border-primary"
+            >
+              Pending
+            </button>
+            <button
+              class="pb-xs font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors"
+            >
+              Submitted
+            </button>
+            <button
+              class="pb-xs font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors"
+            >
+              Graded
+            </button>
+          </div>
+          <!-- Assignment Cards Grid -->
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-md">
+            <!-- Card 1 -->
+            <div
+              class="bg-surface-container-lowest rounded-xl p-md border border-[#E2E8F0] card-shadow flex flex-col h-full hover:shadow-md transition-shadow"
+            >
+              <div class="flex justify-between items-start mb-sm">
+                <span
+                  class="inline-block px-2 py-1 bg-surface-container-highest text-primary-fixed-dim text-[10px] font-bold uppercase tracking-wider rounded"
+                  >Database Systems</span
+                >
+                <span
+                  class="material-symbols-outlined text-outline-variant text-sm"
+                  >more_vert</span
+                >
+              </div>
+              <h3 class="font-headline-md text-headline-md mb-xs line-clamp-2">
+                ER Diagram Design Project
+              </h3>
+              <p
+                class="font-body-md text-body-md text-on-surface-variant mb-md flex-1"
+              >
+                Complete the conceptual design phase including all entities,
+                attributes, and relationships.
+              </p>
+              <div class="mt-auto">
+                <div class="flex items-center gap-2 mb-md text-error">
+                  <span class="material-symbols-outlined text-sm"
+                    >schedule</span
+                  >
+                  <span class="font-label-sm text-label-sm"
+                    >Due: Tomorrow, 11:59 PM</span
+                  >
+                </div>
+                <button
+                  class="w-full bg-primary-container text-on-primary py-2 rounded-lg font-label-md text-label-md hover:bg-primary-container/90 transition-colors shadow-sm active:translate-y-[1px]"
+                >
+                  Submit Assignment
+                </button>
+              </div>
+            </div>
+            <!-- Card 2 -->
+            <div
+              class="bg-surface-container-lowest rounded-xl p-md border border-[#E2E8F0] card-shadow flex flex-col h-full hover:shadow-md transition-shadow"
+            >
+              <div class="flex justify-between items-start mb-sm">
+                <span
+                  class="inline-block px-2 py-1 bg-surface-container-highest text-primary-fixed-dim text-[10px] font-bold uppercase tracking-wider rounded"
+                  >Web Development</span
+                >
+                <span
+                  class="material-symbols-outlined text-outline-variant text-sm"
+                  >more_vert</span
+                >
+              </div>
+              <h3 class="font-headline-md text-headline-md mb-xs line-clamp-2">
+                Frontend Frameworks Lab
+              </h3>
+              <p
+                class="font-body-md text-body-md text-on-surface-variant mb-md flex-1"
+              >
+                Build a responsive single-page application using React or Vue.
+              </p>
+              <div class="mt-auto">
+                <div
+                  class="flex items-center gap-2 mb-md text-on-surface-variant"
+                >
+                  <span class="material-symbols-outlined text-sm"
+                    >schedule</span
+                  >
+                  <span class="font-label-sm text-label-sm"
+                    >Due: Oct 25, 2023</span
+                  >
+                </div>
+                <button
+                  class="w-full bg-primary-container text-on-primary py-2 rounded-lg font-label-md text-label-md hover:bg-primary-container/90 transition-colors shadow-sm active:translate-y-[1px]"
+                >
+                  Submit Assignment
+                </button>
+              </div>
+            </div>
+            <!-- Card 3 -->
+            <div
+              class="bg-surface-container-lowest rounded-xl p-md border border-[#E2E8F0] card-shadow flex flex-col h-full hover:shadow-md transition-shadow"
+            >
+              <div class="flex justify-between items-start mb-sm">
+                <span
+                  class="inline-block px-2 py-1 bg-surface-container-highest text-primary-fixed-dim text-[10px] font-bold uppercase tracking-wider rounded"
+                  >Object Oriented Prog</span
+                >
+                <span
+                  class="material-symbols-outlined text-outline-variant text-sm"
+                  >more_vert</span
+                >
+              </div>
+              <h3 class="font-headline-md text-headline-md mb-xs line-clamp-2">
+                Inheritance &amp; Polymorphism
+              </h3>
+              <p
+                class="font-body-md text-body-md text-on-surface-variant mb-md flex-1"
+              >
+                Implement a class hierarchy for a zoo simulation system.
+              </p>
+              <div class="mt-auto">
+                <div
+                  class="flex items-center gap-2 mb-md text-on-surface-variant"
+                >
+                  <span class="material-symbols-outlined text-sm"
+                    >schedule</span
+                  >
+                  <span class="font-label-sm text-label-sm"
+                    >Due: Oct 28, 2023</span
+                  >
+                </div>
+                <button
+                  class="w-full bg-primary-container text-on-primary py-2 rounded-lg font-label-md text-label-md hover:bg-primary-container/90 transition-colors shadow-sm active:translate-y-[1px]"
+                >
+                  Submit Assignment
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>
