@@ -228,75 +228,48 @@
     </aside>
     <!-- Top App Bar -->
     <header
-      class="fixed top-0 right-0 w-[calc(100%-240px)] z-40 bg-white border-b border-outline-variant flex justify-between items-center h-16 px-8 ml-[240px]"
+      class="fixed top-0 right-0 w-[calc(100%-240px)] z-40 bg-surface border-b border-outline-variant flex justify-between items-center h-16 px-8"
     >
       <div class="flex items-center gap-4">
-        <nav
-          aria-label="Breadcrumb"
-          class="flex text-on-surface-variant font-label-md text-label-md"
+        <span
+          class="font-headline-sm text-headline-sm font-semibold text-on-surface"
+          >EduSync Academy</span
         >
-          <ol class="flex items-center space-x-2">
-            <li class="">
-              <a
-                class="hover:text-primary transition-colors text-outline"
-                href="#"
-                >Dashboard</a
-              >
-            </li>
-            <li class="">
-              <span
-                class="material-symbols-outlined text-[16px] leading-none text-outline"
-                >chevron_right</span
-              >
-            </li>
-            <li class="text-primary font-bold">Home</li>
-          </ol>
-        </nav>
       </div>
       <div class="flex items-center gap-6">
-        <div class="relative">
-          <input
-            class="bg-surface-container-low border border-outline-variant rounded-lg px-4 py-1.5 pr-10 text-body-md font-body-md w-64 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
-            placeholder="Search students, classes..."
-            type="text"
-          />
+        <div class="relative hidden md:block">
           <span
-            class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-outline-variant"
+            class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[20px]"
+            data-icon="search"
             >search</span
           >
+          <input
+            class="pl-10 pr-4 py-2 bg-surface-container-low border border-outline-variant rounded-full text-body-md font-body-md focus:outline-none focus:border-primary w-64"
+            placeholder="Search..."
+            type="text"
+          />
         </div>
-        <div class="flex items-center gap-2">
-          <button
-            class="p-2 text-on-surface-variant hover:text-primary transition-colors"
-          >
+        <div class="flex items-center gap-4 text-on-surface-variant">
+          <button class="hover:text-primary transition-colors hover:scale-95">
             <span class="material-symbols-outlined" data-icon="notifications"
               >notifications</span
             >
           </button>
-          <button
-            class="p-2 text-on-surface-variant hover:text-primary transition-colors"
-          >
+          <button class="hover:text-primary transition-colors hover:scale-95">
             <span class="material-symbols-outlined" data-icon="settings"
               >settings</span
             >
           </button>
-        </div>
-        <div
-          class="flex items-center gap-3 pl-4 border-l border-outline-variant"
-        >
-          <div class="text-right">
-            <p class="font-label-md text-label-md text-on-surface">
-              Mr. Jonathan Tran
-            </p>
-            <p class="text-caption font-caption text-on-surface-variant">
-              Senior Faculty
-            </p>
+          <div
+            class="w-8 h-8 rounded-full bg-surface-container-highest overflow-hidden border border-outline-variant ml-2"
+          >
+            <img
+              alt="Teacher Profile Picture"
+              class="w-full h-full object-cover"
+              data-alt="A professional headshot of a teacher smiling warmly in a well-lit modern classroom setting, conveying trust and competence in a corporate education environment."
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuB9nqivP6SdtbfY00e0U6aII7l50YDTItHAxeewNaaGSX521TbIm1NuyR_BCtOWaBQ2d9hlrYYs4j2bTtmCwN5m-GxOjN96_DOB97SvUU4FxX7s3hoBQbROvIMM-_6DpXMSyMkJPRwIe4OCKLISuBpUxKzT6Kh2I0OueItnPBeG2moXAkX-U1eev81JqlXU_zgykv4APgxHQjIIHgUsmOJ8YWQ4f6617T5paJPOhFMqsXd8Az2n84xF7Q"
+            />
           </div>
-          <img
-            alt="Mr. Jonathan Tran"
-            class="w-10 h-10 rounded-full object-cover border-2 border-primary-fixed shadow-sm"
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDFR1Uql2a_sipyDXC6EJomB_tBbqcG8_1dLWbzZWYqf2Jz7nGccUQsmOv4LOHx3aHJTLajxeuQ6BGO8LGegpWjEf9CiRg_M7LDYaMwTgiJMaTmF9dZ90Pt3EhLeuSIiDX-7Z6OzXvmvrQU7pxkB6wJbEjhxiPUKz92Nu6JWJT1AXSLzmpLQs0EwT_k-0p6SksWhTge3pHemJU4uzoRTdd2QWsbX1cXP6WvQ330QvASuMBbvRhrhCEu6g"
-          />
         </div>
       </div>
     </header>
