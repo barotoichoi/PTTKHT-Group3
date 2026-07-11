@@ -1,16 +1,19 @@
-#pragma once
+#ifndef STUDENT_H
+#define STUDENT_H
 
-#include <iosfwd>
+#include <iostream>
+#include <map>
 #include <string>
 #include <vector>
 
+#include "Teacher.h"
+
+struct sqlite3;
+
 class Student {
-public:
+private:
     std::string studentId;
     std::string name;
-    std::string gender;
-    std::string dob;
-    std::string classId;
     std::string email;
     std::string major;
     std::string phone;
@@ -18,132 +21,86 @@ public:
     std::string password;
     double gpa;
     double tuitionOwed;
-    std::string status;
+    std::vector<CourseInfo> enrolledCourses;
+    std::vector<ScheduleEntry> schedule;
+    std::map<std::string, std::vector<ScoreRecord>> gradebook;
+    std::vector<std::string> notifications;
+    std::map<std::string, std::vector<std::string>> prerequisiteMap;
 
+public:
     Student();
-    Student(const std::string& studentId,
-            const std::string& name,
-            const std::string& gender,
-            const std::string& dob,
-            const std::string& classId,
-            const std::string& email,
-            const std::string& major,
-            const std::string& phone,
-            const std::string& username,
-            const std::string& password,
-            double gpa,
-            double tuitionOwed,
-            const std::string& status);
+    Student(const std::string& studentId, const std::string& name,
+            const std::string& email, const std::string& major,
+            const std::string& phone, const std::string& username,
+            const std::string& password, double gpa = 0.0,
+            double tuitionOwed = 0.0);
 
     bool login(const std::string& username, const std::string& password) const;
-    void displayInfo() const;
+
+    std::string getStudentId() const;
+    void setStudentId(const std::string& studentId);
+
+    std::string getName() const;
+    void setName(const std::string& name);
+
+    std::string getEmail() const;
+    void setEmail(const std::string& email);
+
+    std::string getMajor() const;
+    void setMajor(const std::string& major);
+
+    std::string getPhone() const;
+    void setPhone(const std::string& phone);
+
+    std::string getUsername() const;
+    void setUsername(const std::string& username);
+
+    std::string getPassword() const;
+    void setPassword(const std::string& password);
+
+    double getGpa() const;
+    void setGpa(double gpa);
+
+    double getTuitionOwed() const;
+    void setTuitionOwed(double tuitionOwed);
+
+    void printPersonalInfo() const;
+    void updatePersonalInfo(const std::string& name, const std::string& email,
+                            const std::string& major, const std::string& phone);
+
+    void printStudentCard() const;
+    void printGPA() const;
+    void printGradebook() const;
+
+    void addEnrolledCourse(const CourseInfo& course);
+    std::vector<CourseInfo> getEnrolledCourses() const;
+    void printEnrolledCourses() const;
+    void enrollCourse(const CourseInfo& course);
+    void dropCourse(const std::string& courseId);
+    bool checkPrerequisites(const std::string& courseId) const;
+
+    void addScheduleEntry(const ScheduleEntry& entry);
+    std::vector<ScheduleEntry> getSchedule() const;
+    void printSchedule() const;
+
+    void addGrade(const std::string& courseId, const ScoreRecord& record);
+    std::map<std::string, std::vector<ScoreRecord>> getGradebook() const;
+
+    void addNotification(const std::string& message);
+    std::vector<std::string> getNotifications() const;
+    void printNotifications() const;
+
+    void printTuitionStatus() const;
+    void payTuition(double amount);
+
+    void addPrerequisite(const std::string& courseId, const std::vector<std::string>& requiredCourses);
+   
+    static std::vector<Student> loadStudentsFromDatabase(const std::string& dbPath = "student_db.sqlite");
+    static std::vector<Student> loadDefaultStudents();
+    bool saveToDatabase(const std::string& dbPath = "student_db.sqlite") const;
+    bool deleteFromDatabase(const std::string& dbPath = "student_db.sqlite") const;
+    static bool initializeDatabase(const std::string& dbPath = "student_db.sqlite");
+    static Student findByUsername(const std::string& username, const std::string& dbPath = "student_db.sqlite");
 };
 
-struct StudentCourse {
-    std::string courseId;
-    std::string courseName;
-    int credits;
-    std::string teacherName;
-    std::string room;
-    std::string semester;
-    std::string status;
-};
-
-struct StudentSchedule {
-    std::string scheduleId;
-    std::string courseId;
-    std::string courseName;
-    std::string day;
-    std::string startTime;
-    std::string endTime;
-    std::string room;
-};
-
-struct StudentScore {
-    std::string courseId;
-    std::string courseName;
-    double assignment;
-    double midterm;
-    double finalExam;
-    double average;
-    std::string grade;
-};
-
-struct CourseMaterial {
-    std::string materialId;
-    std::string courseId;
-    std::string courseName;
-    std::string title;
-    std::string url;
-    std::string createdAt;
-};
-
-struct StudentNotification {
-    std::string notificationId;
-    std::string studentId;
-    std::string title;
-    std::string content;
-    std::string createdAt;
-    bool isRead;
-};
-
-struct StudentTuition {
-    std::string tuitionId;
-    std::string studentId;
-    std::string semester;
-    int totalCredits;
-    double amount;
-    double paidAmount;
-    std::string dueDate;
-    std::string status;
-};
-
-class StudentRepository {
-public:
-    explicit StudentRepository(const std::string& connectionString = defaultConnectionString());
-    ~StudentRepository();
-
-    static std::string defaultConnectionString();
-
-    bool connect();
-    void disconnect();
-    bool initializeSchema();
-    bool seedSampleData();
-
-    bool addStudent(const Student& student);
-    bool updateStudent(const Student& student);
-    bool updatePersonalInfo(const std::string& studentId,
-                            const std::string& email,
-                            const std::string& phone,
-                            const std::string& password);
-    bool deleteStudent(const std::string& studentId);
-    bool findStudentById(const std::string& studentId, Student& student);
-    bool login(const std::string& username, const std::string& password, Student& student);
-    std::vector<Student> getAllStudents();
-
-    std::vector<StudentCourse> getAvailableCourses(const std::string& semester);
-    std::vector<StudentCourse> getCurrentCourses(const std::string& studentId, const std::string& semester);
-    std::vector<StudentSchedule> getSchedule(const std::string& studentId, const std::string& semester);
-    std::vector<StudentScore> getScores(const std::string& studentId, const std::string& semester);
-    std::vector<CourseMaterial> getNewCourseMaterials(const std::string& studentId);
-    std::vector<StudentNotification> getTuitionNotifications(const std::string& studentId);
-
-    bool enrollCourse(const std::string& studentId, const std::string& courseId, const std::string& semester);
-    bool cancelEnrollment(const std::string& studentId, const std::string& courseId, const std::string& semester);
-    bool printTuitionStatement(const std::string& studentId, const std::string& semester, std::ostream& output);
-    std::vector<StudentTuition> getTuitionRecords(const std::string& studentId);
-    std::vector<StudentTuition> getUnpaidTuitionRecords(const std::string& studentId);
-    bool payTuition(const std::string& tuitionId, double amount);
-
-private:
-    void* environmentHandle;
-    void* connectionHandle;
-    std::string connectionString;
-
-    bool executeNonQuery(const std::string& sql);
-    std::vector<std::vector<std::string>> executeQuery(const std::string& sql, int columnCount);
-    static std::string escapeSql(const std::string& value);
-    static std::string toSqlString(const std::string& value);
-    static double toDouble(const std::string& value);
-    static int toInt(const std::string& value);
-};
+#endif
