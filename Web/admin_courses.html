@@ -1,0 +1,619 @@
+<!doctype html>
+<html lang="en" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Admin Dashboard - EduSync Academy</title>
+
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+    <!-- Google Font -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Material Icons -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=block"
+      rel="stylesheet"
+    />
+
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#0058BE",
+              secondary: "#64748B",
+              background: "#F7F9FB",
+              sidebar: "#0F172A",
+              card: "#FFFFFF",
+              border: "#D9DEE8",
+              success: "#10B981",
+              warning: "#F59E0B",
+              danger: "#EF4444",
+              info: "#3B82F6",
+              text: "#1E293B",
+              muted: "#64748B",
+              hover: "#1E293B",
+              light: "#F1F5F9",
+            },
+
+            borderRadius: {
+              DEFAULT: "0.125rem",
+              lg: "0.25rem",
+              xl: "0.5rem",
+              full: "0.75rem",
+            },
+            spacing: {
+              "sidebar-width": "240px",
+              "card-gap": "1.5rem",
+              gutter: "1rem",
+              "container-padding": "2rem",
+              "table-row-height": "48px",
+            },
+            fontFamily: {
+              "label-md": ["Inter"],
+              "body-md": ["Inter"],
+              "body-lg": ["Inter"],
+              "headline-lg": ["Inter"],
+              "headline-md": ["Inter"],
+              caption: ["Inter"],
+            },
+            fontSize: {
+              "label-md": [
+                "12px",
+                {
+                  lineHeight: "16px",
+                  letterSpacing: "0.02em",
+                  fontWeight: "600",
+                },
+              ],
+              "body-md": ["14px", { lineHeight: "20px", fontWeight: "400" }],
+              "body-lg": ["16px", { lineHeight: "24px", fontWeight: "400" }],
+              "headline-lg": [
+                "24px",
+                { lineHeight: "32px", fontWeight: "700" },
+              ],
+              "headline-md": [
+                "18px",
+                { lineHeight: "24px", fontWeight: "600" },
+              ],
+              caption: ["12px", { lineHeight: "16px", fontWeight: "400" }],
+            },
+          },
+        },
+      };
+    </script>
+
+    <style>
+      body {
+        font-family: Inter, sans-serif;
+        background: #f7f9fb;
+      }
+
+      .material-symbols-outlined {
+        font-variation-settings:
+          "FILL" 0,
+          "wght" 400,
+          "GRAD" 0,
+          "opsz" 24;
+      }
+
+      ::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 10px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+
+      .nav-item {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 14px 18px;
+        margin: 4px 8px;
+        color: #cbd5e1;
+        border-radius: 10px;
+        transition: 0.25s;
+      }
+
+      .nav-item:hover {
+        background: #1e293b;
+        color: white;
+      }
+
+      .nav-active {
+        background: #0058be;
+        color: white;
+        font-weight: 600;
+        box-shadow: 0 8px 18px rgba(0, 88, 190, 0.25);
+      }
+
+      .card {
+        background: white;
+        border: 1px solid #d9dee8;
+        border-radius: 12px;
+      }
+
+      .stat-icon {
+        width: 42px;
+        height: 42px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        background: #eff6ff;
+        color: #0058be;
+      }
+
+      .table-head {
+        background: #0f172a;
+
+        color: white;
+      }
+
+      .btn-primary {
+        background: #0058be;
+        color: white;
+        transition: 0.25s;
+      }
+
+      .btn-primary:hover {
+        background: #0048a0;
+      }
+
+      .btn-outline {
+        border: 1px solid #d9dee8;
+        background: white;
+        transition: 0.25s;
+      }
+
+      .btn-outline:hover {
+        background: #f8fafc;
+      }
+    </style>
+  </head>
+
+  <body class="text-text">
+    <div class="flex">
+      <aside
+        class="bg-sidebar border-r border-slate-700 w-[240px] h-screen fixed left-0 top-0 flex flex-col py-6 z-50"
+      >
+        <!-- Logo -->
+        <div class="px-6 mb-10">
+          <h1 class="text-white text-[18px] font-bold leading-tight">
+            Student Management System
+          </h1>
+
+          <p class="text-slate-400 text-[10px] mt-1">EduSync Academy</p>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="flex-1 overflow-y-auto px-2">
+          <a
+            class="hover:text-white hover:bg-slate-800 text-white font-bold rounded-lg mx-2 my-1 flex items-center px-4 py-3 gap-3 transition-all opacity-90 shadow-md"
+            href="admin.html"
+          >
+            <span class="material-symbols-outlined" data-icon="home">home</span>
+            <span class="font-body-md text-body-md">Home</span>
+          </a>
+
+          <a
+            class="hover:text-white hover:bg-slate-800 text-white font-bold rounded-lg mx-2 my-1 flex items-center px-4 py-3 gap-3 transition-all opacity-90 shadow-md"
+            href="admin_users.html"
+          >
+            <span class="material-symbols-outlined" data-icon="users"
+              >account_circle</span
+            >
+            <span class="font-body-md text-body-md">Users Management</span>
+          </a>
+
+          <a
+            class="hover:text-white hover:bg-slate-800 text-white font-bold rounded-lg mx-2 my-1 flex items-center px-4 py-3 gap-3 transition-all opacity-90 shadow-md"
+            href="admin_students.html"
+          >
+            <span class="material-symbols-outlined" data-icon="users"
+              >person</span
+            >
+            <span class="font-body-md text-body-md">Students</span>
+          </a>
+
+          <a
+            class="hover:text-white hover:bg-slate-800 text-white font-bold rounded-lg mx-2 my-1 flex items-center px-4 py-3 gap-3 transition-all opacity-90 shadow-md"
+            href="admin_teachers.html"
+          >
+            <span class="material-symbols-outlined" data-icon="users"
+              >groups</span
+            >
+            <span class="font-body-md text-body-md">Teachers</span>
+          </a>
+
+          <a
+            class="bg-primary text-white font-bold rounded-lg mx-2 my-1 flex items-center px-4 py-3 gap-3 transition-all opacity-90 shadow-md"
+            href="admin_courses.html"
+          >
+            <span class="material-symbols-outlined" data-icon="users"
+              >menu_book</span
+            >
+            <span class="font-body-md text-body-md">Courses</span>
+          </a>
+
+          <a
+            class="hover:text-white hover:bg-slate-800 text-white font-bold rounded-lg mx-2 my-1 flex items-center px-4 py-3 gap-3 transition-all opacity-90 shadow-md"
+            href="admin_classes.html"
+          >
+            <span class="material-symbols-outlined" data-icon="users"
+              >meeting_room</span
+            >
+            <span class="font-body-md text-body-md">Classes</span>
+          </a>
+
+          <a
+            class="hover:text-white hover:bg-slate-800 text-white font-bold rounded-lg mx-2 my-1 flex items-center px-4 py-3 gap-3 transition-all opacity-90 shadow-md"
+            href="admin_enrollment.html"
+          >
+            <span class="material-symbols-outlined" data-icon="users"
+              >fact_check</span
+            >
+            <span class="font-body-md text-body-md">Enrollment</span>
+          </a>
+
+          <a
+            class="hover:text-white hover:bg-slate-800 text-white font-bold rounded-lg mx-2 my-1 flex items-center px-4 py-3 gap-3 transition-all opacity-90 shadow-md"
+            href="admin_tuition.html"
+          >
+            <span class="material-symbols-outlined" data-icon="users"
+              >payments</span
+            >
+            <span class="font-body-md text-body-md">Tuition</span>
+          </a>
+
+          <a
+            class="hover:text-white hover:bg-slate-800 text-white font-bold rounded-lg mx-2 my-1 flex items-center px-4 py-3 gap-3 transition-all opacity-90 shadow-md"
+            href="admin_report.html"
+          >
+            <span class="material-symbols-outlined" data-icon="users"
+              >bar_chart</span
+            >
+            <span class="font-body-md text-body-md">Reports</span>
+          </a>
+        </nav>
+
+        <!-- Bottom -->
+        <div class="px-4 mt-auto pt-4 space-y-2">
+          <button
+            class="w-full bg-[#3b82f6] text-white flex items-center justify-center px-4 py-3 transition-colors rounded-lg mb-2 shadow-sm"
+          >
+            <span class="font-body-md text-body-md">Support Center</span>
+          </button>
+          <button
+            class="w-full text-slate-400 hover:text-white flex items-center px-4 py-3 gap-3 hover:bg-slate-800 transition-colors rounded-lg"
+          >
+            <span class="material-symbols-outlined" data-icon="logout"
+              >logout</span
+            >
+            <span class="font-body-md text-body-md">Log Out</span>
+          </button>
+        </div>
+      </aside>
+    <!-- Main Content Wrapper -->
+    <div
+      class="flex-1 ml-[280px] flex flex-col h-full bg-background overflow-hidden"
+    >
+      <!-- TopAppBar -->
+        <header
+          class="fixed top-0 right-0 w-[calc(100%-240px)] z-40 bg-surface border-b border-outline-variant flex justify-between items-center h-16 px-8"
+        >
+          <div class="flex items-center gap-4">
+            <span
+              class="font-headline-sm text-headline-sm font-semibold text-on-surface"
+              >EduSync Academy</span
+            >
+          </div>
+          <div class="flex items-center gap-6">
+            <div class="relative hidden md:block">
+              <span
+                class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[20px]"
+                data-icon="search"
+                >search</span
+              >
+              <input
+                class="pl-10 pr-4 py-2 bg-surface-container-low border border-outline-variant rounded-full text-body-md font-body-md focus:outline-none focus:border-primary w-64"
+                placeholder="Search..."
+                type="text"
+              />
+            </div>
+            <div class="flex items-center gap-4 text-on-surface-variant">
+              <button
+                class="hover:text-primary transition-colors hover:scale-95"
+              >
+                <span
+                  class="material-symbols-outlined"
+                  data-icon="notifications"
+                  >notifications</span
+                >
+              </button>
+              <button
+                class="hover:text-primary transition-colors hover:scale-95"
+              >
+                <span class="material-symbols-outlined" data-icon="settings"
+                  >settings</span
+                >
+              </button>
+              <div
+                class="w-8 h-8 rounded-full bg-surface-container-highest overflow-hidden border border-outline-variant ml-2"
+              >
+                <img
+                  alt="Teacher Profile Picture"
+                  class="w-full h-full object-cover"
+                  data-alt="A professional headshot of a teacher smiling warmly in a well-lit modern classroom setting, conveying trust and competence in a corporate education environment."
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuB9nqivP6SdtbfY00e0U6aII7l50YDTItHAxeewNaaGSX521TbIm1NuyR_BCtOWaBQ2d9hlrYYs4j2bTtmCwN5m-GxOjN96_DOB97SvUU4FxX7s3hoBQbROvIMM-_6DpXMSyMkJPRwIe4OCKLISuBpUxKzT6Kh2I0OueItnPBeG2moXAkX-U1eev81JqlXU_zgykv4APgxHQjIIHgUsmOJ8YWQ4f6617T5paJPOhFMqsXd8Az2n84xF7Q"
+                />
+              </div>
+            </div>
+          </div>
+        </header>
+      <!-- Main Canvas -->
+      <main class="flex-1 overflow-y-auto p-container-padding mt-16">
+        <div class="max-w-7xl mx-auto space-y-section-margin ">
+          <!-- Header & Search/Filter Section -->
+          <div
+            class="flex flex-col md:flex-row md:items-end justify-between gap-6"
+          >
+            <div>
+              <h2 class="font-display-lg text-display-lg text-on-surface">
+                Course Catalog
+              </h2>
+              <p class="font-body-lg text-body-lg text-on-surface-variant mt-2">
+                Explore and manage all academic offerings
+              </p>
+            </div>
+            <div class="flex flex-col sm:flex-row gap-4 w-full md:w-auto">
+              <div class="relative w-full sm:w-80">
+                <span
+                  class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline"
+                  >search</span
+                >
+                <input
+                  class="w-full pl-10 pr-4 py-2.5 bg-surface-container-lowest border border-outline-variant rounded-lg text-body-md focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary shadow-sm transition-all"
+                  placeholder="Search courses by name or code..."
+                  type="text"
+                />
+              </div>
+              <select
+                class="w-full sm:w-48 px-4 py-2.5 bg-surface-container-lowest border border-outline-variant rounded-lg text-body-md text-on-surface-variant focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary shadow-sm appearance-none cursor-pointer"
+              >
+                <option value="">Filter by Department</option>
+                <option value="math">Mathematics</option>
+                <option value="cs">Computer Science</option>
+                <option value="sci">Sciences</option>
+                <option value="arts">Arts &amp; Humanities</option>
+              </select>
+            </div>
+          </div>
+          <!-- Course Grid -->
+          <div
+            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-card-gap"
+          >
+            <!-- Card 1 -->
+            <div
+              class="bg-surface-container-lowest rounded-[16px] shadow-[0_4px_20px_rgba(0,0,0,0.05)] border border-outline-variant/30 overflow-hidden hover:shadow-[0_12px_32px_rgba(0,0,0,0.1)] transition-shadow duration-300 flex flex-col group cursor-pointer"
+            >
+              <div
+                class="h-40 bg-gradient-to-br from-indigo-500 to-purple-600 relative overflow-hidden"
+              >
+                <div
+                  class="absolute inset-0 opacity-20"
+                  style="
+                    background-image:
+                      radial-gradient(
+                        circle at 20% 30%,
+                        rgba(255, 255, 255, 0.8) 0%,
+                        transparent 50%
+                      ),
+                      radial-gradient(
+                        circle at 80% 70%,
+                        rgba(255, 255, 255, 0.5) 0%,
+                        transparent 40%
+                      );
+                  "
+                ></div>
+                <span
+                  class="material-symbols-outlined absolute right-4 top-4 text-white/80 text-4xl"
+                  >functions</span
+                >
+              </div>
+              <div class="p-6 flex-1 flex flex-col">
+                <div class="flex justify-between items-start mb-2">
+                  <span
+                    class="bg-surface-container-high text-primary-fixed-variant px-2.5 py-1 rounded-md font-label-md uppercase text-[10px] tracking-wider"
+                    >MATH101</span
+                  >
+                  <span class="text-outline text-xs flex items-center gap-1"
+                    ><span class="material-symbols-outlined text-[14px]"
+                      >schedule</span
+                    >
+                    12 Weeks</span
+                  >
+                </div>
+                <h3
+                  class="font-headline-md text-headline-md text-on-surface mb-1 group-hover:text-primary transition-colors"
+                >
+                  Advanced Mathematics
+                </h3>
+                <p
+                  class="font-body-md text-body-md text-on-surface-variant mb-4 flex items-center gap-2 mt-auto"
+                >
+                  <span
+                    class="material-symbols-outlined text-outline text-[18px]"
+                    >person</span
+                  >
+                  Dr. Sarah Jenkins
+                </p>
+                <div
+                  class="w-full bg-surface-container-high rounded-full h-1.5 mt-2"
+                >
+                  <div
+                    class="bg-primary-container h-1.5 rounded-full"
+                    style="width: 75%"
+                  ></div>
+                </div>
+                <div
+                  class="flex justify-between text-xs text-outline mt-2 font-label-md"
+                >
+                  <span>75% Capacity</span>
+                  <span>30/40 Enrolled</span>
+                </div>
+              </div>
+            </div>
+            <!-- Card 2 -->
+            <div
+              class="bg-surface-container-lowest rounded-[16px] shadow-[0_4px_20px_rgba(0,0,0,0.05)] border border-outline-variant/30 overflow-hidden hover:shadow-[0_12px_32px_rgba(0,0,0,0.1)] transition-shadow duration-300 flex flex-col group cursor-pointer"
+            >
+              <div
+                class="h-40 bg-gradient-to-br from-blue-500 to-cyan-600 relative overflow-hidden"
+              >
+                <div
+                  class="absolute inset-0 opacity-20"
+                  style="
+                    background-image: repeating-linear-gradient(
+                      45deg,
+                      transparent,
+                      transparent 10px,
+                      rgba(255, 255, 255, 0.1) 10px,
+                      rgba(255, 255, 255, 0.1) 20px
+                    );
+                  "
+                ></div>
+                <span
+                  class="material-symbols-outlined absolute right-4 top-4 text-white/80 text-4xl"
+                  >terminal</span
+                >
+              </div>
+              <div class="p-6 flex-1 flex flex-col">
+                <div class="flex justify-between items-start mb-2">
+                  <span
+                    class="bg-surface-container-high text-primary-fixed-variant px-2.5 py-1 rounded-md font-label-md uppercase text-[10px] tracking-wider"
+                    >CS50</span
+                  >
+                  <span class="text-outline text-xs flex items-center gap-1"
+                    ><span class="material-symbols-outlined text-[14px]"
+                      >schedule</span
+                    >
+                    14 Weeks</span
+                  >
+                </div>
+                <h3
+                  class="font-headline-md text-headline-md text-on-surface mb-1 group-hover:text-primary transition-colors"
+                >
+                  Computer Science 101
+                </h3>
+                <p
+                  class="font-body-md text-body-md text-on-surface-variant mb-4 flex items-center gap-2 mt-auto"
+                >
+                  <span
+                    class="material-symbols-outlined text-outline text-[18px]"
+                    >person</span
+                  >
+                  Prof. Alan Turing
+                </p>
+                <div
+                  class="w-full bg-surface-container-high rounded-full h-1.5 mt-2"
+                >
+                  <div
+                    class="bg-primary-container h-1.5 rounded-full"
+                    style="width: 95%"
+                  ></div>
+                </div>
+                <div
+                  class="flex justify-between text-xs text-outline mt-2 font-label-md"
+                >
+                  <span>95% Capacity</span>
+                  <span>95/100 Enrolled</span>
+                </div>
+              </div>
+            </div>
+            <!-- Card 3 -->
+            <div
+              class="bg-surface-container-lowest rounded-[16px] shadow-[0_4px_20px_rgba(0,0,0,0.05)] border border-outline-variant/30 overflow-hidden hover:shadow-[0_12px_32px_rgba(0,0,0,0.1)] transition-shadow duration-300 flex flex-col group cursor-pointer"
+            >
+              <div
+                class="h-40 bg-gradient-to-br from-emerald-500 to-teal-600 relative overflow-hidden"
+              >
+                <div
+                  class="absolute inset-0 opacity-20"
+                  style="
+                    background-size: 20px 20px;
+                    background-image: radial-gradient(
+                      circle,
+                      rgba(255, 255, 255, 0.2) 1px,
+                      transparent 1px
+                    );
+                  "
+                ></div>
+                <span
+                  class="material-symbols-outlined absolute right-4 top-4 text-white/80 text-4xl"
+                  >biotech</span
+                >
+              </div>
+              <div class="p-6 flex-1 flex flex-col">
+                <div class="flex justify-between items-start mb-2">
+                  <span
+                    class="bg-surface-container-high text-primary-fixed-variant px-2.5 py-1 rounded-md font-label-md uppercase text-[10px] tracking-wider"
+                    >BIO202</span
+                  >
+                  <span class="text-outline text-xs flex items-center gap-1"
+                    ><span class="material-symbols-outlined text-[14px]"
+                      >schedule</span
+                    >
+                    10 Weeks</span
+                  >
+                </div>
+                <h3
+                  class="font-headline-md text-headline-md text-on-surface mb-1 group-hover:text-primary transition-colors"
+                >
+                  Molecular Biology
+                </h3>
+                <p
+                  class="font-body-md text-body-md text-on-surface-variant mb-4 flex items-center gap-2 mt-auto"
+                >
+                  <span
+                    class="material-symbols-outlined text-outline text-[18px]"
+                    >person</span
+                  >
+                  Dr. Rosalind Franklin
+                </p>
+                <div
+                  class="w-full bg-surface-container-high rounded-full h-1.5 mt-2"
+                >
+                  <div
+                    class="bg-primary-container h-1.5 rounded-full"
+                    style="width: 45%"
+                  ></div>
+                </div>
+                <div
+                  class="flex justify-between text-xs text-outline mt-2 font-label-md"
+                >
+                  <span>45% Capacity</span>
+                  <span>18/40 Enrolled</span>
+                </div>
+              </div>
+            </div>
+            <!-- Additional cards could be generated here following the same pattern -->
+          </div>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>
