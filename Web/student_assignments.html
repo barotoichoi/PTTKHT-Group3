@@ -1,13 +1,12 @@
 <!doctype html>
-
-<html lang="en">
+<html class="light" lang="en">
   <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>EduSync Academy - Assignments</title>
+    <title>EduSync Academy - Student Dashboard</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link
-      href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&amp;display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap"
       rel="stylesheet"
     />
     <link
@@ -24,262 +23,206 @@
         theme: {
           extend: {
             colors: {
-              "surface-container-highest": "#d3e4fe",
-              "tertiary-fixed": "#e0e3e5",
-              "primary-fixed": "#dce1ff",
-              tertiary: "#414546",
-              error: "#ba1a1a",
-              "secondary-fixed-dim": "#bec6e0",
-              "surface-container-low": "#eff4ff",
-              secondary: "#565e74",
-              surface: "#f8f9ff",
-              "on-secondary-fixed-variant": "#3f465c",
               "tertiary-container": "#595c5e",
-              "on-primary": "#ffffff",
-              "on-surface": "#0b1c30",
-              "on-secondary-fixed": "#131b2e",
-              "on-primary-fixed": "#001551",
-              "primary-fixed-dim": "#b7c4ff",
-              "surface-bright": "#f8f9ff",
               "on-tertiary": "#ffffff",
-              "inverse-surface": "#213145",
-              "on-secondary-container": "#5c647a",
-              "surface-container-lowest": "#ffffff",
-              primary: "#0037b0",
-              "surface-variant": "#d3e4fe",
-              "on-secondary": "#ffffff",
-              "inverse-primary": "#b7c4ff",
               "secondary-container": "#dae2fd",
-              "surface-container-high": "#dce9ff",
-              "on-tertiary-container": "#d2d4d6",
-              "on-surface-variant": "#434655",
-              "on-background": "#0b1c30",
-              "primary-container": "#1d4ed8",
-              "on-tertiary-fixed": "#191c1e",
+              "surface-variant": "#d3e4fe",
+              "on-secondary-fixed-variant": "#3f465c",
+              "surface-container-low": "#eff4ff",
+              "surface-container-highest": "#d3e4fe",
               outline: "#747686",
-              "on-error-container": "#93000a",
               "outline-variant": "#c4c5d7",
-              "secondary-fixed": "#dae2fd",
-              "surface-dim": "#cbdbf5",
-              background: "#f8f9ff",
-              "surface-tint": "#2151da",
-              "on-error": "#ffffff",
-              "on-primary-fixed-variant": "#0039b5",
+              "on-secondary-fixed": "#131b2e",
               "tertiary-fixed-dim": "#c4c7c9",
-              "on-tertiary-fixed-variant": "#444749",
-              "surface-container": "#e5eeff",
+              "on-surface": "#0b1c30",
+              surface: "#f8f9ff",
+              "on-background": "#0b1c30",
               "error-container": "#ffdad6",
-              "on-primary-container": "#cad3ff",
+              error: "#ba1a1a",
+              secondary: "#565e74",
+              "on-tertiary-fixed-variant": "#444749",
+              "secondary-fixed": "#dae2fd",
+              "primary-fixed": "#dce1ff",
+              "on-surface-variant": "#434655",
+              tertiary: "#414546",
+              "surface-dim": "#cbdbf5",
+              "tertiary-fixed": "#e0e3e5",
+              "surface-container": "#e5eeff",
+              "on-tertiary-container": "#d2d4d6",
+              "surface-container-high": "#dce9ff",
+              "on-primary-fixed": "#001551",
+              background: "#f8f9ff",
+              "surface-bright": "#f8f9ff",
+              "surface-container-lowest": "#ffffff",
+              "primary-fixed-dim": "#b7c4ff",
+              primary: "#0037b0",
+              "inverse-primary": "#b7c4ff",
+              "surface-tint": "#2151da",
+              "on-secondary-container": "#5c647a",
+              "inverse-surface": "#213145",
+              "on-primary-fixed-variant": "#0039b5",
+              "on-tertiary-fixed": "#191c1e",
+              "secondary-fixed-dim": "#bec6e0",
+              "on-secondary": "#ffffff",
+              "primary-container": "#1d4ed8",
               "inverse-on-surface": "#eaf1ff",
+              "on-error-container": "#93000a",
+              "on-primary": "#ffffff",
+              "on-error": "#ffffff",
+              "on-primary-container": "#cad3ff",
             },
             borderRadius: {
-              DEFAULT: "0.25rem",
-              lg: "0.5rem",
-              xl: "0.75rem",
-              full: "9999px",
+              DEFAULT: "0.125rem",
+              lg: "0.25rem",
+              xl: "0.5rem",
+              full: "0.75rem",
             },
             spacing: {
-              lg: "32px",
-              "container-max": "1440px",
-              sm: "16px",
-              md: "24px",
+              base: "4px",
+              gutter: "24px",
               xs: "8px",
               xl: "48px",
-              gutter: "24px",
-              base: "4px",
+              sm: "16px",
+              md: "24px",
+              "container-max": "1440px",
+              lg: "32px",
             },
             fontFamily: {
-              display: ["Hanken Grotesk"],
-              "body-md": ["Hanken Grotesk"],
-              "headline-md": ["Hanken Grotesk"],
-              "headline-lg": ["Hanken Grotesk"],
-              "label-sm": ["Hanken Grotesk"],
-              "label-md": ["Hanken Grotesk"],
-              "body-lg": ["Hanken Grotesk"],
+              "label-md": ["Inter"],
+              "body-md": ["Inter"],
+              "body-lg": ["Inter"],
+              "headline-lg": ["Inter"],
+              "headline-md": ["Inter"],
+              caption: ["Inter"],
             },
             fontSize: {
-              display: [
-                "30px",
-                {
-                  lineHeight: "38px",
-                  letterSpacing: "-0.02em",
-                  fontWeight: "700",
-                },
-              ],
-              "body-md": ["14px", { lineHeight: "20px", fontWeight: "400" }],
-              "headline-md": [
-                "20px",
-                { lineHeight: "28px", fontWeight: "600" },
-              ],
-              "headline-lg": [
-                "24px",
-                { lineHeight: "32px", fontWeight: "700" },
-              ],
-              "label-sm": ["11px", { lineHeight: "14px", fontWeight: "600" }],
               "label-md": [
                 "12px",
                 {
                   lineHeight: "16px",
-                  letterSpacing: "0.01em",
-                  fontWeight: "500",
+                  letterSpacing: "0.02em",
+                  fontWeight: "600",
                 },
               ],
+              "body-md": ["14px", { lineHeight: "20px", fontWeight: "400" }],
               "body-lg": ["16px", { lineHeight: "24px", fontWeight: "400" }],
+              "headline-lg": [
+                "24px",
+                { lineHeight: "32px", fontWeight: "700" },
+              ],
+              "headline-md": [
+                "18px",
+                { lineHeight: "24px", fontWeight: "600" },
+              ],
+              caption: ["12px", { lineHeight: "16px", fontWeight: "400" }],
             },
           },
         },
       };
     </script>
     <style>
+      .material-symbols-outlined {
+        font-variation-settings:
+          "FILL" 0,
+          "wght" 400,
+          "GRAD" 0,
+          "opsz" 24;
+      }
       body {
-        background-color: #f8fafc;
+        background-color: #f7f9fb;
       }
-      .nav-item-active {
-        background-color: #1d4ed8;
-        color: #ffffff;
-        font-weight: 600;
-        border-radius: 8px;
+      .custom-scroll::-webkit-scrollbar {
+        width: 4px;
       }
-      .nav-item-inactive {
-        color: #e0e3e5;
-        transition: color 200ms;
+      .custom-scroll::-webkit-scrollbar-track {
+        background: transparent;
       }
-      .nav-item-inactive:hover {
-        color: #ffffff;
-        background-color: rgba(29, 78, 216, 0.2);
-      }
-      .card-shadow {
-        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.05);
+      .custom-scroll::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 10px;
       }
     </style>
   </head>
-  <body
-    class="font-body-md text-on-surface bg-background antialiased flex overflow-hidden h-screen"
-  >
-    <!-- SideNavBar -->
-    <nav
-      class="fixed h-full w-[260px] left-0 top-0 flex flex-col bg-on-background dark:bg-on-background shadow-md z-20"
+  <body class="font-body-md text-on-surface">
+    <!-- Side Navigation Bar -->
+    <aside
+      class="bg-[#0F172A] border-r border-outline-variant w-[240px] h-screen fixed left-0 top-0 flex flex-col py-6 z-50"
     >
-      <div class="flex flex-col justify-between h-screen p-md">
-        <div>
-          <!-- Header -->
-          <div class="mb-xl">
-            <h1
-              class="text-headline-lg font-headline-lg text-on-primary mb-base"
-            >
-              Welcome Back
-            </h1>
-            <p class="text-body-md font-body-md text-on-primary opacity-80">
-              Mr. Bao
-            </p>
-          </div>
-          <!-- Tabs -->
-          <ul class="space-y-xs">
-            <li class="">
-              <a
-                class="flex items-center px-sm py-3 hover:bg-primary/20 hover:text-white text-on-primary rounded-lg font-semibold transition-colors"
-                href="student.html"
-              >
-                <span
-                  class="material-symbols-outlined mr-sm"
-                  style="font-variation-settings: &quot;FILL&quot; 0"
-                  >home</span
-                >
-                <span class="text-label-md font-label-md">Home</span>
-              </a>
-            </li>
-            <li class="">
-              <a
-                class="flex items-center px-sm py-3 text-tertiary-fixed hover:bg-primary/20 hover:text-white transition-colors rounded-lg"
-                href="student_classes.html"
-              >
-                <span
-                  class="material-symbols-outlined mr-sm"
-                  style="font-variation-settings: &quot;FILL&quot; 0"
-                  >school</span
-                >
-                <span class="text-label-md font-label-md">My Classes</span>
-              </a>
-            </li>
-            <li class="">
-              <a
-                class="flex items-center px-sm py-3 text-tertiary-fixed hover:bg-primary/20 hover:text-white transition-colors rounded-lg"
-                href="student_schedules.html"
-              >
-                <span
-                  class="material-symbols-outlined mr-sm"
-                  style="font-variation-settings: &quot;FILL&quot; 0"
-                  >calendar_today</span
-                >
-                <span class="text-label-md font-label-md">Schedules</span>
-              </a>
-            </li>
-            <li class="">
-              <a
-                class="flex items-center px-sm py-3 text-tertiary-fixed bg-primary transition-colors rounded-lg"
-                href="student_assignments.html"
-              >
-                <span
-                  class="material-symbols-outlined mr-sm"
-                  style="font-variation-settings: &quot;FILL&quot; 0"
-                  >assignment</span
-                >
-                <span class="text-label-md font-label-md">Assignments</span>
-              </a>
-            </li>
-            <li class="">
-              <a
-                class="flex items-center px-sm py-3 text-tertiary-fixed hover:bg-primary/20 hover:text-white transition-colors rounded-lg"
-                href="student_grades.html"
-              >
-                <span
-                  class="material-symbols-outlined mr-sm"
-                  style="font-variation-settings: &quot;FILL&quot; 0"
-                  >star_outline</span
-                >
-                <span class="text-label-md font-label-md">Grades</span>
-              </a>
-            </li>
-            <li class="">
-              <a
-                class="flex items-center px-sm py-3 text-tertiary-fixed hover:bg-primary/20 hover:text-white transition-colors rounded-lg"
-                href="student_tuition.html"
-              >
-                <span
-                  class="material-symbols-outlined mr-sm"
-                  style="font-variation-settings: &quot;FILL&quot; 0"
-                  >account_balance_wallet</span
-                >
-                <span class="text-label-md font-label-md">Tuition</span>
-              </a>
-            </li>
-          </ul>
-        </div>
-        <!-- Footer & CTA -->
-        <div>
-          <button
-            class="w-full bg-primary-container text-on-primary py-2 rounded-lg font-label-md text-label-md mb-md hover:bg-primary transition-colors"
-          >
-            Support Center
-          </button>
-          <ul>
-            <li class="">
-              <a
-                class="flex items-center px-sm py-2 text-tertiary-fixed hover:text-white transition-colors"
-                href="login.html"
-              >
-                <span
-                  class="material-symbols-outlined mr-sm"
-                  style="font-variation-settings: &quot;FILL&quot; 0"
-                  >logout</span
-                >
-                <span class="text-label-md font-label-md">Log Out</span>
-              </a>
-            </li>
-          </ul>
-        </div>
+      <div class="px-6 mb-10">
+        <h1
+          class="font-headline-md text-headline-md font-bold text-white tracking-tight leading-tight"
+        >
+          Welcome Back
+          <br />EduSync Academy<br />
+        </h1>
+        <p class="text-slate-400 text-[10px] font-caption mt-1">Mr.Bao</p>
       </div>
-    </nav>
+      <nav class="flex-1 px-2 space-y-1 overflow-y-auto custom-scroll">
+        <a
+          class="hover:text-white hover:bg-slate-800 text-white font-bold rounded-lg mx-2 my-1 flex items-center px-4 py-3 gap-3 transition-all opacity-90 shadow-md"
+          href="student.html"
+        >
+          <span class="material-symbols-outlined" data-icon="home">home</span>
+          <span class="font-body-md text-body-md">Home</span>
+        </a>
+        <a
+          class="text-slate-300 hover:text-white mx-2 my-1 flex items-center px-4 py-3 gap-3 hover:bg-slate-800 transition-colors"
+          href="student_classes.html"
+        >
+          <span class="material-symbols-outlined" data-icon="class">class</span>
+          <span class="font-body-md text-body-md">My Classes</span>
+        </a>
+        <a
+          class="text-slate-300 hover:text-white mx-2 my-1 flex items-center px-4 py-3 gap-3 hover:bg-slate-800 transition-colors"
+          href="student_schedules.html"
+        >
+          <span class="material-symbols-outlined" data-icon="calendar_today"
+            >calendar_today</span
+          >
+          <span class="font-body-md text-body-md">Schedules</span>
+        </a>
+        <a
+          class="text-slate-300 bg-primary mx-2 my-1 flex items-center px-4 py-3 gap-3 transition-colors"
+          href="student_assignments.html"
+        >
+          <span class="material-symbols-outlined" data-icon="assignment"
+            >assignment</span
+          >
+          <span class="font-body-md text-body-md">Assignments</span>
+        </a>
+        <a
+          class="text-slate-300 hover:text-white mx-2 my-1 flex items-center px-4 py-3 gap-3 hover:bg-slate-800 transition-colors"
+          href="student_grades.html"
+        >
+          <span class="material-symbols-outlined" data-icon="grade">grade</span>
+          <span class="font-body-md text-body-md">Grades</span>
+        </a>
+        <a
+          class="text-slate-300 hover:text-white mx-2 my-1 flex items-center px-4 py-3 gap-3 hover:bg-slate-800 transition-colors"
+          href="student_tuition.html"
+        >
+          <span class="material-symbols-outlined" data-icon="event_available"
+            >event_available</span
+          >
+          <span class="font-body-md text-body-md">Tuition</span>
+        </a>
+      </nav>
+      <div class="px-4 mt-auto pt-4 space-y-2">
+        <button
+          class="w-full bg-[#3b82f6] text-white flex items-center justify-center px-4 py-3 transition-colors rounded-lg mb-2 shadow-sm"
+        >
+          <span class="font-body-md text-body-md">Support Center</span>
+        </button>
+        <button
+          class="w-full text-slate-400 hover:text-white flex items-center px-4 py-3 gap-3 hover:bg-slate-800 transition-colors rounded-lg"
+        >
+          <span class="material-symbols-outlined" data-icon="logout"
+            >logout</span
+          >
+          <span class="font-body-md text-body-md">Log Out</span>
+        </button>
+      </div>
+    </aside>
     <!-- Main Content Area -->
     <div class="flex-1 flex flex-col ml-[260px] h-screen overflow-hidden">
       <!-- TopNavBar -->
