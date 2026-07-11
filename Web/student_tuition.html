@@ -1,0 +1,656 @@
+<!doctype html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>EduSync Academy - Học phí &amp; Thanh toán</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface-container-highest": "#d3e4fe",
+              "tertiary-fixed": "#e0e3e5",
+              "primary-fixed": "#dce1ff",
+              tertiary: "#414546",
+              error: "#ba1a1a",
+              "secondary-fixed-dim": "#bec6e0",
+              "surface-container-low": "#eff4ff",
+              secondary: "#565e74",
+              surface: "#f8f9ff",
+              "on-secondary-fixed-variant": "#3f465c",
+              "tertiary-container": "#595c5e",
+              "on-primary": "#ffffff",
+              "on-surface": "#0b1c30",
+              "on-secondary-fixed": "#131b2e",
+              "on-primary-fixed": "#001551",
+              "primary-fixed-dim": "#b7c4ff",
+              "surface-bright": "#f8f9ff",
+              "on-tertiary": "#ffffff",
+              "inverse-surface": "#213145",
+              "on-secondary-container": "#5c647a",
+              "surface-container-lowest": "#ffffff",
+              primary: "#0037b0",
+              "surface-variant": "#d3e4fe",
+              "on-secondary": "#ffffff",
+              "inverse-primary": "#b7c4ff",
+              "secondary-container": "#dae2fd",
+              "surface-container-high": "#dce9ff",
+              "on-tertiary-container": "#d2d4d6",
+              "on-surface-variant": "#434655",
+              "on-background": "#0b1c30",
+              "primary-container": "#1d4ed8",
+              "on-tertiary-fixed": "#191c1e",
+              outline: "#747686",
+              "on-error-container": "#93000a",
+              "outline-variant": "#c4c5d7",
+              "secondary-fixed": "#dae2fd",
+              "surface-dim": "#cbdbf5",
+              background: "#f8f9ff",
+              "surface-tint": "#2151da",
+              "on-error": "#ffffff",
+              "on-primary-fixed-variant": "#0039b5",
+              "tertiary-fixed-dim": "#c4c7c9",
+              "on-tertiary-fixed-variant": "#444749",
+              "surface-container": "#e5eeff",
+              "error-container": "#ffdad6",
+              "on-primary-container": "#cad3ff",
+              "inverse-on-surface": "#eaf1ff",
+            },
+            borderRadius: {
+              DEFAULT: "0.25rem",
+              lg: "0.5rem",
+              xl: "0.75rem",
+              full: "9999px",
+            },
+            spacing: {
+              lg: "32px",
+              "container-max": "1440px",
+              sm: "16px",
+              md: "24px",
+              xs: "8px",
+              xl: "48px",
+              gutter: "24px",
+              base: "4px",
+            },
+            fontFamily: {
+              display: ["Hanken Grotesk"],
+              "body-md": ["Hanken Grotesk"],
+              "headline-md": ["Hanken Grotesk"],
+              "headline-lg": ["Hanken Grotesk"],
+              "label-sm": ["Hanken Grotesk"],
+              "label-md": ["Hanken Grotesk"],
+              "body-lg": ["Hanken Grotesk"],
+            },
+            fontSize: {
+              display: [
+                "30px",
+                {
+                  lineHeight: "38px",
+                  letterSpacing: "-0.02em",
+                  fontWeight: "700",
+                },
+              ],
+              "body-md": [
+                "14px",
+                {
+                  lineHeight: "20px",
+                  fontWeight: "400",
+                },
+              ],
+              "headline-md": [
+                "20px",
+                {
+                  lineHeight: "28px",
+                  fontWeight: "600",
+                },
+              ],
+              "headline-lg": [
+                "24px",
+                {
+                  lineHeight: "32px",
+                  fontWeight: "700",
+                },
+              ],
+              "label-sm": [
+                "11px",
+                {
+                  lineHeight: "14px",
+                  fontWeight: "600",
+                },
+              ],
+              "label-md": [
+                "12px",
+                {
+                  lineHeight: "16px",
+                  letterSpacing: "0.01em",
+                  fontWeight: "500",
+                },
+              ],
+              "body-lg": [
+                "16px",
+                {
+                  lineHeight: "24px",
+                  fontWeight: "400",
+                },
+              ],
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      body {
+        background-color: #f8fafe;
+        font-family: "Hanken Grotesk", sans-serif;
+      }
+    </style>
+  </head>
+  <body
+    class="bg-background text-on-surface antialiased flex overflow-hidden h-screen"
+  >
+    <!-- SideNavBar -->
+    <nav
+      class="fixed h-full w-[260px] left-0 top-0 flex flex-col bg-on-background dark:bg-on-background shadow-md z-20"
+    >
+      <div class="flex flex-col justify-between h-screen p-md">
+        <div>
+          <!-- Header -->
+          <div class="mb-xl">
+            <h1
+              class="text-headline-lg font-headline-lg text-on-primary mb-base"
+            >
+              Welcome Back
+            </h1>
+            <p class="text-body-md font-body-md text-on-primary opacity-80">
+              Mr. Bao
+            </p>
+          </div>
+          <!-- Tabs -->
+          <ul class="space-y-xs">
+            <li class="">
+              <a
+                class="flex items-center px-sm py-3 text-on-primary rounded-lg font-semibold transition-colors"
+                href="student.html"
+              >
+                <span
+                  class="material-symbols-outlined mr-sm"
+                  style="font-variation-settings: &quot;FILL&quot; 0"
+                  >home</span
+                >
+                <span class="text-label-md font-label-md">Home</span>
+              </a>
+            </li>
+            <li class="">
+              <a
+                class="flex items-center px-sm py-3 text-tertiary-fixed hover:bg-primary/20 hover:text-white transition-colors rounded-lg"
+                href="student_classes.html"
+              >
+                <span
+                  class="material-symbols-outlined mr-sm"
+                  style="font-variation-settings: &quot;FILL&quot; 0"
+                  >school</span
+                >
+                <span class="text-label-md font-label-md">My Classes</span>
+              </a>
+            </li>
+            <li class="">
+              <a
+                class="flex items-center px-sm py-3 text-tertiary-fixed hover:bg-primary/20 hover:text-white transition-colors rounded-lg"
+                href="student_schedules.html"
+              >
+                <span
+                  class="material-symbols-outlined mr-sm"
+                  style="font-variation-settings: &quot;FILL&quot; 0"
+                  >calendar_today</span
+                >
+                <span class="text-label-md font-label-md">Schedules</span>
+              </a>
+            </li>
+            <li class="">
+              <a
+                class="flex items-center px-sm py-3 text-tertiary-fixed hover:bg-primary/20 hover:text-white transition-colors rounded-lg"
+                href="student_assignments.html"
+              >
+                <span
+                  class="material-symbols-outlined mr-sm"
+                  style="font-variation-settings: &quot;FILL&quot; 0"
+                  >assignment</span
+                >
+                <span class="text-label-md font-label-md">Assignments</span>
+              </a>
+            </li>
+            <li class="">
+              <a
+                class="flex items-center px-sm py-3 text-tertiary-fixed hover:bg-primary/20 hover:text-white transition-colors rounded-lg"
+                href="student_grades.html"
+              >
+                <span
+                  class="material-symbols-outlined mr-sm"
+                  style="font-variation-settings: &quot;FILL&quot; 0"
+                  >star_outline</span
+                >
+                <span class="text-label-md font-label-md">Grades</span>
+              </a>
+            </li>
+            <li class="">
+              <a
+                class="flex items-center px-sm py-3 text-tertiary-fixed bg-primary transition-colors rounded-lg"
+                href="student_tuition.html"
+              >
+                <span
+                  class="material-symbols-outlined mr-sm"
+                  style="font-variation-settings: &quot;FILL&quot; 0"
+                  >account_balance_wallet</span
+                >
+                <span class="text-label-md font-label-md">Tuition</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <!-- Footer & CTA -->
+        <div>
+          <button
+            class="w-full bg-primary-container text-on-primary py-2 rounded-lg font-label-md text-label-md mb-md hover:bg-primary transition-colors"
+          >
+            Support Center
+          </button>
+          <ul>
+            <li class="">
+              <a
+                class="flex items-center px-sm py-2 text-tertiary-fixed hover:text-white transition-colors"
+                href="login.html"
+              >
+                <span
+                  class="material-symbols-outlined mr-sm"
+                  style="font-variation-settings: &quot;FILL&quot; 0"
+                  >logout</span
+                >
+                <span class="text-label-md font-label-md">Log Out</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <!-- Main Content Wrapper -->
+    <div class="flex-1 flex flex-col md:ml-[260px] h-screen overflow-hidden">
+      <!-- TopNavBar -->
+      <header
+        class="bg-surface dark:bg-surface flex justify-between items-center h-16 px-lg z-10 w-full relative"
+      >
+        <div class="font-headline-md text-headline-md text-on-surface">
+          EduSync Academy
+        </div>
+        <div class="flex items-center gap-md">
+          <div class="relative hidden sm:block">
+            <span
+              class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-sm"
+              >search</span
+            >
+            <input
+              class="pl-10 pr-4 py-2 bg-surface-container-low border-0 rounded-full text-body-md font-body-md focus:ring-2 focus:ring-primary outline-none w-64 transition-all"
+              placeholder="Search..."
+              type="text"
+            />
+          </div>
+          <div class="flex items-center gap-sm">
+            <button
+              class="p-2 text-on-surface-variant hover:text-primary transition-colors hover:scale-105 rounded-full hover:bg-surface-container-high"
+            >
+              <span class="material-symbols-outlined">notifications</span>
+            </button>
+            <button
+              class="p-2 text-on-surface-variant hover:text-primary transition-colors hover:scale-105 rounded-full hover:bg-surface-container-high"
+            >
+              <span class="material-symbols-outlined">settings</span>
+            </button>
+            <div
+              class="w-8 h-8 rounded-full bg-primary-container text-on-primary flex items-center justify-center font-label-md font-bold overflow-hidden cursor-pointer border-2 border-transparent hover:border-primary transition-colors"
+            >
+              <img
+                alt="User Avatar"
+                class="w-full h-full object-cover"
+                data-alt="A small, circular avatar image of a young male student with messy brown hair smiling warmly, wearing a casual grey hoodie, well-lit against a neutral background."
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuAxn4N3xy1hA1gfnxv1V_R75cjl-A2sBmWyqIvedD5UtWAyhHEiaIFfZ2WqBTMoGvTwu68BYCngzBxYLW3fEsuGVtGHv1OcezIy6j76ASBgQ8b2p458zwyEwnvK6srbEC63sttq5-v0xOhSVW7JWBsr_EEtyYD90xlFTWBKPGJTp4FIPuCTcyctSyVm3BfJjIv4xzZ-5SJ8KBWJg1_lARapKniisWtGn-XSgRTdTNYxHDndcsnFU5DQnQ"
+              />
+            </div>
+          </div>
+        </div>
+      </header>
+      <!-- Main Canvas -->
+      <main class="flex-1 overflow-y-auto p-md md:p-lg">
+        <div class="max-w-container-max mx-auto w-full">
+          <!-- Page Header -->
+          <div
+            class="mb-lg flex flex-col sm:flex-row sm:items-end justify-between gap-4"
+          >
+            <div>
+              <h2 class="font-display text-display text-on-surface mb-2">
+                Học phí &amp; Thanh toán
+              </h2>
+              <p class="font-body-md text-body-md text-on-surface-variant">
+                View your current balance and payment history.
+              </p>
+            </div>
+            <div class="flex gap-3">
+              <span
+                class="inline-flex items-center px-3 py-1 rounded-full bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm uppercase tracking-wider"
+              >
+                Fall Semester 2024
+              </span>
+            </div>
+          </div>
+          <!-- Bento Grid Layout -->
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-md mb-lg">
+            <!-- Summary Card (Spans 2 cols on lg) -->
+            <div
+              class="lg:col-span-2 bg-surface-container-lowest rounded-xl p-md border border-outline-variant/30 shadow-sm flex flex-col justify-between relative overflow-hidden group"
+            >
+              <!-- Decorative bg -->
+              <div
+                class="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4 pointer-events-none group-hover:bg-primary/10 transition-colors duration-500"
+              ></div>
+              <div>
+                <div
+                  class="flex justify-between items-start mb-6 relative z-10"
+                >
+                  <div>
+                    <h3
+                      class="font-headline-md text-headline-md text-on-surface mb-1"
+                    >
+                      Current Balance
+                    </h3>
+                    <p
+                      class="font-body-md text-body-md text-on-surface-variant"
+                    >
+                      Total amount due for the current semester.
+                    </p>
+                  </div>
+                  <div
+                    class="p-3 bg-error-container text-on-error-container rounded-lg"
+                  >
+                    <span class="material-symbols-outlined"
+                      >account_balance_wallet</span
+                    >
+                  </div>
+                </div>
+                <div class="relative z-10">
+                  <span class="text-4xl font-display font-bold text-on-surface"
+                    >25,500,000 ₫</span
+                  >
+                </div>
+              </div>
+              <div
+                class="mt-8 flex flex-col sm:flex-row items-center justify-between gap-4 relative z-10 border-t border-outline-variant/20 pt-4"
+              >
+                <div
+                  class="flex items-center gap-2 text-error font-label-md text-label-md"
+                >
+                  <span class="material-symbols-outlined text-sm"
+                    >schedule</span
+                  >
+                  Due Date: <span class="font-bold">Oct 15, 2024</span>
+                </div>
+                <button
+                  class="w-full sm:w-auto px-6 py-3 bg-primary text-on-primary rounded-lg font-label-md text-label-md font-bold hover:bg-primary-container transition-transform hover:-translate-y-0.5 shadow-md active:translate-y-0"
+                >
+                  Pay Now
+                </button>
+              </div>
+            </div>
+            <!-- Next Payment / Status Card -->
+            <div
+              class="bg-surface-container-lowest rounded-xl p-md border border-outline-variant/30 shadow-sm flex flex-col"
+            >
+              <div class="flex justify-between items-start mb-6">
+                <h3 class="font-headline-md text-headline-md text-on-surface">
+                  Payment Status
+                </h3>
+                <div
+                  class="p-3 bg-surface-container-high text-primary rounded-lg"
+                >
+                  <span class="material-symbols-outlined">donut_large</span>
+                </div>
+              </div>
+              <div class="flex-1 flex flex-col justify-center">
+                <div class="flex justify-between items-end mb-2">
+                  <span
+                    class="font-body-md text-body-md text-on-surface-variant"
+                    >Paid</span
+                  >
+                  <span
+                    class="font-label-md text-label-md font-bold text-on-surface"
+                    >15,000,000 ₫</span
+                  >
+                </div>
+                <div
+                  class="w-full h-2 bg-surface-container-highest rounded-full overflow-hidden mb-4"
+                >
+                  <div
+                    class="h-full bg-primary rounded-full"
+                    style="width: 37%"
+                  ></div>
+                </div>
+                <div class="flex justify-between items-end">
+                  <span
+                    class="font-body-md text-body-md text-on-surface-variant"
+                    >Total Fees</span
+                  >
+                  <span
+                    class="font-label-md text-label-md font-bold text-on-surface"
+                    >40,500,000 ₫</span
+                  >
+                </div>
+              </div>
+              <div class="mt-6 pt-4 border-t border-outline-variant/20">
+                <a
+                  class="text-primary font-label-md text-label-md flex items-center gap-1 hover:underline group"
+                  href="#"
+                >
+                  View Fee Breakdown
+                  <span
+                    class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform"
+                    >arrow_forward</span
+                  >
+                </a>
+              </div>
+            </div>
+          </div>
+          <!-- Payment History Table -->
+          <div
+            class="bg-surface-container-lowest rounded-xl border border-outline-variant/30 shadow-sm overflow-hidden"
+          >
+            <div
+              class="p-md border-b border-outline-variant/30 flex justify-between items-center bg-surface-bright"
+            >
+              <h3 class="font-headline-md text-headline-md text-on-surface">
+                Payment History
+              </h3>
+              <button
+                class="p-2 text-on-surface-variant hover:text-primary transition-colors rounded-full hover:bg-surface-container-high"
+                title="Download Statement"
+              >
+                <span class="material-symbols-outlined">download</span>
+              </button>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left border-collapse">
+                <thead>
+                  <tr class="bg-surface border-b border-outline-variant/20">
+                    <th
+                      class="p-4 font-label-md text-label-md text-on-surface-variant uppercase tracking-wider"
+                    >
+                      Transaction ID
+                    </th>
+                    <th
+                      class="p-4 font-label-md text-label-md text-on-surface-variant uppercase tracking-wider"
+                    >
+                      Date
+                    </th>
+                    <th
+                      class="p-4 font-label-md text-label-md text-on-surface-variant uppercase tracking-wider"
+                    >
+                      Amount
+                    </th>
+                    <th
+                      class="p-4 font-label-md text-label-md text-on-surface-variant uppercase tracking-wider"
+                    >
+                      Method
+                    </th>
+                    <th
+                      class="p-4 font-label-md text-label-md text-on-surface-variant uppercase tracking-wider"
+                    >
+                      Status
+                    </th>
+                  </tr>
+                </thead>
+                <tbody
+                  class="divide-y divide-outline-variant/10 font-body-md text-body-md text-on-surface"
+                >
+                  <tr
+                    class="hover:bg-surface-container-lowest/50 transition-colors group"
+                  >
+                    <td
+                      class="p-4 font-medium text-primary cursor-pointer group-hover:underline"
+                    >
+                      #TRX-89234
+                    </td>
+                    <td class="p-4 text-on-surface-variant">Sep 01, 2024</td>
+                    <td class="p-4 font-semibold">15,000,000 ₫</td>
+                    <td class="p-4">
+                      <div class="flex items-center gap-2">
+                        <span
+                          class="material-symbols-outlined text-sm text-outline"
+                          >account_balance</span
+                        >
+                        Bank Transfer
+                      </div>
+                    </td>
+                    <td class="p-4">
+                      <span
+                        class="inline-flex items-center px-2.5 py-1 rounded-md bg-[#e6f4ea] text-[#137333] font-label-sm text-label-sm gap-1"
+                      >
+                        <span class="material-symbols-outlined text-[12px]"
+                          >check_circle</span
+                        >
+                        Successful
+                      </span>
+                    </td>
+                  </tr>
+                  <tr
+                    class="hover:bg-surface-container-lowest/50 transition-colors group"
+                  >
+                    <td
+                      class="p-4 font-medium text-primary cursor-pointer group-hover:underline"
+                    >
+                      #TRX-77412
+                    </td>
+                    <td class="p-4 text-on-surface-variant">Feb 15, 2024</td>
+                    <td class="p-4 font-semibold">22,000,000 ₫</td>
+                    <td class="p-4">
+                      <div class="flex items-center gap-2">
+                        <span
+                          class="material-symbols-outlined text-sm text-outline"
+                          >credit_card</span
+                        >
+                        Visa ****4242
+                      </div>
+                    </td>
+                    <td class="p-4">
+                      <span
+                        class="inline-flex items-center px-2.5 py-1 rounded-md bg-[#e6f4ea] text-[#137333] font-label-sm text-label-sm gap-1"
+                      >
+                        <span class="material-symbols-outlined text-[12px]"
+                          >check_circle</span
+                        >
+                        Successful
+                      </span>
+                    </td>
+                  </tr>
+                  <tr
+                    class="hover:bg-surface-container-lowest/50 transition-colors group"
+                  >
+                    <td
+                      class="p-4 font-medium text-primary cursor-pointer group-hover:underline"
+                    >
+                      #TRX-77409
+                    </td>
+                    <td class="p-4 text-on-surface-variant">Feb 14, 2024</td>
+                    <td
+                      class="p-4 font-semibold text-on-surface-variant line-through"
+                    >
+                      22,000,000 ₫
+                    </td>
+                    <td class="p-4">
+                      <div class="flex items-center gap-2">
+                        <span
+                          class="material-symbols-outlined text-sm text-outline"
+                          >credit_card</span
+                        >
+                        Visa ****4242
+                      </div>
+                    </td>
+                    <td class="p-4">
+                      <span
+                        class="inline-flex items-center px-2.5 py-1 rounded-md bg-error-container text-on-error-container font-label-sm text-label-sm gap-1"
+                      >
+                        <span class="material-symbols-outlined text-[12px]"
+                          >cancel</span
+                        >
+                        Failed
+                      </span>
+                    </td>
+                  </tr>
+                  <tr
+                    class="hover:bg-surface-container-lowest/50 transition-colors group"
+                  >
+                    <td
+                      class="p-4 font-medium text-primary cursor-pointer group-hover:underline"
+                    >
+                      #TRX-61099
+                    </td>
+                    <td class="p-4 text-on-surface-variant">Sep 05, 2023</td>
+                    <td class="p-4 font-semibold">20,500,000 ₫</td>
+                    <td class="p-4">
+                      <div class="flex items-center gap-2">
+                        <span
+                          class="material-symbols-outlined text-sm text-outline"
+                          >account_balance</span
+                        >
+                        Bank Transfer
+                      </div>
+                    </td>
+                    <td class="p-4">
+                      <span
+                        class="inline-flex items-center px-2.5 py-1 rounded-md bg-[#e6f4ea] text-[#137333] font-label-sm text-label-sm gap-1"
+                      >
+                        <span class="material-symbols-outlined text-[12px]"
+                          >check_circle</span
+                        >
+                        Successful
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <!-- Spacer for bottom padding -->
+          <div class="h-xl"></div>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>
