@@ -1,8 +1,8 @@
-IF DB_ID('StudentManagement') IS NULL
-    CREATE DATABASE StudentManagement;
+IF DB_ID('TeacherManagement') IS NULL
+    CREATE DATABASE TeacherManagement;
 GO
 
-USE StudentManagement;
+USE TeacherManagement;
 GO
 
 IF OBJECT_ID('dbo.Teachers', 'U') IS NULL
