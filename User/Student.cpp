@@ -1,5 +1,8 @@
 #include "Student.h"
 
+#include <array>
+#include <cstdint>
+#include <cstring>
 #include <iomanip>
 #include <iostream>
 #include <sstream>
@@ -43,6 +46,99 @@ string getDiagnosticMessage(SQLSMALLINT handleType, SQLHANDLE handle) {
 string nullableDateSql(const string& value) {
     if (value.empty()) return "NULL";
     return "'" + value + "'";
+}
+
+string readColumnData(SQLHSTMT statement, SQLUSMALLINT column) {
+    string value;
+    SQLLEN indicator = 0;
+
+    while (true) {
+        char buffer[1024] = {};
+        SQLRETURN result = SQLGetData(statement, column, SQL_C_CHAR, buffer, sizeof(buffer), &indicator);
+        if (result == SQL_NO_DATA) break;
+        if (!checkSqlSuccess(result)) break;
+        if (indicator == SQL_NULL_DATA) return "";
+
+        value += buffer;
+        if (result == SQL_SUCCESS) break;
+    }
+
+    return value;
+}
+
+uint32_t rotateRight(uint32_t value, uint32_t bits) {
+    return (value >> bits) | (value << (32 - bits));
+}
+
+string sha256Hex(const string& input) {
+    static const std::array<uint32_t, 64> k = {
+        0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5, 0x3956c25b, 0x59f111f1, 0x923f82a4, 0xab1c5ed5,
+        0xd807aa98, 0x12835b01, 0x243185be, 0x550c7dc3, 0x72be5d74, 0x80deb1fe, 0x9bdc06a7, 0xc19bf174,
+        0xe49b69c1, 0xefbe4786, 0x0fc19dc6, 0x240ca1cc, 0x2de92c6f, 0x4a7484aa, 0x5cb0a9dc, 0x76f988da,
+        0x983e5152, 0xa831c66d, 0xb00327c8, 0xbf597fc7, 0xc6e00bf3, 0xd5a79147, 0x06ca6351, 0x14292967,
+        0x27b70a85, 0x2e1b2138, 0x4d2c6dfc, 0x53380d13, 0x650a7354, 0x766a0abb, 0x81c2c92e, 0x92722c85,
+        0xa2bfe8a1, 0xa81a664b, 0xc24b8b70, 0xc76c51a3, 0xd192e819, 0xd6990624, 0xf40e3585, 0x106aa070,
+        0x19a4c116, 0x1e376c08, 0x2748774c, 0x34b0bcb5, 0x391c0cb3, 0x4ed8aa4a, 0x5b9cca4f, 0x682e6ff3,
+        0x748f82ee, 0x78a5636f, 0x84c87814, 0x8cc70208, 0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2
+    };
+
+    std::array<uint32_t, 8> h = {
+        0x6a09e667, 0xbb67ae85, 0x3c6ef372, 0xa54ff53a,
+        0x510e527f, 0x9b05688c, 0x1f83d9ab, 0x5be0cd19
+    };
+
+    vector<uint8_t> bytes(input.begin(), input.end());
+    const uint64_t bitLength = static_cast<uint64_t>(bytes.size()) * 8;
+    bytes.push_back(0x80);
+    while ((bytes.size() % 64) != 56) bytes.push_back(0);
+    for (int shift = 56; shift >= 0; shift -= 8) {
+        bytes.push_back(static_cast<uint8_t>((bitLength >> shift) & 0xff));
+    }
+
+    for (size_t offset = 0; offset < bytes.size(); offset += 64) {
+        std::array<uint32_t, 64> w = {};
+        for (int i = 0; i < 16; ++i) {
+            const size_t j = offset + i * 4;
+            w[i] = (static_cast<uint32_t>(bytes[j]) << 24) |
+                   (static_cast<uint32_t>(bytes[j + 1]) << 16) |
+                   (static_cast<uint32_t>(bytes[j + 2]) << 8) |
+                   static_cast<uint32_t>(bytes[j + 3]);
+        }
+        for (int i = 16; i < 64; ++i) {
+            const uint32_t s0 = rotateRight(w[i - 15], 7) ^ rotateRight(w[i - 15], 18) ^ (w[i - 15] >> 3);
+            const uint32_t s1 = rotateRight(w[i - 2], 17) ^ rotateRight(w[i - 2], 19) ^ (w[i - 2] >> 10);
+            w[i] = w[i - 16] + s0 + w[i - 7] + s1;
+        }
+
+        uint32_t a = h[0], b = h[1], c = h[2], d = h[3];
+        uint32_t e = h[4], f = h[5], g = h[6], hash = h[7];
+
+        for (int i = 0; i < 64; ++i) {
+            const uint32_t s1 = rotateRight(e, 6) ^ rotateRight(e, 11) ^ rotateRight(e, 25);
+            const uint32_t ch = (e & f) ^ ((~e) & g);
+            const uint32_t temp1 = hash + s1 + ch + k[i] + w[i];
+            const uint32_t s0 = rotateRight(a, 2) ^ rotateRight(a, 13) ^ rotateRight(a, 22);
+            const uint32_t maj = (a & b) ^ (a & c) ^ (b & c);
+            const uint32_t temp2 = s0 + maj;
+
+            hash = g;
+            g = f;
+            f = e;
+            e = d + temp1;
+            d = c;
+            c = b;
+            b = a;
+            a = temp1 + temp2;
+        }
+
+        h[0] += a; h[1] += b; h[2] += c; h[3] += d;
+        h[4] += e; h[5] += f; h[6] += g; h[7] += hash;
+    }
+
+    std::ostringstream out;
+    out << std::hex << std::setfill('0');
+    for (uint32_t part : h) out << std::setw(8) << part;
+    return out.str();
 }
 }
 
@@ -98,7 +194,9 @@ StudentRepository::~StudentRepository() {
 string StudentRepository::defaultConnectionString() {
     return "Driver={ODBC Driver 17 for SQL Server};"
            "Server=localhost;"
-           "Trusted_Connection=yes;";
+           "Trusted_Connection=yes;"
+           "Encrypt=no;"
+           "TrustServerCertificate=yes;";
 }
 
 bool StudentRepository::connect() {
@@ -175,7 +273,7 @@ bool StudentRepository::initializeSchema() {
         "Major NVARCHAR(100) NULL,"
         "Phone NVARCHAR(20) NULL,"
         "Username NVARCHAR(50) NOT NULL UNIQUE,"
-        "[Password] NVARCHAR(100) NOT NULL,"
+        "PasswordHash NVARCHAR(64) NOT NULL,"
         "GPA FLOAT NOT NULL DEFAULT 0,"
         "TuitionOwed FLOAT NOT NULL DEFAULT 0,"
         "Status NVARCHAR(30) NULL"
@@ -187,8 +285,11 @@ bool StudentRepository::initializeSchema() {
         "IF COL_LENGTH('StudentManagement.dbo.Students','Username') IS NULL "
         "ALTER TABLE StudentManagement.dbo.Students ADD Username NVARCHAR(50) NULL;",
 
-        "IF COL_LENGTH('StudentManagement.dbo.Students','Password') IS NULL "
-        "ALTER TABLE StudentManagement.dbo.Students ADD [Password] NVARCHAR(100) NULL;",
+        "IF COL_LENGTH('StudentManagement.dbo.Students','PasswordHash') IS NULL "
+        "ALTER TABLE StudentManagement.dbo.Students ADD PasswordHash NVARCHAR(64) NULL;",
+
+        "IF COL_LENGTH('StudentManagement.dbo.Students','Password') IS NOT NULL "
+        "EXEC('UPDATE StudentManagement.dbo.Students SET [Password]=NULL;');",
 
         "IF COL_LENGTH('StudentManagement.dbo.Students','GPA') IS NULL "
         "ALTER TABLE StudentManagement.dbo.Students ADD GPA FLOAT NOT NULL DEFAULT 0;",
@@ -289,6 +390,21 @@ bool StudentRepository::initializeSchema() {
         if (!executeNonQuery(statement)) return false;
     }
 
+    if (!addForeignKeyIfMissing("StudentManagement.dbo.Enrollments", "FK_Enrollments_Students",
+                                "FOREIGN KEY(StudentID) REFERENCES StudentManagement.dbo.Students(StudentID)")) return false;
+    if (!addForeignKeyIfMissing("StudentManagement.dbo.Enrollments", "FK_Enrollments_Courses",
+                                "FOREIGN KEY(CourseID) REFERENCES StudentManagement.dbo.Courses(CourseID)")) return false;
+    if (!addForeignKeyIfMissing("StudentManagement.dbo.Scores", "FK_Scores_Students",
+                                "FOREIGN KEY(StudentID) REFERENCES StudentManagement.dbo.Students(StudentID)")) return false;
+    if (!addForeignKeyIfMissing("StudentManagement.dbo.Scores", "FK_Scores_Courses",
+                                "FOREIGN KEY(CourseID) REFERENCES StudentManagement.dbo.Courses(CourseID)")) return false;
+    if (!addForeignKeyIfMissing("StudentManagement.dbo.Schedules", "FK_Schedules_Courses",
+                                "FOREIGN KEY(CourseID) REFERENCES StudentManagement.dbo.Courses(CourseID)")) return false;
+    if (!addForeignKeyIfMissing("StudentManagement.dbo.Tuitions", "FK_Tuitions_Students",
+                                "FOREIGN KEY(StudentID) REFERENCES StudentManagement.dbo.Students(StudentID)")) return false;
+    if (!addForeignKeyIfMissing("StudentManagement.dbo.Payments", "FK_Payments_Tuitions",
+                                "FOREIGN KEY(TuitionID) REFERENCES StudentManagement.dbo.Tuitions(TuitionID)")) return false;
+
     return true;
 }
 
@@ -300,7 +416,7 @@ bool StudentRepository::seedSampleData() {
 bool StudentRepository::addStudent(const Student& student) {
     std::ostringstream sql;
     sql << "INSERT INTO StudentManagement.dbo.Students "
-        << "(StudentID,Name,Gender,DOB,ClassID,Email,Major,Phone,Username,[Password],GPA,TuitionOwed,Status) VALUES ("
+        << "(StudentID,Name,Gender,DOB,ClassID,Email,Major,Phone,Username,PasswordHash,GPA,TuitionOwed,Status) VALUES ("
         << toSqlString(student.studentId) << ","
         << toSqlString(student.name) << ","
         << toSqlString(student.gender) << ","
@@ -310,7 +426,7 @@ bool StudentRepository::addStudent(const Student& student) {
         << toSqlString(student.major) << ","
         << toSqlString(student.phone) << ","
         << toSqlString(student.username) << ","
-        << toSqlString(student.password) << ","
+        << toSqlString(hashPassword(student.username, student.password)) << ","
         << student.gpa << ","
         << student.tuitionOwed << ","
         << toSqlString(student.status) << ");";
@@ -327,8 +443,11 @@ bool StudentRepository::updateStudent(const Student& student) {
         << "Email=" << toSqlString(student.email) << ","
         << "Major=" << toSqlString(student.major) << ","
         << "Phone=" << toSqlString(student.phone) << ","
-        << "Username=" << toSqlString(student.username) << ","
-        << "[Password]=" << toSqlString(student.password) << ","
+        << "Username=" << toSqlString(student.username) << ",";
+    if (!student.password.empty()) {
+        sql << "PasswordHash=" << toSqlString(hashPassword(student.username, student.password)) << ",";
+    }
+    sql
         << "GPA=" << student.gpa << ","
         << "TuitionOwed=" << student.tuitionOwed << ","
         << "Status=" << toSqlString(student.status) << " "
@@ -344,7 +463,12 @@ bool StudentRepository::updatePersonalInfo(const string& studentId,
     sql << "UPDATE StudentManagement.dbo.Students SET "
         << "Email=" << toSqlString(email) << ","
         << "Phone=" << toSqlString(phone);
-    if (!password.empty()) sql << ",[Password]=" << toSqlString(password);
+    if (!password.empty()) {
+        vector<vector<string>> rows = executeQuery(
+            "SELECT Username FROM StudentManagement.dbo.Students WHERE StudentID=" + toSqlString(studentId) + ";", 1);
+        if (rows.empty()) return false;
+        sql << ",PasswordHash=" << toSqlString(hashPassword(rows.front()[0], password));
+    }
     sql << " WHERE StudentID=" << toSqlString(studentId) << ";";
     return executeNonQuery(sql.str());
 }
@@ -355,31 +479,32 @@ bool StudentRepository::deleteStudent(const string& studentId) {
 
 bool StudentRepository::findStudentById(const string& studentId, Student& student) {
     vector<vector<string>> rows = executeQuery(
-        "SELECT StudentID,Name,Gender,CONVERT(VARCHAR(10),DOB,23),ClassID,Email,Major,Phone,Username,[Password],GPA,TuitionOwed,Status "
-        "FROM StudentManagement.dbo.Students WHERE StudentID=" + toSqlString(studentId) + ";", 13);
+        "SELECT StudentID,Name,Gender,CONVERT(VARCHAR(10),DOB,23),ClassID,Email,Major,Phone,Username,GPA,TuitionOwed,Status "
+        "FROM StudentManagement.dbo.Students WHERE StudentID=" + toSqlString(studentId) + ";", 12);
     if (rows.empty()) return false;
 
     const vector<string>& r = rows.front();
-    student = Student(r[0], r[1], r[2], r[3], r[4], r[5], r[6], r[7], r[8], r[9],
-                      toDouble(r[10]), toDouble(r[11]), r[12]);
+    student = Student(r[0], r[1], r[2], r[3], r[4], r[5], r[6], r[7], r[8], "",
+                      toDouble(r[9]), toDouble(r[10]), r[11]);
     return true;
 }
 
 bool StudentRepository::login(const string& username, const string& password, Student& student) {
     vector<vector<string>> rows = executeQuery(
-        "SELECT StudentID FROM StudentManagement.dbo.Students WHERE Username=" + toSqlString(username) +
-        " AND [Password]=" + toSqlString(password) + ";", 1);
-    return !rows.empty() && findStudentById(rows.front()[0], student);
+        "SELECT StudentID,PasswordHash FROM StudentManagement.dbo.Students WHERE Username=" + toSqlString(username) + ";", 2);
+    if (rows.empty()) return false;
+    if (rows.front()[1] != hashPassword(username, password)) return false;
+    return findStudentById(rows.front()[0], student);
 }
 
 vector<Student> StudentRepository::getAllStudents() {
     vector<Student> students;
     vector<vector<string>> rows = executeQuery(
-        "SELECT StudentID,Name,Gender,CONVERT(VARCHAR(10),DOB,23),ClassID,Email,Major,Phone,Username,[Password],GPA,TuitionOwed,Status "
-        "FROM StudentManagement.dbo.Students ORDER BY StudentID;", 13);
+        "SELECT StudentID,Name,Gender,CONVERT(VARCHAR(10),DOB,23),ClassID,Email,Major,Phone,Username,GPA,TuitionOwed,Status "
+        "FROM StudentManagement.dbo.Students ORDER BY StudentID;", 12);
     for (const vector<string>& r : rows) {
-        students.emplace_back(r[0], r[1], r[2], r[3], r[4], r[5], r[6], r[7], r[8], r[9],
-                              toDouble(r[10]), toDouble(r[11]), r[12]);
+        students.emplace_back(r[0], r[1], r[2], r[3], r[4], r[5], r[6], r[7], r[8], "",
+                              toDouble(r[9]), toDouble(r[10]), r[11]);
     }
     return students;
 }
@@ -468,14 +593,24 @@ vector<StudentNotification> StudentRepository::getTuitionNotifications(const str
 }
 
 bool StudentRepository::enrollCourse(const string& studentId, const string& courseId, const string& semester) {
+    if (!exists("SELECT 1 FROM StudentManagement.dbo.Students WHERE StudentID=" + toSqlString(studentId) + ";")) {
+        cout << "Enroll failed: student does not exist.\n";
+        return false;
+    }
+    if (!exists("SELECT 1 FROM StudentManagement.dbo.Courses WHERE CourseID=" + toSqlString(courseId) + ";")) {
+        cout << "Enroll failed: course does not exist.\n";
+        return false;
+    }
+
     std::ostringstream sql;
-    sql << "IF EXISTS (SELECT 1 FROM StudentManagement.dbo.Enrollments WHERE StudentID=" << toSqlString(studentId)
-        << " AND CourseID=" << toSqlString(courseId) << " AND Semester=" << toSqlString(semester) << ") "
-        << "UPDATE StudentManagement.dbo.Enrollments SET Status='Enrolled' WHERE StudentID=" << toSqlString(studentId)
-        << " AND CourseID=" << toSqlString(courseId) << " AND Semester=" << toSqlString(semester) << "; "
-        << "ELSE INSERT INTO StudentManagement.dbo.Enrollments (StudentID,CourseID,Semester,Status) VALUES ("
-        << toSqlString(studentId) << "," << toSqlString(courseId) << "," << toSqlString(semester) << ",'Enrolled');";
-    return executeNonQuery(sql.str());
+    sql << "MERGE StudentManagement.dbo.Enrollments WITH (HOLDLOCK) AS target "
+        << "USING (SELECT " << toSqlString(studentId) << " AS StudentID, "
+        << toSqlString(courseId) << " AS CourseID, " << toSqlString(semester) << " AS Semester) AS source "
+        << "ON target.StudentID=source.StudentID AND target.CourseID=source.CourseID AND target.Semester=source.Semester "
+        << "WHEN MATCHED THEN UPDATE SET Status='Enrolled' "
+        << "WHEN NOT MATCHED THEN INSERT (StudentID,CourseID,Semester,Status) "
+        << "VALUES (source.StudentID,source.CourseID,source.Semester,'Enrolled');";
+    return executeInTransaction(sql.str());
 }
 
 bool StudentRepository::cancelEnrollment(const string& studentId, const string& courseId, const string& semester) {
@@ -528,14 +663,28 @@ vector<StudentTuition> StudentRepository::getUnpaidTuitionRecords(const string& 
     return tuitions;
 }
 
+bool StudentRepository::isTuitionOwnedByStudent(const string& studentId, const string& tuitionId) {
+    return exists("SELECT 1 FROM StudentManagement.dbo.Tuitions WHERE StudentID=" +
+                  toSqlString(studentId) + " AND TuitionID=" + toSqlString(tuitionId) + ";");
+}
+
 bool StudentRepository::payTuition(const string& tuitionId, double amount) {
+    if (amount <= 0) {
+        cout << "Payment failed: amount must be greater than zero.\n";
+        return false;
+    }
+    if (!exists("SELECT 1 FROM StudentManagement.dbo.Tuitions WHERE TuitionID=" + toSqlString(tuitionId) + ";")) {
+        cout << "Payment failed: tuition record does not exist.\n";
+        return false;
+    }
+
     std::ostringstream sql;
     sql << "INSERT INTO StudentManagement.dbo.Payments (TuitionID,Amount,Method) VALUES ("
         << toSqlString(tuitionId) << "," << amount << ",'Cash'); "
         << "UPDATE StudentManagement.dbo.Tuitions SET PaidAmount=PaidAmount+" << amount
         << ", Status=CASE WHEN PaidAmount+" << amount << " >= Amount THEN 'Paid' ELSE 'Partial' END "
         << "WHERE TuitionID=" << toSqlString(tuitionId) << ";";
-    return executeNonQuery(sql.str());
+    return executeInTransaction(sql.str());
 }
 
 bool StudentRepository::executeNonQuery(const string& sql) {
@@ -557,6 +706,35 @@ bool StudentRepository::executeNonQuery(const string& sql) {
     return true;
 }
 
+bool StudentRepository::executeInTransaction(const string& sql) {
+    if (!connect()) return false;
+
+    SQLHDBC dbc = static_cast<SQLHDBC>(connectionHandle);
+    SQLRETURN result = SQLSetConnectAttr(dbc, SQL_ATTR_AUTOCOMMIT,
+                                         reinterpret_cast<SQLPOINTER>(SQL_AUTOCOMMIT_OFF), 0);
+    if (!checkSqlSuccess(result)) {
+        cout << "Cannot start SQL transaction: " << getDiagnosticMessage(SQL_HANDLE_DBC, dbc) << '\n';
+        return false;
+    }
+
+    const bool ok = executeNonQuery(sql);
+    if (ok) {
+        result = SQLEndTran(SQL_HANDLE_DBC, dbc, SQL_COMMIT);
+    } else {
+        result = SQLEndTran(SQL_HANDLE_DBC, dbc, SQL_ROLLBACK);
+    }
+
+    SQLSetConnectAttr(dbc, SQL_ATTR_AUTOCOMMIT,
+                      reinterpret_cast<SQLPOINTER>(SQL_AUTOCOMMIT_ON), 0);
+
+    if (!checkSqlSuccess(result)) {
+        cout << "SQL transaction finish failed: " << getDiagnosticMessage(SQL_HANDLE_DBC, dbc) << '\n';
+        return false;
+    }
+
+    return ok;
+}
+
 vector<vector<string>> StudentRepository::executeQuery(const string& sql, int columnCount) {
     vector<vector<string>> rows;
     if (!connect()) return rows;
@@ -573,19 +751,35 @@ vector<vector<string>> StudentRepository::executeQuery(const string& sql, int co
         return rows;
     }
 
-    while (SQLFetch(statement) == SQL_SUCCESS) {
+    while (checkSqlSuccess(SQLFetch(statement))) {
         vector<string> row;
         for (SQLUSMALLINT column = 1; column <= static_cast<SQLUSMALLINT>(columnCount); ++column) {
-            char buffer[512] = {};
-            SQLLEN indicator = 0;
-            SQLGetData(statement, column, SQL_C_CHAR, buffer, sizeof(buffer), &indicator);
-            row.push_back(indicator == SQL_NULL_DATA ? "" : string(buffer));
+            row.push_back(readColumnData(statement, column));
         }
         rows.push_back(row);
     }
 
     SQLFreeHandle(SQL_HANDLE_STMT, statement);
     return rows;
+}
+
+bool StudentRepository::exists(const string& sql) {
+    return !executeQuery(sql, 1).empty();
+}
+
+bool StudentRepository::addForeignKeyIfMissing(const string& table,
+                                               const string& constraint,
+                                               const string& definition) {
+    std::ostringstream sql;
+    sql << "IF NOT EXISTS (SELECT 1 FROM StudentManagement.sys.foreign_keys WHERE name="
+        << toSqlString(constraint) << ") "
+        << "ALTER TABLE " << table << " WITH NOCHECK ADD CONSTRAINT "
+        << constraint << " " << definition << ";";
+    return executeNonQuery(sql.str());
+}
+
+string StudentRepository::hashPassword(const string& username, const string& password) {
+    return sha256Hex("student-management-system|" + username + "|" + password);
 }
 
 string StudentRepository::escapeSql(const string& value) {
