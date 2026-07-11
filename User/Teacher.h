@@ -34,10 +34,13 @@ struct ScoreRecord {
     std::string studentId;
     std::string assessment;
     double score;
+    std::string updatedAt;
 
-    ScoreRecord() : studentId(""), assessment(""), score(0.0) {}
-    ScoreRecord(const std::string& studentId, const std::string& assessment, double score)
-        : studentId(studentId), assessment(assessment), score(score) {}
+    ScoreRecord();
+    ScoreRecord(const std::string& studentId,
+                const std::string& assessment,
+                double score,
+                const std::string& updatedAt = "");
 };
 
 struct ScheduleEntry {
@@ -54,6 +57,17 @@ struct ScheduleEntry {
         : courseId(courseId), classId(classId), dayOfWeek(dayOfWeek), timeRange(timeRange), room(room) {}
 };
 
+struct TeacherNotification {
+    std::string message;
+    std::string createdAt;
+    bool isRead;
+
+    TeacherNotification();
+    TeacherNotification(const std::string& message,
+                        const std::string& createdAt = "",
+                        bool isRead = false);
+};
+
 class Teacher {
 private:
     std::string teacherId;
@@ -62,14 +76,18 @@ private:
     std::string department;
     std::string phone;
     std::string username;
-    std::string password;
+    std::string passwordHash;
+    std::string status;
 
     std::vector<CourseInfo> assignedCourses;
     std::map<std::string, std::vector<StudentInfo>> classStudents;
     std::map<std::string, std::vector<ScoreRecord>> gradebook;
     std::map<std::string, std::vector<std::string>> courseContent;
     std::vector<ScheduleEntry> schedule;
-    std::vector<std::string> notifications;
+    std::vector<TeacherNotification> notifications;
+
+    static std::string currentTimestamp();
+    static std::string hashPassword(const std::string& username, const std::string& password);
 
 public:
     Teacher();
@@ -101,6 +119,12 @@ public:
     std::string getPassword() const;
     void setPassword(const std::string& password);
 
+    std::string getPasswordHash() const;
+    void setPasswordHash(const std::string& passwordHash);
+
+    std::string getStatus() const;
+    void setStatus(const std::string& status);
+
     void printPersonalInfo() const;
     void updatePersonalInfo(const std::string& name, const std::string& email,
                             const std::string& department, const std::string& phone);
@@ -131,7 +155,7 @@ public:
     void printCourseContent(const std::string& courseId) const;
 
     void addNotification(const std::string& message);
-    std::vector<std::string> getNotifications() const;
+    std::vector<TeacherNotification> getNotifications() const;
     void printNotifications() const;
 };
 
