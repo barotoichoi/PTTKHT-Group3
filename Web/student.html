@@ -1,705 +1,794 @@
 <!doctype html>
-<html lang="en">
+<html class="light" lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Student Dashboard - EduSync Academy</title>
-    <!-- Inter Font -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>EduSync Academy - Student Dashboard</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&amp;display=swap"
       rel="stylesheet"
     />
-    <link href="./style.css" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "tertiary-container": "#595c5e",
+              "on-tertiary": "#ffffff",
+              "secondary-container": "#dae2fd",
+              "surface-variant": "#d3e4fe",
+              "on-secondary-fixed-variant": "#3f465c",
+              "surface-container-low": "#eff4ff",
+              "surface-container-highest": "#d3e4fe",
+              outline: "#747686",
+              "outline-variant": "#c4c5d7",
+              "on-secondary-fixed": "#131b2e",
+              "tertiary-fixed-dim": "#c4c7c9",
+              "on-surface": "#0b1c30",
+              surface: "#f8f9ff",
+              "on-background": "#0b1c30",
+              "error-container": "#ffdad6",
+              error: "#ba1a1a",
+              secondary: "#565e74",
+              "on-tertiary-fixed-variant": "#444749",
+              "secondary-fixed": "#dae2fd",
+              "primary-fixed": "#dce1ff",
+              "on-surface-variant": "#434655",
+              tertiary: "#414546",
+              "surface-dim": "#cbdbf5",
+              "tertiary-fixed": "#e0e3e5",
+              "surface-container": "#e5eeff",
+              "on-tertiary-container": "#d2d4d6",
+              "surface-container-high": "#dce9ff",
+              "on-primary-fixed": "#001551",
+              background: "#f8f9ff",
+              "surface-bright": "#f8f9ff",
+              "surface-container-lowest": "#ffffff",
+              "primary-fixed-dim": "#b7c4ff",
+              primary: "#0037b0",
+              "inverse-primary": "#b7c4ff",
+              "surface-tint": "#2151da",
+              "on-secondary-container": "#5c647a",
+              "inverse-surface": "#213145",
+              "on-primary-fixed-variant": "#0039b5",
+              "on-tertiary-fixed": "#191c1e",
+              "secondary-fixed-dim": "#bec6e0",
+              "on-secondary": "#ffffff",
+              "primary-container": "#1d4ed8",
+              "inverse-on-surface": "#eaf1ff",
+              "on-error-container": "#93000a",
+              "on-primary": "#ffffff",
+              "on-error": "#ffffff",
+              "on-primary-container": "#cad3ff",
+            },
+            borderRadius: {
+              DEFAULT: "0.25rem",
+              lg: "0.5rem",
+              xl: "0.75rem",
+              full: "9999px",
+            },
+            spacing: {
+              base: "4px",
+              gutter: "24px",
+              xs: "8px",
+              xl: "48px",
+              sm: "16px",
+              md: "24px",
+              "container-max": "1440px",
+              lg: "32px",
+            },
+            fontFamily: {
+              "body-md": ["Hanken Grotesk"],
+              "body-lg": ["Hanken Grotesk"],
+              "headline-lg": ["Hanken Grotesk"],
+              display: ["Hanken Grotesk"],
+              "label-md": ["Hanken Grotesk"],
+              "headline-md": ["Hanken Grotesk"],
+              "label-sm": ["Hanken Grotesk"],
+            },
+            fontSize: {
+              "body-md": ["14px", { lineHeight: "20px", fontWeight: "400" }],
+              "body-lg": ["16px", { lineHeight: "24px", fontWeight: "400" }],
+              "headline-lg": [
+                "24px",
+                { lineHeight: "32px", fontWeight: "700" },
+              ],
+              display: [
+                "30px",
+                {
+                  lineHeight: "38px",
+                  letterSpacing: "-0.02em",
+                  fontWeight: "700",
+                },
+              ],
+              "label-md": [
+                "12px",
+                {
+                  lineHeight: "16px",
+                  letterSpacing: "0.01em",
+                  fontWeight: "500",
+                },
+              ],
+              "headline-md": [
+                "20px",
+                { lineHeight: "28px", fontWeight: "600" },
+              ],
+              "label-sm": ["11px", { lineHeight: "14px", fontWeight: "600" }],
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      body {
+        font-family: "Hanken Grotesk", sans-serif;
+      }
+    </style>
   </head>
-  <body
-    class="bg-brand-bg text-brand-text font-sans antialiased flex h-screen overflow-hidden"
-  >
-    <!-- Sidebar -->
-    <aside class="w-[220px] bg-brand-primary text-white flex flex-col shrink-0">
-      <!-- Logo Area -->
-      <div class="p-6 pb-8">
-        <h1 class="text-[28px] font-bold leading-tight tracking-tight">
-          Welcome Back<br />Mr. Bao
-        </h1>
-      </div>
-
-      <!-- Navigation -->
-      <nav class="flex-1 flex flex-col gap-1">
-        <a
-          href="./student.html"
-          class="flex items-center gap-3 px-6 py-4 bg-brand-secondary text-white border-l-4 border-white font-medium"
-        >
-          <svg
-            class="w-5 h-5 opacity-90"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
-            ></path>
-          </svg>
-          Home
-        </a>
-        <a
-          href="./student-my-classes.html"
-          class="flex items-center gap-3 px-6 py-4 text-gray-300 hover:bg-white/5 transition-colors font-medium border-l-4 border-transparent"
-        >
-          <svg
-            class="w-5 h-5 opacity-70"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-            ></path>
-          </svg>
-          My Classes
-        </a>
-        <a
-          href="#"
-          class="flex items-center gap-3 px-6 py-4 text-gray-300 hover:bg-white/5 transition-colors font-medium border-l-4 border-transparent"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-            class="w-6 h-6 opacity-70"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5m-9-6h.008v.008H12v-.008ZM12 15h.008v.008H12V15Zm0 2.25h.008v.008H12v-.008ZM9.75 15h.008v.008H9.75V15Zm0 2.25h.008v.008H9.75v-.008ZM7.5 15h.008v.008H7.5V15Zm0 2.25h.008v.008H7.5v-.008Zm6.75-4.5h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V15Zm0 2.25h.008v.008h-.008v-.008Zm2.25-4.5h.008v.008H16.5v-.008Zm0 2.25h.008v.008H16.5V15Z"
-            />
-          </svg>
-          Schedules
-        </a>
-        <a
-          href="#"
-          class="flex items-center gap-3 px-6 py-4 text-gray-300 hover:bg-white/5 transition-colors font-medium border-l-4 border-transparent"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-            class="w-6 h-6 opacity-70"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25ZM6.75 12h.008v.008H6.75V12Zm0 3h.008v.008H6.75V15Zm0 3h.008v.008H6.75V18Z"
-            />
-          </svg>
-          Asignments
-        </a>
-        <a
-          href="#"
-          class="flex items-center gap-3 px-6 py-4 text-gray-300 hover:bg-white/5 transition-colors font-medium border-l-4 border-transparent"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-            class="w-6 h-6 opacity-70"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M4.26 10.147a60.438 60.438 0 0 0-.491 6.347A48.62 48.62 0 0 1 12 20.904a48.62 48.62 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.636 50.636 0 0 0-2.658-.813A59.906 59.906 0 0 1 12 3.493a59.903 59.903 0 0 1 10.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0 1 12 13.489a50.702 50.702 0 0 1 7.74-3.342M6.75 15a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm0 0v-3.675A55.378 55.378 0 0 1 12 8.443m-7.007 11.55A5.981 5.981 0 0 0 6.75 15.75v-1.5"
-            />
-          </svg>
-          Grades
-        </a>
-        <a
-          href="#"
-          class="flex items-center gap-3 px-6 py-4 text-gray-300 hover:bg-white/5 transition-colors font-medium border-l-4 border-transparent"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-            class="w-6 h-6 opacity-70"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M8.625 9.75a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375m-13.5 3.01c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-4.183a1.14 1.14 0 0 1 .778-.332 48.294 48.294 0 0 0 5.83-.498c1.585-.233 2.708-1.626 2.708-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z"
-            />
-          </svg>
-          Messages
-        </a>
-        <a
-          href="#"
-          class="flex items-center gap-3 px-6 py-4 text-gray-300 hover:bg-white/5 transition-colors font-medium border-l-4 border-transparent"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-            class="w-6 h-6 opacity-70"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M12 6v12m-3-2.818.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-            />
-          </svg>
-
-          Tuition
-        </a>
-      </nav>
-
-      <!-- Footer Actions -->
-      <div class="p-6 flex flex-col gap-4">
-        <button
-          class="w-full bg-brand-secondary text-white py-2.5 rounded-lg font-semibold hover:bg-blue-700 transition-colors text-sm shadow-sm"
-        >
-          Support Center
-        </button>
-        <a
-          href="#"
-          class="flex items-center gap-2 text-gray-300 hover:text-white transition-colors text-sm font-medium mt-2"
-        >
-          <svg
-            class="w-5 h-5 opacity-70"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
-            ></path>
-          </svg>
-          Log Out
-        </a>
-      </div>
-    </aside>
-
-    <!-- Main Content Area -->
-    <main class="flex-1 flex flex-col h-screen overflow-y-auto">
-      <!-- Topbar -->
-      <header class="flex items-center justify-between px-8 py-5 shrink-0">
-        <h2 class="text-[20px] font-bold text-brand-text">EduSync Academy</h2>
-        <div class="flex items-center gap-6">
-          <div class="relative">
-            <svg
-              class="w-4 h-4 text-gray-400 absolute left-4 top-1/2 -translate-y-1/2"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+  <body class="bg-background text-on-background flex h-screen overflow-hidden">
+    <!-- SideNavBar -->
+    <nav
+      class="fixed h-full w-[260px] left-0 top-0 flex flex-col bg-on-background dark:bg-on-background shadow-md z-20"
+    >
+      <div class="flex flex-col justify-between h-screen p-md">
+        <div>
+          <!-- Header -->
+          <div class="mb-xl">
+            <h1
+              class="text-headline-lg font-headline-lg text-on-primary mb-base"
             >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-              ></path>
-            </svg>
+              Welcome Back
+            </h1>
+            <p class="text-body-md font-body-md text-on-primary opacity-80">
+              Mr. Bao
+            </p>
+          </div>
+          <!-- Tabs -->
+          <ul class="space-y-xs">
+            <li class="">
+              <a
+                class="flex items-center px-sm py-3 bg-primary text-on-primary rounded-lg font-semibold transition-colors"
+                href="student.html"
+              >
+                <span
+                  class="material-symbols-outlined mr-sm"
+                  style="font-variation-settings: &quot;FILL&quot; 0"
+                  >home</span
+                >
+                <span class="text-label-md font-label-md">Home</span>
+              </a>
+            </li>
+            <li class="">
+              <a
+                class="flex items-center px-sm py-3 text-tertiary-fixed hover:bg-primary/20 hover:text-white transition-colors rounded-lg"
+                href="student_classes.html"
+              >
+                <span
+                  class="material-symbols-outlined mr-sm"
+                  style="font-variation-settings: &quot;FILL&quot; 0"
+                  >school</span
+                >
+                <span class="text-label-md font-label-md">My Classes</span>
+              </a>
+            </li>
+            <li class="">
+              <a
+                class="flex items-center px-sm py-3 text-tertiary-fixed hover:bg-primary/20 hover:text-white transition-colors rounded-lg"
+                href="student_schedules.html"
+              >
+                <span
+                  class="material-symbols-outlined mr-sm"
+                  style="font-variation-settings: &quot;FILL&quot; 0"
+                  >calendar_today</span
+                >
+                <span class="text-label-md font-label-md">Schedules</span>
+              </a>
+            </li>
+            <li class="">
+              <a
+                class="flex items-center px-sm py-3 text-tertiary-fixed hover:bg-primary/20 hover:text-white transition-colors rounded-lg"
+                href="student_assignments.html"
+              >
+                <span
+                  class="material-symbols-outlined mr-sm"
+                  style="font-variation-settings: &quot;FILL&quot; 0"
+                  >assignment</span
+                >
+                <span class="text-label-md font-label-md">Assignments</span>
+              </a>
+            </li>
+            <li class="">
+              <a
+                class="flex items-center px-sm py-3 text-tertiary-fixed hover:bg-primary/20 hover:text-white transition-colors rounded-lg"
+                href="student_grades.html"
+              >
+                <span
+                  class="material-symbols-outlined mr-sm"
+                  style="font-variation-settings: &quot;FILL&quot; 0"
+                  >star_outline</span
+                >
+                <span class="text-label-md font-label-md">Grades</span>
+              </a>
+            </li>
+            <li class="">
+              <a
+                class="flex items-center px-sm py-3 text-tertiary-fixed hover:bg-primary/20 hover:text-white transition-colors rounded-lg"
+                href="student_tuition.html"
+              >
+                <span
+                  class="material-symbols-outlined mr-sm"
+                  style="font-variation-settings: &quot;FILL&quot; 0"
+                  >account_balance_wallet</span
+                >
+                <span class="text-label-md font-label-md">Tuition</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <!-- Footer & CTA -->
+        <div>
+          <button
+            class="w-full bg-primary-container text-on-primary py-2 rounded-lg font-label-md text-label-md mb-md hover:bg-primary transition-colors"
+          >
+            Support Center
+          </button>
+          <ul>
+            <li class="">
+              <a
+                class="flex items-center px-sm py-2 text-tertiary-fixed hover:text-white transition-colors"
+                href="login.html"
+              >
+                <span
+                  class="material-symbols-outlined mr-sm"
+                  style="font-variation-settings: &quot;FILL&quot; 0"
+                  >logout</span
+                >
+                <span class="text-label-md font-label-md">Log Out</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <!-- Main Content Area -->
+    <div class="flex-1 ml-[260px] flex flex-col h-screen overflow-hidden">
+      <!-- TopNavBar -->
+      <header
+        class="flex justify-between items-center h-16 px-lg bg-surface dark:bg-surface border-b border-surface-variant z-10 shrink-0"
+      >
+        <div class="font-headline-md text-headline-md text-on-surface">
+          EduSync Academy
+        </div>
+        <div class="flex items-center gap-md">
+          <!-- Search -->
+          <div class="relative">
+            <span
+              class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline-variant"
+              style="font-variation-settings: &quot;FILL&quot; 0"
+              >search</span
+            >
             <input
-              type="text"
+              class="pl-10 pr-4 py-2 bg-surface-container-low border border-surface-variant rounded-full text-body-md font-body-md focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary w-64 transition-all"
               placeholder="Search..."
-              class="bg-[#f0edef] text-sm rounded-full pl-10 pr-4 py-2.5 w-64 focus:outline-none focus:ring-2 focus:ring-brand-secondary transition-all"
+              type="text"
             />
           </div>
-          <button class="text-brand-text-muted hover:text-brand-text">
-            <svg
-              class="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
-              ></path>
-            </svg>
-          </button>
-          <button class="text-brand-text-muted hover:text-brand-text">
-            <svg
-              class="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
-              ></path>
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-              ></path>
-            </svg>
-          </button>
-          <div
-            class="h-9 w-9 bg-[#e4e2e3] rounded-full flex items-center justify-center text-sm font-bold text-brand-text border border-gray-300 cursor-pointer"
+          <!-- Actions -->
+          <button
+            class="p-2 text-on-surface-variant hover:text-primary transition-colors rounded-full hover:bg-surface-container-low"
           >
-            AD
+            <span
+              class="material-symbols-outlined"
+              style="font-variation-settings: &quot;FILL&quot; 0"
+              >notifications</span
+            >
+          </button>
+          <button
+            class="p-2 text-on-surface-variant hover:text-primary transition-colors rounded-full hover:bg-surface-container-low"
+          >
+            <span
+              class="material-symbols-outlined"
+              style="font-variation-settings: &quot;FILL&quot; 0"
+              >settings</span
+            >
+          </button>
+          <!-- Profile Avatar -->
+          <div
+            class="w-8 h-8 rounded-full bg-surface-variant overflow-hidden border border-outline-variant shrink-0 cursor-pointer"
+          >
+            <img
+              alt="User Avatar"
+              class="w-full h-full object-cover"
+              data-alt="A small, professional portrait of a young male student with short dark hair, smiling warmly against a light grey background. Modern lighting, clean corporate style."
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuBEUF2DQEWeNKvA8EOY4M4YB-AhloHx7eAq_PmCnZ4wMSe_At6h3mNivXtinZ4537zvPPUgql7vFb7dypreymhvtuBxkpuQkcZz4vnu0iy-Z2A8Oogdb9QIIfOmrNXT6f35sz-4jBPAeEkZgOsKKq5BPEXmRdFCiRVtTAouyRmgAKCeidnUxPa7LmGM05JN9f1q81nG631sSxsl0Nh6vAw4wFNdFJnj04-wuqOpQGSL0tBRIogHrmu7vg"
+            />
           </div>
         </div>
       </header>
-
-      <!-- Dashboard Content -->
-      <div class="px-8 pb-8 space-y-6">
-        <!-- Page Title Area -->
-        <div class="flex items-end justify-between pt-4">
-          <div>
-            <h1 class="text-[32px] font-bold text-brand-text tracking-tight">
-              Student Dashboard
-            </h1>
-            <p class="text-brand-text-muted mt-1">
-              Welcome back! Mr. Bao. Here's a quick overview of your classes and
-              assignments.
-            </p>
-          </div>
-          <div
-            class="bg-brand-surface-dim text-brand-text-muted text-xs font-semibold px-3 py-1.5 rounded uppercase tracking-wider"
-          >
-            Last updated: Just now
-          </div>
-        </div>
-
-        <!-- Stats Grid -->
-        <!-- ================= Statistics + Student Profile ================= -->
-
-        <div class="grid grid-cols-12 gap-6 mt-10">
-          <!-- ================= Student Card ================= -->
-
-          <div class="col-span-3">
-            <div class="bg-white rounded-2xl shadow-sm p-6 h-full">
-              <div class="flex flex-col items-center">
-                <img
-                  src="https://i.pravatar.cc/150?img=12"
-                  class="w-28 h-28 rounded-full border-4 border-blue-100 object-cover"
-                />
-
-                <h2 class="mt-4 text-2xl font-bold">Hà Văn Bảo</h2>
-
-                <p class="text-gray-500 mt-1">Student ID: 22110234</p>
-
-                <span
-                  class="mt-3 bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-sm"
-                >
-                  Computer Science
-                </span>
-              </div>
-
-              <div class="mt-8 space-y-5">
-                <div class="flex gap-3 p-2">
-                  <i class="fa-regular fa-envelope text-blue-600 mt-1"></i>
-
-                  <div>
-                    <p class="text-gray-400 text-sm">Email</p>
-
-                    <p class="font-medium">bao@student.edu.vn</p>
-                  </div>
-                </div>
-
-                <div class="flex gap-3 p-2">
-                  <i class="fa-solid fa-phone text-green-600 mt-1"></i>
-
-                  <div>
-                    <p class="text-gray-400 text-sm">Phone</p>
-
-                    <p class="font-medium">0123 456 789</p>
-                  </div>
-                </div>
-
-                <div class="flex gap-3 p-2">
-                  <i
-                    class="fa-solid fa-building-columns text-orange-500 mt-1"
-                  ></i>
-
-                  <div>
-                    <p class="text-gray-400 text-sm">Faculty</p>
-
-                    <p class="font-medium">Information Technology</p>
-                  </div>
-                </div>
-
-                <div class="flex gap-3 p-2">
-                  <i class="fa-solid fa-user-tie text-purple-500 mt-1"></i>
-
-                  <div>
-                    <p class="text-gray-400 text-sm">Advisor</p>
-
-                    <p class="font-medium">Nguyễn Văn A</p>
-                  </div>
-                </div>
-              </div>
-
-              <button
-                class="mt-8 w-full py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold duration-300"
-              >
-                View Profile
-              </button>
+      <!-- Scrollable Content Canvas -->
+      <main class="flex-1 overflow-y-auto p-lg bg-background">
+        <div class="max-w-container-max mx-auto space-y-lg pb-xl">
+          <!-- Page Header -->
+          <div class="flex justify-between items-end mb-md">
+            <div>
+              <h2 class="text-display font-display text-on-surface mb-base">
+                Student Dashboard
+              </h2>
+              <p class="text-body-md font-body-md text-on-surface-variant">
+                Welcome back! Mr. Bao. Here's a quick overview of your classes
+                and assignments.
+              </p>
+            </div>
+            <div
+              class="text-label-sm font-label-sm text-outline uppercase tracking-wider"
+            >
+              Last Updated: Just Now
             </div>
           </div>
-
-          <!-- ================= Right Content ================= -->
-
-          <div class="col-span-9">
-            <div class="grid grid-cols-4 gap-6">
-              <!-- Stat 1 -->
+          <div class="grid grid-cols-1 lg:grid-cols-4 gap-gutter items-start">
+            <!-- Left Column: Profile Card (Takes 1 col on desktop) -->
+            <div class="lg:col-span-1">
               <div
-                class="bg-brand-surface rounded-xl p-6 border border-brand-border shadow-card flex flex-col justify-between h-[140px]"
+                class="bg-surface-container-lowest rounded-xl p-md shadow-[0px_2px_4px_rgba(0,0,0,0.05)] border border-[#E2E8F0] flex flex-col items-center text-center"
               >
-                <div class="flex justify-between items-start">
-                  <h3 class="text-[16px] font-semibold text-brand-text">
-                    My Classes
-                  </h3>
-                  <div class="bg-[#d8e2ff] p-2 rounded text-brand-secondary">
-                    <svg
-                      class="w-5 h-5"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path
-                        d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"
-                      ></path>
-                    </svg>
+                <div
+                  class="w-24 h-24 rounded-full overflow-hidden mb-sm border-2 border-surface-variant"
+                >
+                  <img
+                    alt="Student Profile"
+                    class="w-full h-full object-cover"
+                    data-alt="A professional headshot of a young male university student with short dark hair, wearing a casual light blue button-down shirt. Friendly expression, well-lit studio lighting against a soft white background."
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuDeQDI3mxLzkFHhFWdMv-y8YXT7VYEXlPn-MeLp8-juTNNScRGf2RCROzn3xYUojuf6TyQ-MRL3f2PI405EOMpga3Py9Yf4fY9lOYKz9JIvlaICRolVfkIVANVBoSTd_sd8xLdgSy7Nl9rn7e73vkSa6cO5EU6VOSOsKuI97O39pyd4XVKYqb6elEfok7M7Raafk3JoeL1FjDMskHuidXzT6s0TIDziztMbedDn9kgn0GZvPEJbKBg0Ww"
+                  />
+                </div>
+                <h3 class="text-headline-md font-headline-md text-on-surface">
+                  Hà Văn Bảo
+                </h3>
+                <p
+                  class="text-body-md font-body-md text-on-surface-variant mb-xs"
+                >
+                  Student ID: 22110234
+                </p>
+                <span
+                  class="px-3 py-1 bg-primary-fixed text-on-primary-fixed-variant rounded-full text-label-sm font-label-sm mb-md uppercase tracking-wide"
+                  >Computer Science</span
+                >
+                <div
+                  class="w-full text-left space-y-sm pt-sm border-t border-surface-variant"
+                >
+                  <div>
+                    <p class="text-label-sm font-label-sm text-outline mb-1">
+                      Email
+                    </p>
+                    <p class="text-body-md font-body-md text-on-surface">
+                      bao@student.edu.vn
+                    </p>
+                  </div>
+                  <div>
+                    <p class="text-label-sm font-label-sm text-outline mb-1">
+                      Phone
+                    </p>
+                    <p class="text-body-md font-body-md text-on-surface">
+                      0123 456 789
+                    </p>
+                  </div>
+                  <div>
+                    <p class="text-label-sm font-label-sm text-outline mb-1">
+                      Faculty
+                    </p>
+                    <p class="text-body-md font-body-md text-on-surface">
+                      Information Technology
+                    </p>
+                  </div>
+                  <div>
+                    <p class="text-label-sm font-label-sm text-outline mb-1">
+                      Advisor
+                    </p>
+                    <p class="text-body-md font-body-md text-on-surface">
+                      Nguyễn Văn A
+                    </p>
                   </div>
                 </div>
-                <div>
-                  <div
-                    class="text-[32px] font-bold text-brand-text leading-none mb-2"
-                  >
+                <button
+                  class="w-full mt-md bg-primary-container text-on-primary py-2 rounded-lg font-label-md text-label-md hover:bg-primary transition-colors shadow-sm"
+                >
+                  View Profile
+                </button>
+              </div>
+            </div>
+            <!-- Right Column: Stats & Content (Takes 3 cols on desktop) -->
+            <div class="lg:col-span-3 space-y-gutter">
+              <!-- Top Row: Stat Cards -->
+              <div
+                class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-sm"
+              >
+                <!-- Stat 1 -->
+                <div
+                  class="bg-surface-container-lowest rounded-xl p-sm shadow-[0px_2px_4px_rgba(0,0,0,0.05)] border border-[#E2E8F0] relative overflow-hidden group"
+                >
+                  <div class="flex justify-between items-start mb-sm">
+                    <h4
+                      class="text-label-md font-label-md text-on-surface-variant font-semibold"
+                    >
+                      My Classes
+                    </h4>
+                    <div class="p-1.5 bg-primary-fixed rounded-lg text-primary">
+                      <span
+                        class="material-symbols-outlined text-[20px]"
+                        style="font-variation-settings: &quot;FILL&quot; 1"
+                        >groups</span
+                      >
+                    </div>
+                  </div>
+                  <div class="text-display font-display text-on-surface mb-xs">
                     5
                   </div>
-                  <div
-                    class="text-sm font-medium text-brand-secondary flex items-center gap-1"
+                  <a
+                    class="text-label-sm font-label-sm text-primary hover:underline flex items-center"
+                    href="#"
                   >
-                    View all courses ->
-                  </div>
-                </div>
-              </div>
-
-              <!-- Stat 2 -->
-              <div
-                class="bg-brand-surface rounded-xl p-6 border border-brand-border shadow-card flex flex-col justify-between h-[140px]"
-              >
-                <div class="flex justify-between items-start">
-                  <h3 class="text-[16px] font-semibold text-brand-text">
-                    Current GPA
-                  </h3>
-                  <div class="bg-[#d8e2ff] p-2 rounded text-brand-icon">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke-width="1.5"
-                      stroke="currentColor"
-                      class="w-5 h-5"
+                    View all courses
+                    <span class="material-symbols-outlined text-[14px] ml-1"
+                      >arrow_forward</span
                     >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z"
-                      />
-                    </svg>
-                  </div>
+                  </a>
                 </div>
-                <div>
-                  <div
-                    class="text-[32px] font-bold text-brand-text leading-none mb-2"
-                  >
+                <!-- Stat 2 -->
+                <div
+                  class="bg-surface-container-lowest rounded-xl p-sm shadow-[0px_2px_4px_rgba(0,0,0,0.05)] border border-[#E2E8F0] relative overflow-hidden group"
+                >
+                  <div class="flex justify-between items-start mb-sm">
+                    <h4
+                      class="text-label-md font-label-md text-on-surface-variant font-semibold"
+                    >
+                      Current GPA
+                    </h4>
+                    <div
+                      class="p-1.5 bg-surface-container-high rounded-lg text-secondary"
+                    >
+                      <span
+                        class="material-symbols-outlined text-[20px]"
+                        style="font-variation-settings: &quot;FILL&quot; 1"
+                        >bar_chart</span
+                      >
+                    </div>
+                  </div>
+                  <div class="text-display font-display text-on-surface mb-xs">
                     3.45
                   </div>
-                  <div class="text-sm text-brand-secondary">Good stading</div>
+                  <p class="text-label-sm font-label-sm text-primary">
+                    Good standing
+                  </p>
                 </div>
-              </div>
-
-              <!-- Stat 3 -->
-              <div
-                class="bg-brand-surface rounded-xl p-6 border border-brand-border shadow-card flex flex-col justify-between h-[140px]"
-              >
-                <div class="flex justify-between items-start">
-                  <h3 class="text-[16px] font-semibold text-brand-text">
-                    Pending Assignments
-                  </h3>
-                  <div class="bg-[#fadfb8] p-2 rounded text-[#564427]">
-                    <svg
-                      class="w-5 h-5"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
+                <!-- Stat 3 -->
+                <div
+                  class="bg-surface-container-lowest rounded-xl p-sm shadow-[0px_2px_4px_rgba(0,0,0,0.05)] border border-[#E2E8F0] relative overflow-hidden group"
+                >
+                  <div class="flex justify-between items-start mb-sm">
+                    <h4
+                      class="text-label-md font-label-md text-on-surface-variant font-semibold"
                     >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9.5a2.5 2.5 0 00-2.5-2.5H14"
-                      ></path>
-                    </svg>
+                      Pending Assignments
+                    </h4>
+                    <div class="p-1.5 bg-[#FFF3E0] rounded-lg text-[#E65100]">
+                      <span
+                        class="material-symbols-outlined text-[20px]"
+                        style="font-variation-settings: &quot;FILL&quot; 1"
+                        >assignment_late</span
+                      >
+                    </div>
                   </div>
-                </div>
-                <div>
-                  <div
-                    class="text-[32px] font-bold text-brand-text leading-none mb-2"
-                  >
+                  <div class="text-display font-display text-on-surface mb-xs">
                     3
                   </div>
-                  <div
-                    class="text-sm font-medium text-brand-secondary flex items-center gap-1"
-                  >
+                  <p class="text-label-sm font-label-sm text-[#E65100]">
                     Due Soon
-                  </div>
+                  </p>
                 </div>
-              </div>
-              <!-- Stat 4 -->
-              <div
-                class="bg-brand-surface rounded-xl p-6 border border-brand-border shadow-card flex flex-col justify-between h-[140px]"
-              >
-                <div class="flex justify-between items-start">
-                  <h3 class="text-[16px] font-semibold text-brand-text">
-                    Unread Messages
-                  </h3>
-                  <div class="bg-[#d8e2ff] p-2 rounded text-purple-700">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke-width="1.5"
-                      stroke="currentColor"
-                      class="w-5 h--5"
+                <!-- Stat 4 -->
+                <div
+                  class="bg-surface-container-lowest rounded-xl p-sm shadow-[0px_2px_4px_rgba(0,0,0,0.05)] border border-[#E2E8F0] relative overflow-hidden group"
+                >
+                  <div class="flex justify-between items-start mb-sm">
+                    <h4
+                      class="text-label-md font-label-md text-on-surface-variant font-semibold"
                     >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M8.625 9.75a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375m-13.5 3.01c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-4.183a1.14 1.14 0 0 1 .778-.332 48.294 48.294 0 0 0 5.83-.498c1.585-.233 2.708-1.626 2.708-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z"
-                      />
-                    </svg>
+                      Unread Messages
+                    </h4>
+                    <div class="p-1.5 bg-[#F3E5F5] rounded-lg text-[#8E24AA]">
+                      <span
+                        class="material-symbols-outlined text-[20px]"
+                        style="font-variation-settings: &quot;FILL&quot; 1"
+                        >mark_chat_unread</span
+                      >
+                    </div>
                   </div>
-                </div>
-                <div>
-                  <div
-                    class="text-[32px] font-bold text-brand-text leading-none mb-2"
-                  >
+                  <div class="text-display font-display text-on-surface mb-xs">
                     2
                   </div>
-                  <div class="text-sm text-brand-secondary">
-                    View all messages
+                  <a
+                    class="text-label-sm font-label-sm text-[#8E24AA] hover:underline"
+                    href="#"
+                    >View all messages</a
+                  >
+                </div>
+              </div>
+              <!-- Main Content Row -->
+              <div
+                class="grid grid-cols-1 xl:grid-cols-3 gap-gutter items-start"
+              >
+                <!-- Classes Table -->
+                <div
+                  class="xl:col-span-2 bg-surface-container-lowest rounded-xl shadow-[0px_2px_4px_rgba(0,0,0,0.05)] border border-[#E2E8F0] overflow-hidden"
+                >
+                  <div
+                    class="p-md border-b border-surface-variant flex justify-between items-center"
+                  >
+                    <h3
+                      class="text-headline-md font-headline-md text-on-surface"
+                    >
+                      My Classes
+                    </h3>
+                    <a
+                      class="text-label-md font-label-md text-primary hover:underline"
+                      href="#"
+                      >View All</a
+                    >
+                  </div>
+                  <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                      <thead>
+                        <tr
+                          class="border-b border-surface-variant bg-surface-container-low text-label-sm font-label-sm text-outline uppercase tracking-wider"
+                        >
+                          <th class="px-md py-sm font-semibold">Course</th>
+                          <th class="px-md py-sm font-semibold">Students</th>
+                          <th class="px-md py-sm font-semibold">Room</th>
+                          <th class="px-md py-sm font-semibold">Progress</th>
+                        </tr>
+                      </thead>
+                      <tbody
+                        class="text-body-md font-body-md divide-y divide-surface-variant"
+                      >
+                        <tr class="hover:bg-surface-bright transition-colors">
+                          <td class="px-md py-sm font-medium text-on-surface">
+                            Database Systems
+                          </td>
+                          <td class="px-md py-sm text-on-surface-variant">
+                            43
+                          </td>
+                          <td class="px-md py-sm text-on-surface-variant">
+                            A203
+                          </td>
+                          <td class="px-md py-sm">
+                            <div class="flex items-center gap-2">
+                              <div
+                                class="w-full h-2 bg-surface-variant rounded-full overflow-hidden"
+                              >
+                                <div
+                                  class="bg-primary h-full rounded-full"
+                                  style="width: 82%"
+                                ></div>
+                              </div>
+                              <span class="text-label-sm text-outline"
+                                >82%</span
+                              >
+                            </div>
+                          </td>
+                        </tr>
+                        <tr class="hover:bg-surface-bright transition-colors">
+                          <td class="px-md py-sm font-medium text-on-surface">
+                            Object Oriented Programming
+                          </td>
+                          <td class="px-md py-sm text-on-surface-variant">
+                            38
+                          </td>
+                          <td class="px-md py-sm text-on-surface-variant">
+                            B105
+                          </td>
+                          <td class="px-md py-sm">
+                            <div class="flex items-center gap-2">
+                              <div
+                                class="w-full h-2 bg-surface-variant rounded-full overflow-hidden"
+                              >
+                                <div
+                                  class="bg-[#10B981] h-full rounded-full"
+                                  style="width: 68%"
+                                ></div>
+                              </div>
+                              <span class="text-label-sm text-outline"
+                                >68%</span
+                              >
+                            </div>
+                          </td>
+                        </tr>
+                        <tr class="hover:bg-surface-bright transition-colors">
+                          <td class="px-md py-sm font-medium text-on-surface">
+                            Web Development
+                          </td>
+                          <td class="px-md py-sm text-on-surface-variant">
+                            51
+                          </td>
+                          <td class="px-md py-sm text-on-surface-variant">
+                            C302
+                          </td>
+                          <td class="px-md py-sm">
+                            <div class="flex items-center gap-2">
+                              <div
+                                class="w-full h-2 bg-surface-variant rounded-full overflow-hidden"
+                              >
+                                <div
+                                  class="bg-[#8B5CF6] h-full rounded-full"
+                                  style="width: 91%"
+                                ></div>
+                              </div>
+                              <span class="text-label-sm text-outline"
+                                >91%</span
+                              >
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <!-- Schedule Sidebar -->
+                <div
+                  class="xl:col-span-1 bg-surface-container-lowest rounded-xl shadow-[0px_2px_4px_rgba(0,0,0,0.05)] border border-[#E2E8F0] p-md"
+                >
+                  <h3
+                    class="text-headline-md font-headline-md text-on-surface mb-md"
+                  >
+                    Today's Schedule
+                  </h3>
+                  <div class="space-y-sm">
+                    <!-- Schedule Item 1 -->
+                    <div
+                      class="flex gap-sm items-start p-sm rounded-lg hover:bg-surface-container-low transition-colors border border-transparent hover:border-surface-variant"
+                    >
+                      <div
+                        class="px-2 py-1 bg-primary-fixed text-on-primary-fixed-variant rounded text-label-sm font-label-sm font-bold shrink-0 mt-1"
+                      >
+                        09:30
+                      </div>
+                      <div>
+                        <h4
+                          class="text-body-md font-body-md font-semibold text-on-surface"
+                        >
+                          Database Systems
+                        </h4>
+                        <p
+                          class="text-label-sm font-label-sm text-on-surface-variant"
+                        >
+                          Room A203
+                        </p>
+                      </div>
+                    </div>
+                    <!-- Schedule Item 2 -->
+                    <div
+                      class="flex gap-sm items-start p-sm rounded-lg hover:bg-surface-container-low transition-colors border border-transparent hover:border-surface-variant"
+                    >
+                      <div
+                        class="px-2 py-1 bg-[#D1FAE5] text-[#065F46] rounded text-label-sm font-label-sm font-bold shrink-0 mt-1"
+                      >
+                        13:00
+                      </div>
+                      <div>
+                        <h4
+                          class="text-body-md font-body-md font-semibold text-on-surface"
+                        >
+                          Web Development
+                        </h4>
+                        <p
+                          class="text-label-sm font-label-sm text-on-surface-variant"
+                        >
+                          Lab C302
+                        </p>
+                      </div>
+                    </div>
+                    <!-- Schedule Item 3 -->
+                    <div
+                      class="flex gap-sm items-start p-sm rounded-lg hover:bg-surface-container-low transition-colors border border-transparent hover:border-surface-variant"
+                    >
+                      <div
+                        class="px-2 py-1 bg-[#F3E8FF] text-[#6B21A8] rounded text-label-sm font-label-sm font-bold shrink-0 mt-1"
+                      >
+                        15:30
+                      </div>
+                      <div>
+                        <h4
+                          class="text-body-md font-body-md font-semibold text-on-surface"
+                        >
+                          Office Hours
+                        </h4>
+                        <p
+                          class="text-label-sm font-label-sm text-on-surface-variant"
+                        >
+                          Faculty Office
+                        </p>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <!-- ================= Main Grid ================= -->
-            <div class="grid grid-cols-3 gap-6 mt-6">
-              <!-- My Classes -->
+              <!-- Announcements Row -->
               <div
-                class="col-span-2 bg-white rounded-2xl shadow-sm border border-gray-200"
+                class="bg-surface-container-lowest rounded-xl shadow-[0px_2px_4px_rgba(0,0,0,0.05)] border border-[#E2E8F0] overflow-hidden"
               >
                 <div
-                  class="flex items-center justify-between px-6 py-5 border-b"
+                  class="p-md border-b border-surface-variant flex justify-between items-center"
                 >
-                  <h2 class="text-lg font-semibold">My Classes</h2>
-                  <button class="text-sm text-blue-600 hover:underline">
-                    View All
-                  </button>
+                  <h3 class="text-headline-md font-headline-md text-on-surface">
+                    Recent Announcements
+                  </h3>
+                  <a
+                    class="text-label-md font-label-md text-primary hover:underline"
+                    href="#"
+                    >View All</a
+                  >
                 </div>
-                <div class="overflow-x-auto">
-                  <table class="w-full">
-                    <thead class="bg-gray-50">
-                      <tr class="text-sm text-left text-gray-500">
-                        <th class="px-6 py-4">Course</th>
-                        <th>Students</th>
-                        <th>Room</th>
-                        <th class="pr-6">Progress</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <!-- ROW 1 -->
-                      <tr class="border-t hover:bg-gray-50">
-                        <td class="px-6 py-5">
-                          <p class="font-semibold">Database Systems</p>
-                        </td>
-                        <td>43</td>
-                        <td>A203</td>
-
-                        <td class="pr-6">
-                          <div class="flex items-center gap-3">
-                            <div class="flex-1 h-2 rounded-full bg-gray-200">
-                              <div
-                                class="w-[82%] h-2 rounded-full bg-blue-600"
-                              ></div>
-                            </div>
-                            <span class="text-xs"> 82% </span>
-                          </div>
-                        </td>
-                      </tr>
-
-                      <!-- ROW 2 -->
-                      <tr class="border-t hover:bg-gray-50">
-                        <td class="px-6 py-4 font-medium">
-                          Object Oriented Programming
-                        </td>
-                        <td>38</td>
-                        <td>B105</td>
-                        <td>
-                          <div class="flex items-center gap-2">
-                            <div class="w-24 h-2 rounded-full bg-yellow-200">
-                              <div
-                                class="w-[68%] h-2 rounded-full bg-green-500"
-                              ></div>
-                            </div>
-                            <span class="text-xs"> 68% </span>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr class="border-t hover:bg-gray-50">
-                        <td class="px-6 py-4 font-medium">Web Development</td>
-                        <td>51</td>
-                        <td>C302</td>
-                        <td>
-                          <div class="flex items-center gap-2">
-                            <div class="w-24 h-2 rounded-full bg-gray-200">
-                              <div
-                                class="w-[91%] h-2 rounded-full bg-purple-500"
-                              ></div>
-                            </div>
-                            <span class="text-xs"> 91% </span>
-                          </div>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-              <!-- ================= Today's Schedule ================= -->
-
-              <div class="bg-white rounded-2xl border border-gray-200">
-                <div
-                  class="flex items-center justify-between px-6 py-5 border-b"
-                >
-                  <h2 class="text-lg font-semibold">Today's Schedule</h2>
-
-                  <i class="fa-regular fa-calendar text-blue-600"></i>
-                </div>
-
-                <div class="p-5 space-y-4">
-                  <!-- Item -->
-
-                  <div class="flex gap-4">
-                    <div
-                      class="w-14 h-14 rounded-xl bg-blue-100 text-blue-700 flex flex-col items-center justify-center"
+                <div class="divide-y divide-surface-variant">
+                  <div
+                    class="p-md hover:bg-surface-bright transition-colors cursor-pointer"
+                  >
+                    <h4
+                      class="text-body-lg font-body-lg font-medium text-on-surface mb-xs"
                     >
-                      <span class="text-xs font-medium">09:30</span>
-                    </div>
-
-                    <div class="flex-1">
-                      <h3 class="font-semibold text-sm">Database Systems</h3>
-
-                      <p class="text-xs text-gray-500 mt-1">Room A203</p>
-                    </div>
+                      Final Exam Schedule Published
+                    </h4>
+                    <p
+                      class="text-body-md font-body-md text-on-surface-variant"
+                    >
+                      The final examination timetable has been released. Please
+                      check your student portal for exact times and locations.
+                    </p>
                   </div>
-
-                  <!-- Item -->
-
-                  <div class="flex gap-4">
-                    <div
-                      class="w-14 h-14 rounded-xl bg-green-100 text-green-700 flex flex-col items-center justify-center"
+                  <div
+                    class="p-md hover:bg-surface-bright transition-colors cursor-pointer"
+                  >
+                    <h4
+                      class="text-body-lg font-body-lg font-medium text-on-surface mb-xs"
                     >
-                      <span class="text-xs font-medium">13:00</span>
-                    </div>
-
-                    <div class="flex-1">
-                      <h3 class="font-semibold text-sm">Web Development</h3>
-
-                      <p class="text-xs text-gray-500 mt-1">Lab C302</p>
-                    </div>
+                      Grade Submission Deadline
+                    </h4>
+                    <p
+                      class="text-body-md font-body-md text-on-surface-variant"
+                    >
+                      Please submit all remaining assignments and project grades
+                      before June 30th to ensure processing.
+                    </p>
                   </div>
-
-                  <!-- Item -->
-
-                  <div class="flex gap-4">
-                    <div
-                      class="w-14 h-14 rounded-xl bg-purple-100 text-purple-700 flex flex-col items-center justify-center"
+                  <div
+                    class="p-md hover:bg-surface-bright transition-colors cursor-pointer"
+                  >
+                    <h4
+                      class="text-body-lg font-body-lg font-medium text-on-surface mb-xs"
                     >
-                      <span class="text-xs font-medium">15:30</span>
-                    </div>
-
-                    <div class="flex-1">
-                      <h3 class="font-semibold text-sm">Office Hours</h3>
-
-                      <p class="text-xs text-gray-500 mt-1">Faculty Office</p>
-                    </div>
+                      Faculty Meeting - IT Department
+                    </h4>
+                    <p
+                      class="text-body-md font-body-md text-on-surface-variant"
+                    >
+                      Friday 09:00 AM - Meeting Room A. Attendance is mandatory
+                      for all senior year students presenting their capstone.
+                    </p>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-
-        <!-- ================= Bottom Section ================= -->
-
-        <div class="grid grid-cols-3 gap-5 mt-6">
-          <!-- Announcements -->
-
-          <div class="col-span-3 bg-white rounded-2xl border border-gray-200">
-            <div class="flex items-center justify-between px-6 py-5 border-b">
-              <h2 class="text-lg font-semibold">Recent Announcements</h2>
-
-              <button class="text-sm text-blue-600 hover:underline">
-                View All
-              </button>
-            </div>
-
-            <div class="divide-y">
-              <div class="px-6 py-5">
-                <h3 class="font-medium">Final Exam Schedule Published</h3>
-
-                <p class="text-sm text-gray-500 mt-1">
-                  The final examination timetable has been released.
-                </p>
-              </div>
-
-              <div class="px-6 py-5">
-                <h3 class="font-medium">Grade Submission Deadline</h3>
-
-                <p class="text-sm text-gray-500 mt-1">
-                  Please submit all grades before June 30.
-                </p>
-              </div>
-
-              <div class="px-6 py-5">
-                <h3 class="font-medium">Faculty Meeting</h3>
-
-                <p class="text-sm text-gray-500 mt-1">
-                  Friday 09:00 AM - Meeting Room A.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </main>
+      </main>
+    </div>
   </body>
 </html>
