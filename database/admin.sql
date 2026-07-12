@@ -9,20 +9,21 @@ GO
 IF OBJECT_ID('dbo.Users', 'U') IS NULL
 BEGIN
     CREATE TABLE Users (
-        UserID NVARCHAR(20) PRIMARY KEY, -- VD: US001, US002...
-        Username NVARCHAR(50) UNIQUE NOT NULL,
-        Password NVARCHAR(50) NOT NULL,
-        Role NVARCHAR(20) CHECK (Role IN ('Student', 'Teacher', 'Admin')),
-        Status NVARCHAR(30) DEFAULT 'Active',
-        CreatedAt DATETIME DEFAULT GETDATE(),
-        
-        -- Thông tin cá nhân từ bảng Profiles cũ chuyển sang
-        FullName NVARCHAR(100) NOT NULL,
-        Email NVARCHAR(100) UNIQUE,
-        Phone NVARCHAR(20),
-        Gender NVARCHAR(20),
-        DOB DATE
-    );
+    UserID NVARCHAR(20) PRIMARY KEY,      -- US001
+    AdminID NVARCHAR(20) NULL UNIQUE,     -- AD001 (chỉ Admin mới có)
+
+    Username NVARCHAR(50) UNIQUE NOT NULL,
+    Password NVARCHAR(50) NOT NULL,
+    Role NVARCHAR(20) CHECK (Role IN ('Student','Teacher','Admin')),
+    Status NVARCHAR(30) DEFAULT 'Active',
+    CreatedAt DATETIME DEFAULT GETDATE(),
+
+    FullName NVARCHAR(100) NOT NULL,
+    Email NVARCHAR(100) UNIQUE,
+    Phone NVARCHAR(20),
+    Gender NVARCHAR(20),
+    DOB DATE
+);
 END;
 GO
 
@@ -140,10 +141,82 @@ GO
 --------------------------------------------------------------------------------
 -- 1. NẠP DỮ LIỆU BẢNG: Users (25 Users: 2 Admin, 5 Teacher, 18 Student)
 --------------------------------------------------------------------------------
-INSERT INTO Users (UserID, Username, Password, Role, Status, FullName, Email, Phone, Gender, DOB) VALUES
--- Admins
-('US_AD01', 'admin01', 'admin123', 'Admin', 'Active', N'Nguyễn Văn Quản Lý', 'admin01@school.edu.vn', '0901234561', N'Nam', '1985-05-20'),
-('US_AD02', 'admin02', 'admin123', 'Admin', 'Active', N'Lê Thị Hoàng Yến', 'admin02@school.edu.vn', '0901234562', N'Nữ', '1988-11-12'),
+DECLARE @UserID NVARCHAR(20);
+DECLARE @AdminID NVARCHAR(20);
+
+-- Sinh UserID
+SELECT @UserID =
+'US' + RIGHT('000' +
+CAST(ISNULL(MAX(CAST(SUBSTRING(UserID,3,LEN(UserID)) AS INT)),0)+1 AS VARCHAR(3)),3)
+FROM Users;
+
+-- Sinh AdminID
+SELECT @AdminID =
+'AD' + RIGHT('000' +
+CAST(ISNULL(MAX(CAST(SUBSTRING(AdminID,3,LEN(AdminID)) AS INT)),0)+1 AS VARCHAR(3)),3)
+FROM Users
+WHERE AdminID IS NOT NULL;
+
+INSERT INTO Users
+(
+    UserID,
+    AdminID,
+    Username,
+    Password,
+    Role,
+    FullName,
+    Email,
+    Phone,
+    Gender,
+    DOB
+)
+VALUES
+(
+    @UserID,
+    @AdminID,
+    'admin01',
+    'admin123',
+    'Admin',
+    N'Nguyễn Văn Quản Lý',
+    'admin01@school.edu.vn',
+    '0901234561',
+    N'Nam',
+    '1985-05-20'
+);
+
+SELECT @AdminID =
+'AD' + RIGHT('000' +
+CAST(ISNULL(MAX(CAST(SUBSTRING(AdminID,3,LEN(AdminID)) AS INT)),0)+1 AS VARCHAR(3)),3)
+FROM Users
+WHERE AdminID IS NOT NULL;
+
+INSERT INTO Users
+(
+    UserID,
+    AdminID,
+    Username,
+    Password,
+    Role,
+    Status,
+    FullName,
+    Email,
+    Phone,
+    Gender,
+    DOB
+)
+VALUES
+(
+    @UserID,
+    'admin02',
+    'admin123',
+    'Admin',
+    'Active',
+    N'Lê Thị Hoàng Yến',
+    'admin02@school.edu.vn',
+    '0901234562',
+    N'Nữ',
+    '1988-11-12'
+);
 
 INSERT INTO Departments (DepartmentName) VALUES
 (N'Computer Science'),
