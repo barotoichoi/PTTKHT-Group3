@@ -1,13 +1,8 @@
-﻿/*=========================================================
-    TEACHER.SQL: Insert Data for Teachers
-    Order: Users -> Departments -> Teachers -> Courses -> Classes -> ClassSchedules
-=========================================================*/
-
 USE StudentManagement;
 GO
 
 /*=========================================================
-    1. INSERT INTO USERS (Teachers)
+    USERS (Teacher)
 =========================================================*/
 
 INSERT INTO Users
@@ -16,7 +11,6 @@ INSERT INTO Users
     Username,
     Password,
     Role,
-    Status,
     FullName,
     Email,
     Phone,
@@ -24,87 +18,19 @@ INSERT INTO Users
     DOB
 )
 VALUES
-(
-    'T001',
-    'nguyenthong',
-    'pass123456',
-    'Teacher',
-    'Active',
-    N'Nguyễn Thông',
-    'nguyenthong@school.edu',
-    '0912345678',
-    N'Nam',
-    '1980-05-15'
-),
-(
-    'T002',
-    'phuongtrinh',
-    'pass123456',
-    'Teacher',
-    'Active',
-    N'Phương Trinh',
-    'phuongtrinh@school.edu',
-    '0912345679',
-    N'Nữ',
-    '1985-03-22'
-),
-(
-    'T003',
-    'hungquang',
-    'pass123456',
-    'Teacher',
-    'Active',
-    N'Hùng Quang',
-    'hungquang@school.edu',
-    '0912345680',
-    N'Nam',
-    '1982-07-10'
-),
-(
-    'T004',
-    'linhduc',
-    'pass123456',
-    'Teacher',
-    'Active',
-    N'Linh Đức',
-    'linhduc@school.edu',
-    '0912345681',
-    N'Nữ',
-    '1988-01-30'
-),
-(
-    'T005',
-    'minh_khanh',
-    'pass123456',
-    'Teacher',
-    'Active',
-    N'Minh Khánh',
-    'minh.khanh@school.edu',
-    '0912345682',
-    N'Nam',
-    '1986-11-05'
-);
+('U_T001','teacher01','123456','Teacher',
+N'Nguyen Van An','an@university.edu','0901000001','Male','1985-03-15'),
+
+('U_T002','teacher02','123456','Teacher',
+N'Tran Thi Binh','binh@university.edu','0901000002','Female','1988-07-21'),
+
+('U_T003','teacher03','123456','Teacher',
+N'Le Minh Chau','chau@university.edu','0901000003','Male','1982-11-05');
 GO
 
-/*=========================================================
-    2. INSERT INTO DEPARTMENTS (if not already exists)
-=========================================================*/
-
-IF NOT EXISTS (SELECT 1 FROM Departments WHERE DepartmentName = N'Khoa Toán')
-    INSERT INTO Departments (DepartmentName) VALUES (N'Khoa Toán');
-
-IF NOT EXISTS (SELECT 1 FROM Departments WHERE DepartmentName = N'Khoa Lý')
-    INSERT INTO Departments (DepartmentName) VALUES (N'Khoa Lý');
-
-IF NOT EXISTS (SELECT 1 FROM Departments WHERE DepartmentName = N'Khoa Hóa')
-    INSERT INTO Departments (DepartmentName) VALUES (N'Khoa Hóa');
-
-IF NOT EXISTS (SELECT 1 FROM Departments WHERE DepartmentName = N'Khoa Văn')
-    INSERT INTO Departments (DepartmentName) VALUES (N'Khoa Văn');
-GO
 
 /*=========================================================
-    3. INSERT INTO TEACHERS
+    TEACHERS
 =========================================================*/
 
 INSERT INTO Teachers
@@ -115,90 +41,14 @@ INSERT INTO Teachers
     Title
 )
 VALUES
-(
-    'T001',
-    'T001',
-    (SELECT DepartmentID FROM Departments WHERE DepartmentName = N'Khoa Toán'),
-    N'Tiến sĩ'
-),
-(
-    'T002',
-    'T002',
-    (SELECT DepartmentID FROM Departments WHERE DepartmentName = N'Khoa Lý'),
-    N'Thạc sĩ'
-),
-(
-    'T003',
-    'T003',
-    (SELECT DepartmentID FROM Departments WHERE DepartmentName = N'Khoa Hóa'),
-    N'Tiến sĩ'
-),
-(
-    'T004',
-    'T004',
-    (SELECT DepartmentID FROM Departments WHERE DepartmentName = N'Khoa Văn'),
-    N'Thạc sĩ'
-),
-(
-    'T005',
-    'T005',
-    (SELECT DepartmentID FROM Departments WHERE DepartmentName = N'Khoa Toán'),
-    N'Giảng viên'
-);
+('GV001','U_T001',1,N'Lecturer'),
+('GV002','U_T002',2,N'Senior Lecturer'),
+('GV003','U_T003',3,N'Professor');
 GO
 
-/*=========================================================
-    4. INSERT INTO COURSES
-=========================================================*/
-
-INSERT INTO Courses
-(
-    CourseID,
-    CourseName,
-    DepartmentID,
-    Credits
-)
-VALUES
-(
-    'MATH101',
-    N'Giải tích 1',
-    (SELECT DepartmentID FROM Departments WHERE DepartmentName = N'Khoa Toán'),
-    3
-),
-(
-    'MATH102',
-    N'Đại số tuyến tính',
-    (SELECT DepartmentID FROM Departments WHERE DepartmentName = N'Khoa Toán'),
-    3
-),
-(
-    'PHYS101',
-    N'Vật lý 1',
-    (SELECT DepartmentID FROM Departments WHERE DepartmentName = N'Khoa Lý'),
-    3
-),
-(
-    'CHEM101',
-    N'Hóa học 1',
-    (SELECT DepartmentID FROM Departments WHERE DepartmentName = N'Khoa Hóa'),
-    3
-),
-(
-    'LIT101',
-    N'Văn học 1',
-    (SELECT DepartmentID FROM Departments WHERE DepartmentName = N'Khoa Văn'),
-    3
-),
-(
-    'MATH201',
-    N'Tích phân',
-    (SELECT DepartmentID FROM Departments WHERE DepartmentName = N'Khoa Toán'),
-    3
-);
-GO
 
 /*=========================================================
-    5. INSERT INTO CLASSES
+    CLASSES
 =========================================================*/
 
 INSERT INTO Classes
@@ -210,52 +60,15 @@ INSERT INTO Classes
     MaxCapacity
 )
 VALUES
-(
-    'C001',
-    'MATH101',
-    'T001',
-    N'2024-1',
-    40
-),
-(
-    'C002',
-    'MATH102',
-    'T001',
-    N'2024-1',
-    40
-),
-(
-    'C003',
-    'PHYS101',
-    'T002',
-    N'2024-1',
-    35
-),
-(
-    'C004',
-    'CHEM101',
-    'T003',
-    N'2024-1',
-    35
-),
-(
-    'C005',
-    'LIT101',
-    'T004',
-    N'2024-1',
-    40
-),
-(
-    'C006',
-    'MATH201',
-    'T005',
-    N'2024-1',
-    30
-);
+('CLS001','CS101','GV001','Fall 2026',40),
+('CLS002','CS102','GV001','Fall 2026',40),
+('CLS003','BA101','GV002','Fall 2026',35),
+('CLS004','EN101','GV003','Fall 2026',30);
 GO
 
+
 /*=========================================================
-    6. INSERT INTO CLASS SCHEDULES
+    CLASS SCHEDULES
 =========================================================*/
 
 INSERT INTO ClassSchedules
@@ -266,83 +79,15 @@ INSERT INTO ClassSchedules
     Room
 )
 VALUES
-(
-    'C001',
-    N'Thứ 2',
-    '08:00-09:30',
-    N'Phòng 101'
-),
-(
-    'C001',
-    N'Thứ 4',
-    '08:00-09:30',
-    N'Phòng 101'
-),
-(
-    'C002',
-    N'Thứ 3',
-    '10:00-11:30',
-    N'Phòng 102'
-),
-(
-    'C002',
-    N'Thứ 5',
-    '10:00-11:30',
-    N'Phòng 102'
-),
-(
-    'C003',
-    N'Thứ 2',
-    '13:00-14:30',
-    N'Phòng 201'
-),
-(
-    'C003',
-    N'Thứ 5',
-    '13:00-14:30',
-    N'Phòng 201'
-),
-(
-    'C004',
-    N'Thứ 3',
-    '14:45-16:15',
-    N'Phòng 202'
-),
-(
-    'C004',
-    N'Thứ 6',
-    '14:45-16:15',
-    N'Phòng 202'
-),
-(
-    'C005',
-    N'Thứ 2',
-    '16:30-18:00',
-    N'Phòng 301'
-),
-(
-    'C005',
-    N'Thứ 4',
-    '16:30-18:00',
-    N'Phòng 301'
-),
-(
-    'C006',
-    N'Thứ 3',
-    '09:00-10:30',
-    N'Phòng 103'
-),
-(
-    'C006',
-    N'Thứ 6',
-    '09:00-10:30',
-    N'Phòng 103'
-);
-GO
+('CLS001','Monday','07:30-09:30','A101'),
+('CLS001','Wednesday','07:30-09:30','A101'),
 
-/*=========================================================
-    DONE: Teacher data inserted successfully
-=========================================================*/
+('CLS002','Tuesday','09:45-11:45','A102'),
+('CLS002','Thursday','09:45-11:45','A102'),
 
-PRINT N'Dữ liệu giáo viên đã được insert thành công!';
+('CLS003','Monday','13:00-15:00','B201'),
+('CLS003','Friday','13:00-15:00','B201'),
+
+('CLS004','Tuesday','15:15-17:15','C301'),
+('CLS004','Thursday','15:15-17:15','C301');
 GO
