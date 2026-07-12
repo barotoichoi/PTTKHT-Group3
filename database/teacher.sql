@@ -22,16 +22,39 @@ ELSE
 BEGIN
     IF COL_LENGTH('dbo.Teachers', 'Password') IS NULL
     BEGIN
-        IF COL_LENGTH('dbo.Teachers', 'PasswordHash') IS NOT NULL
-        BEGIN
-            EXEC sp_rename 'dbo.Teachers.PasswordHash', 'Password', 'COLUMN';
-        END
-        ELSE
-        BEGIN
-            ALTER TABLE dbo.Teachers ADD Password NVARCHAR(100) NULL;
-        END;
+        ALTER TABLE dbo.Teachers ADD Password NVARCHAR(100) NULL;
     END;
 END;
+GO
+
+IF OBJECT_ID('dbo.TeacherUsers', 'U') IS NULL
+BEGIN
+    CREATE TABLE dbo.TeacherUsers (
+        UserID NVARCHAR(20) NOT NULL PRIMARY KEY,
+        TeacherID NVARCHAR(20) NOT NULL,
+        Username NVARCHAR(50) NOT NULL UNIQUE,
+        Password NVARCHAR(100) NOT NULL,
+        Role NVARCHAR(20) NOT NULL DEFAULT 'Teacher',
+        Status NVARCHAR(30) NOT NULL DEFAULT 'Active',
+        CONSTRAINT FK_TeacherUsers_Teachers FOREIGN KEY (TeacherID) REFERENCES dbo.Teachers(TeacherID) ON DELETE CASCADE
+    );
+END;
+GO
+
+MERGE dbo.TeacherUsers AS target
+USING (VALUES
+    ('USER_TCH001', 'TCH001', 'teacher1', 'abc123', 'Teacher', 'Active')
+) AS source (UserID,TeacherID,Username,Password,Role,Status)
+ON target.UserID = source.UserID
+WHEN MATCHED THEN UPDATE SET
+    TeacherID = source.TeacherID,
+    Username = source.Username,
+    Password = source.Password,
+    Role = source.Role,
+    Status = source.Status
+WHEN NOT MATCHED THEN
+    INSERT (UserID,TeacherID,Username,Password,Role,Status)
+    VALUES (source.UserID,source.TeacherID,source.Username,source.Password,source.Role,source.Status);
 GO
 
 IF OBJECT_ID('dbo.TeacherAssignedCourses', 'U') IS NULL
