@@ -1,0 +1,688 @@
+<!doctype html>
+<html lang="en" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Admin Dashboard - EduSync Academy</title>
+
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+    <!-- Google Font -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Material Icons -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=block"
+      rel="stylesheet"
+    />
+
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#0058BE",
+              secondary: "#64748B",
+              background: "#F7F9FB",
+              sidebar: "#0F172A",
+              card: "#FFFFFF",
+              border: "#D9DEE8",
+              success: "#10B981",
+              warning: "#F59E0B",
+              danger: "#EF4444",
+              info: "#3B82F6",
+              text: "#1E293B",
+              muted: "#64748B",
+              hover: "#1E293B",
+              light: "#F1F5F9",
+            },
+
+            borderRadius: {
+              DEFAULT: "0.125rem",
+              lg: "0.25rem",
+              xl: "0.5rem",
+              full: "0.75rem",
+            },
+            spacing: {
+              "sidebar-width": "240px",
+              "card-gap": "1.5rem",
+              gutter: "1rem",
+              "container-padding": "2rem",
+              "table-row-height": "48px",
+            },
+            fontFamily: {
+              "label-md": ["Inter"],
+              "body-md": ["Inter"],
+              "body-lg": ["Inter"],
+              "headline-lg": ["Inter"],
+              "headline-md": ["Inter"],
+              caption: ["Inter"],
+            },
+            fontSize: {
+              "label-md": [
+                "12px",
+                {
+                  lineHeight: "16px",
+                  letterSpacing: "0.02em",
+                  fontWeight: "600",
+                },
+              ],
+              "body-md": ["14px", { lineHeight: "20px", fontWeight: "400" }],
+              "body-lg": ["16px", { lineHeight: "24px", fontWeight: "400" }],
+              "headline-lg": [
+                "24px",
+                { lineHeight: "32px", fontWeight: "700" },
+              ],
+              "headline-md": [
+                "18px",
+                { lineHeight: "24px", fontWeight: "600" },
+              ],
+              caption: ["12px", { lineHeight: "16px", fontWeight: "400" }],
+            },
+          },
+        },
+      };
+    </script>
+
+    <style>
+      body {
+        font-family: Inter, sans-serif;
+        background: #f7f9fb;
+      }
+
+      .material-symbols-outlined {
+        font-variation-settings:
+          "FILL" 0,
+          "wght" 400,
+          "GRAD" 0,
+          "opsz" 24;
+      }
+
+      ::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 10px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+
+      .nav-item {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 14px 18px;
+        margin: 4px 8px;
+        color: #cbd5e1;
+        border-radius: 10px;
+        transition: 0.25s;
+      }
+
+      .nav-item:hover {
+        background: #1e293b;
+        color: white;
+      }
+
+      .nav-active {
+        background: #0058be;
+        color: white;
+        font-weight: 600;
+        box-shadow: 0 8px 18px rgba(0, 88, 190, 0.25);
+      }
+
+      .card {
+        background: white;
+        border: 1px solid #d9dee8;
+        border-radius: 12px;
+      }
+
+      .stat-icon {
+        width: 42px;
+        height: 42px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        background: #eff6ff;
+        color: #0058be;
+      }
+
+      .table-head {
+        background: #0f172a;
+
+        color: white;
+      }
+
+      .btn-primary {
+        background: #0058be;
+        color: white;
+        transition: 0.25s;
+      }
+
+      .btn-primary:hover {
+        background: #0048a0;
+      }
+
+      .btn-outline {
+        border: 1px solid #d9dee8;
+        background: white;
+        transition: 0.25s;
+      }
+
+      .btn-outline:hover {
+        background: #f8fafc;
+      }
+    </style>
+  </head>
+
+  <body class="text-text">
+    <div class="flex">
+      <aside
+        class="bg-sidebar border-r border-slate-700 w-[240px] h-screen fixed left-0 top-0 flex flex-col py-6 z-50"
+      >
+        <!-- Logo -->
+        <div class="px-6 mb-10">
+          <h1 class="text-white text-[18px] font-bold leading-tight">
+            Student Management System
+          </h1>
+
+          <p class="text-slate-400 text-[10px] mt-1">EduSync Academy</p>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="flex-1 overflow-y-auto px-2">
+          <a
+            class="hover:text-white hover:bg-slate-800 text-white font-bold rounded-lg mx-2 my-1 flex items-center px-4 py-3 gap-3 transition-all opacity-90 shadow-md"
+            href="admin.html"
+          >
+            <span class="material-symbols-outlined" data-icon="home">home</span>
+            <span class="font-body-md text-body-md">Home</span>
+          </a>
+
+          <a
+            class="bg-primary text-white font-bold rounded-lg mx-2 my-1 flex items-center px-4 py-3 gap-3 transition-all opacity-90 shadow-md"
+            href="admin_users.html"
+          >
+            <span class="material-symbols-outlined" data-icon="users"
+              >account_circle</span
+            >
+            <span class="font-body-md text-body-md">Users Management</span>
+          </a>
+
+          <a
+            class="hover:text-white hover:bg-slate-800 text-white font-bold rounded-lg mx-2 my-1 flex items-center px-4 py-3 gap-3 transition-all opacity-90 shadow-md"
+            href="admin_students.html"
+          >
+            <span class="material-symbols-outlined" data-icon="users"
+              >person</span
+            >
+            <span class="font-body-md text-body-md">Students</span>
+          </a>
+
+          <a
+            class="hover:text-white hover:bg-slate-800 text-white font-bold rounded-lg mx-2 my-1 flex items-center px-4 py-3 gap-3 transition-all opacity-90 shadow-md"
+            href="admin_teachers.html"
+          >
+            <span class="material-symbols-outlined" data-icon="users"
+              >groups</span
+            >
+            <span class="font-body-md text-body-md">Teachers</span>
+          </a>
+
+          <a
+            class="hover:text-white hover:bg-slate-800 text-white font-bold rounded-lg mx-2 my-1 flex items-center px-4 py-3 gap-3 transition-all opacity-90 shadow-md"
+            href="admin_courses.html"
+          >
+            <span class="material-symbols-outlined" data-icon="users"
+              >menu_book</span
+            >
+            <span class="font-body-md text-body-md">Courses</span>
+          </a>
+
+          <a
+            class="hover:text-white hover:bg-slate-800 text-white font-bold rounded-lg mx-2 my-1 flex items-center px-4 py-3 gap-3 transition-all opacity-90 shadow-md"
+            href="admin_classes.html"
+          >
+            <span class="material-symbols-outlined" data-icon="users"
+              >meeting_room</span
+            >
+            <span class="font-body-md text-body-md">Classes</span>
+          </a>
+
+          <a
+            class="hover:text-white hover:bg-slate-800 text-white font-bold rounded-lg mx-2 my-1 flex items-center px-4 py-3 gap-3 transition-all opacity-90 shadow-md"
+            href="admin_enrollment.html"
+          >
+            <span class="material-symbols-outlined" data-icon="users"
+              >fact_check</span
+            >
+            <span class="font-body-md text-body-md">Enrollment</span>
+          </a>
+
+          <a
+            class="hover:text-white hover:bg-slate-800 text-white font-bold rounded-lg mx-2 my-1 flex items-center px-4 py-3 gap-3 transition-all opacity-90 shadow-md"
+            href="admin_tuition.html"
+          >
+            <span class="material-symbols-outlined" data-icon="users"
+              >payments</span
+            >
+            <span class="font-body-md text-body-md">Tuition</span>
+          </a>
+
+          <a
+            class="hover:text-white hover:bg-slate-800 text-white font-bold rounded-lg mx-2 my-1 flex items-center px-4 py-3 gap-3 transition-all opacity-90 shadow-md"
+            href="admin_report.html"
+          >
+            <span class="material-symbols-outlined" data-icon="users"
+              >bar_chart</span
+            >
+            <span class="font-body-md text-body-md">Reports</span>
+          </a>
+        </nav>
+
+        <!-- Bottom -->
+        <div class="px-4 mt-auto pt-4 space-y-2">
+          <button
+            class="w-full bg-[#3b82f6] text-white flex items-center justify-center px-4 py-3 transition-colors rounded-lg mb-2 shadow-sm"
+          >
+            <span class="font-body-md text-body-md">Support Center</span>
+          </button>
+          <button
+            class="w-full text-slate-400 hover:text-white flex items-center px-4 py-3 gap-3 hover:bg-slate-800 transition-colors rounded-lg"
+          >
+            <span class="material-symbols-outlined" data-icon="logout"
+              >logout</span
+            >
+            <span class="font-body-md text-body-md">Log Out</span>
+          </button>
+        </div>
+      </aside>
+    <!-- END: Sidebar -->
+    <!-- BEGIN: Main Content Area -->
+    <div class="flex-1 flex flex-col min-h-screen ml-[240px] overflow-hidden">
+      <!-- BEGIN: Top Header -->
+      <header
+          class="fixed top-0 right-0 w-[calc(100%-240px)] z-40 bg-white border-b border-gray-200 flex justify-between items-center h-16 px-8"
+          >
+          <div class="flex items-center gap-4">
+            <span
+              class="font-headline-sm text-headline-sm font-semibold text-on-surface"
+              >EduSync Academy</span
+            >
+          </div>
+          <div class="flex items-center gap-6">
+            <div class="relative hidden md:block">
+              <span
+                class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[20px]"
+                data-icon="search"
+                >search</span
+              >
+              <input
+                class="pl-10 pr-4 py-2 bg-surface-container-low border border-outline-variant rounded-full text-body-md font-body-md focus:outline-none focus:border-primary w-64"
+                placeholder="Search..."
+                type="text"
+              />
+            </div>
+            <div class="flex items-center gap-4 text-on-surface-variant">
+              <button
+                class="hover:text-primary transition-colors hover:scale-95"
+              >
+                <span
+                  class="material-symbols-outlined"
+                  data-icon="notifications"
+                  >notifications</span
+                >
+              </button>
+              <button
+                class="hover:text-primary transition-colors hover:scale-95"
+              >
+                <span class="material-symbols-outlined" data-icon="settings"
+                  >settings</span
+                >
+              </button>
+              <div
+                class="w-8 h-8 rounded-full bg-surface-container-highest overflow-hidden border border-outline-variant ml-2"
+              >
+                <img
+                  alt="Teacher Profile Picture"
+                  class="w-full h-full object-cover"
+                  data-alt="A professional headshot of a teacher smiling warmly in a well-lit modern classroom setting, conveying trust and competence in a corporate education environment."
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuB9nqivP6SdtbfY00e0U6aII7l50YDTItHAxeewNaaGSX521TbIm1NuyR_BCtOWaBQ2d9hlrYYs4j2bTtmCwN5m-GxOjN96_DOB97SvUU4FxX7s3hoBQbROvIMM-_6DpXMSyMkJPRwIe4OCKLISuBpUxKzT6Kh2I0OueItnPBeG2moXAkX-U1eev81JqlXU_zgykv4APgxHQjIIHgUsmOJ8YWQ4f6617T5paJPOhFMqsXd8Az2n84xF7Q"
+                />
+              </div>
+            </div>
+          </div>
+        </header>
+      <!-- END: Top Header -->
+      <!-- BEGIN: Page Content -->
+      <main
+        class="flex-1 overflow-y-auto bg-gray-50 p-8 mt-16"
+        data-purpose="page-content"
+        >
+        <!-- Page Header -->
+        <div class="flex justify-between items-center mb-8">
+          <div>
+            <h2 class="text-2xl font-bold text-gray-900">Users Management</h2>
+            <p class="mt-1 text-sm text-gray-500">
+              Manage all registered users in the system.
+            </p>
+          </div>
+          <button
+            class="bg-[#0058BE] hover:bg-blue-700 text-white font-medium py-2.5 px-4 rounded-lg shadow-sm transition-colors flex items-center text-sm"
+          >
+            <i class="fa-solid fa-plus mr-2"></i>
+            Add New User
+          </button>
+        </div>
+        <!-- Users Table Card -->
+        <div
+          class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden"
+        >
+          <!-- Table Tools (Optional - e.g. filters) -->
+          <div
+            class="px-6 py-4 border-b border-gray-200 flex justify-between items-center bg-gray-50/50"
+          >
+            <div class="flex space-x-2">
+              <button
+                class="px-3 py-1.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50"
+              >
+                All Users
+              </button>
+              <button
+                class="px-3 py-1.5 text-sm font-medium text-gray-500 hover:text-gray-700"
+              >
+                Students
+              </button>
+              <button
+                class="px-3 py-1.5 text-sm font-medium text-gray-500 hover:text-gray-700"
+              >
+                Teachers
+              </button>
+              <button
+                class="px-3 py-1.5 text-sm font-medium text-gray-500 hover:text-gray-700"
+              >
+                Admins
+              </button>
+            </div>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+              <thead>
+                <tr>
+                  <th class="table-header" scope="col">User</th>
+                  <th class="table-header" scope="col">User ID</th>
+                  <th class="table-header" scope="col">Email</th>
+                  <th class="table-header" scope="col">Role</th>
+                  <th class="table-header" scope="col">Status</th>
+                  <th class="table-header text-right" scope="col">Actions</th>
+                </tr>
+              </thead>
+              <tbody class="bg-white divide-y divide-gray-100">
+                <!-- Row 1 -->
+                <tr class="hover:bg-gray-50 transition-colors">
+                  <td class="table-cell">
+                    <div class="flex items-center">
+                      <div class="flex-shrink-0 h-10 w-10">
+                        <div
+                          class="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-700 font-bold text-sm"
+                        >
+                          BH
+                        </div>
+                      </div>
+                      <div class="ml-4">
+                        <div class="text-sm font-medium text-gray-900">
+                          Bao Ha Van
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="table-cell font-mono text-gray-500">ST220015</td>
+                  <td class="table-cell text-gray-500">
+                    bao.ha@student.edusync.edu
+                  </td>
+                  <td class="table-cell">
+                    <span class="badge bg-blue-100 text-blue-800">Student</span>
+                  </td>
+                  <td class="table-cell">
+                    <span
+                      class="badge bg-status-success text-status-successText"
+                      >Active</span
+                    >
+                  </td>
+                  <td class="table-cell text-right text-sm font-medium">
+                    <button
+                      class="text-gray-400 hover:text-blue-600 mx-2 transition-colors"
+                      title="Edit"
+                    >
+                      <i class="fa-solid fa-pen"></i>
+                    </button>
+                    <button
+                      class="text-gray-400 hover:text-red-600 mx-2 transition-colors"
+                      title="Delete"
+                    >
+                      <i class="fa-solid fa-trash"></i>
+                    </button>
+                  </td>
+                </tr>
+                <!-- Row 2 -->
+                <tr class="hover:bg-gray-50 transition-colors">
+                  <td class="table-cell">
+                    <div class="flex items-center">
+                      <div class="flex-shrink-0 h-10 w-10">
+                        <div
+                          class="h-10 w-10 rounded-full bg-purple-100 flex items-center justify-center text-purple-700 font-bold text-sm"
+                        >
+                          MT
+                        </div>
+                      </div>
+                      <div class="ml-4">
+                        <div class="text-sm font-medium text-gray-900">
+                          Mr. Tran
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="table-cell font-mono text-gray-500">GV001</td>
+                  <td class="table-cell text-gray-500">
+                    tran.teacher@edusync.edu
+                  </td>
+                  <td class="table-cell">
+                    <span class="badge bg-purple-100 text-purple-800"
+                      >Teacher</span
+                    >
+                  </td>
+                  <td class="table-cell">
+                    <span
+                      class="badge bg-status-success text-status-successText"
+                      >Active</span
+                    >
+                  </td>
+                  <td class="table-cell text-right text-sm font-medium">
+                    <button
+                      class="text-gray-400 hover:text-blue-600 mx-2 transition-colors"
+                    >
+                      <i class="fa-solid fa-pen"></i>
+                    </button>
+                    <button
+                      class="text-gray-400 hover:text-red-600 mx-2 transition-colors"
+                    >
+                      <i class="fa-solid fa-trash"></i>
+                    </button>
+                  </td>
+                </tr>
+                <!-- Row 3 -->
+                <tr class="hover:bg-gray-50 transition-colors">
+                  <td class="table-cell">
+                    <div class="flex items-center">
+                      <div class="flex-shrink-0 h-10 w-10">
+                        <img
+                          alt=""
+                          class="h-10 w-10 rounded-full object-cover"
+                          src="https://lh3.googleusercontent.com/aida-public/AB6AXuCj5ytEvbjB1m6quEiTi0GNdJusiZFTILW4fE41q4Ly6PyyM-KcIHkrF_js67DRj9T0KNOfnvELI0PlMIY_DBF4ctEc_eo9TcAfGI1QIgEn_81DW0377Z1jM6Eo1wYEvh0MsXONTj_P1Hix3L2d676hfjdGxU0mEO18x94BeROr8DFEFOiwFlvsF7jeSWeCtI4J4xOPXS956wXZw0mENyKjMPP7FMOJXkfNb42_gd63YWc1XO5d34Lk"
+                        />
+                      </div>
+                      <div class="ml-4">
+                        <div class="text-sm font-medium text-gray-900">
+                          Admin
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="table-cell font-mono text-gray-500">AD001</td>
+                  <td class="table-cell text-gray-500">admin@edusync.edu</td>
+                  <td class="table-cell">
+                    <span class="badge bg-gray-800 text-white"
+                      >Administrator</span
+                    >
+                  </td>
+                  <td class="table-cell">
+                    <span
+                      class="badge bg-status-success text-status-successText"
+                      >Active</span
+                    >
+                  </td>
+                  <td class="table-cell text-right text-sm font-medium">
+                    <button
+                      class="text-gray-400 hover:text-blue-600 mx-2 transition-colors"
+                    >
+                      <i class="fa-solid fa-pen"></i>
+                    </button>
+                    <button
+                      class="text-gray-400 hover:text-red-600 mx-2 transition-colors"
+                    >
+                      <i class="fa-solid fa-trash"></i>
+                    </button>
+                  </td>
+                </tr>
+                <!-- Row 4 -->
+                <tr class="hover:bg-gray-50 transition-colors">
+                  <td class="table-cell">
+                    <div class="flex items-center">
+                      <div class="flex-shrink-0 h-10 w-10">
+                        <div
+                          class="h-10 w-10 rounded-full bg-red-100 flex items-center justify-center text-red-700 font-bold text-sm"
+                        >
+                          LN
+                        </div>
+                      </div>
+                      <div class="ml-4">
+                        <div class="text-sm font-medium text-gray-900">
+                          Le Nguyen
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="table-cell font-mono text-gray-500">ST220251</td>
+                  <td class="table-cell text-gray-500">
+                    le.nguyen@student.edusync.edu
+                  </td>
+                  <td class="table-cell">
+                    <span class="badge bg-blue-100 text-blue-800">Student</span>
+                  </td>
+                  <td class="table-cell">
+                    <span class="badge bg-status-danger text-status-dangerText"
+                      >Inactive</span
+                    >
+                  </td>
+                  <td class="table-cell text-right text-sm font-medium">
+                    <button
+                      class="text-gray-400 hover:text-blue-600 mx-2 transition-colors"
+                    >
+                      <i class="fa-solid fa-pen"></i>
+                    </button>
+                    <button
+                      class="text-gray-400 hover:text-red-600 mx-2 transition-colors"
+                    >
+                      <i class="fa-solid fa-trash"></i>
+                    </button>
+                  </td>
+                </tr>
+                <!-- Row 5 -->
+                <tr class="hover:bg-gray-50 transition-colors">
+                  <td class="table-cell">
+                    <div class="flex items-center">
+                      <div class="flex-shrink-0 h-10 w-10">
+                        <div
+                          class="h-10 w-10 rounded-full bg-green-100 flex items-center justify-center text-green-700 font-bold text-sm"
+                        >
+                          SJ
+                        </div>
+                      </div>
+                      <div class="ml-4">
+                        <div class="text-sm font-medium text-gray-900">
+                          Sarah Jenkins
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="table-cell font-mono text-gray-500">GV042</td>
+                  <td class="table-cell text-gray-500">
+                    s.jenkins@edusync.edu
+                  </td>
+                  <td class="table-cell">
+                    <span class="badge bg-purple-100 text-purple-800"
+                      >Teacher</span
+                    >
+                  </td>
+                  <td class="table-cell">
+                    <span
+                      class="badge bg-status-success text-status-successText"
+                      >Active</span
+                    >
+                  </td>
+                  <td class="table-cell text-right text-sm font-medium">
+                    <button
+                      class="text-gray-400 hover:text-blue-600 mx-2 transition-colors"
+                    >
+                      <i class="fa-solid fa-pen"></i>
+                    </button>
+                    <button
+                      class="text-gray-400 hover:text-red-600 mx-2 transition-colors"
+                    >
+                      <i class="fa-solid fa-trash"></i>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- Pagination -->
+          <div
+            class="px-6 py-4 border-t border-gray-200 flex items-center justify-between bg-white"
+          >
+            <div class="text-sm text-gray-500">
+              Showing <span class="font-medium text-gray-900">1</span> to
+              <span class="font-medium text-gray-900">5</span> of
+              <span class="font-medium text-gray-900">2,735</span> results
+            </div>
+            <div class="flex space-x-2">
+              <button
+                class="px-3 py-1 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                disabled=""
+              >
+                Previous
+              </button>
+              <button
+                class="px-3 py-1 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
+              >
+                Next
+              </button>
+            </div>
+          </div>
+        </div>
+      </main>
+      <!-- END: Page Content -->
+    </div>
+    <!-- END: Main Content Area -->
+  </body>
+</html>

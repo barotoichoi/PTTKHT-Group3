@@ -1,0 +1,575 @@
+<!doctype html>
+<html class="light" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>EduSync Academy - Student Dashboard</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "tertiary-container": "#595c5e",
+              "on-tertiary": "#ffffff",
+              "secondary-container": "#dae2fd",
+              "surface-variant": "#d3e4fe",
+              "on-secondary-fixed-variant": "#3f465c",
+              "surface-container-low": "#eff4ff",
+              "surface-container-highest": "#d3e4fe",
+              outline: "#747686",
+              "outline-variant": "#c4c5d7",
+              "on-secondary-fixed": "#131b2e",
+              "tertiary-fixed-dim": "#c4c7c9",
+              "on-surface": "#0b1c30",
+              surface: "#f8f9ff",
+              "on-background": "#0b1c30",
+              "error-container": "#ffdad6",
+              error: "#ba1a1a",
+              secondary: "#565e74",
+              "on-tertiary-fixed-variant": "#444749",
+              "secondary-fixed": "#dae2fd",
+              "primary-fixed": "#dce1ff",
+              "on-surface-variant": "#434655",
+              tertiary: "#414546",
+              "surface-dim": "#cbdbf5",
+              "tertiary-fixed": "#e0e3e5",
+              "surface-container": "#e5eeff",
+              "on-tertiary-container": "#d2d4d6",
+              "surface-container-high": "#dce9ff",
+              "on-primary-fixed": "#001551",
+              background: "#f8f9ff",
+              "surface-bright": "#f8f9ff",
+              "surface-container-lowest": "#ffffff",
+              "primary-fixed-dim": "#b7c4ff",
+              primary: "#0037b0",
+              "inverse-primary": "#b7c4ff",
+              "surface-tint": "#2151da",
+              "on-secondary-container": "#5c647a",
+              "inverse-surface": "#213145",
+              "on-primary-fixed-variant": "#0039b5",
+              "on-tertiary-fixed": "#191c1e",
+              "secondary-fixed-dim": "#bec6e0",
+              "on-secondary": "#ffffff",
+              "primary-container": "#1d4ed8",
+              "inverse-on-surface": "#eaf1ff",
+              "on-error-container": "#93000a",
+              "on-primary": "#ffffff",
+              "on-error": "#ffffff",
+              "on-primary-container": "#cad3ff",
+            },
+            borderRadius: {
+              DEFAULT: "0.125rem",
+              lg: "0.25rem",
+              xl: "0.5rem",
+              full: "0.75rem",
+            },
+            spacing: {
+              base: "4px",
+              gutter: "24px",
+              xs: "8px",
+              xl: "48px",
+              sm: "16px",
+              md: "24px",
+              "container-max": "1440px",
+              lg: "32px",
+            },
+            fontFamily: {
+              "label-md": ["Inter"],
+              "body-md": ["Inter"],
+              "body-lg": ["Inter"],
+              "headline-lg": ["Inter"],
+              "headline-md": ["Inter"],
+              caption: ["Inter"],
+            },
+            fontSize: {
+              "label-md": [
+                "12px",
+                {
+                  lineHeight: "16px",
+                  letterSpacing: "0.02em",
+                  fontWeight: "600",
+                },
+              ],
+              "body-md": ["14px", { lineHeight: "20px", fontWeight: "400" }],
+              "body-lg": ["16px", { lineHeight: "24px", fontWeight: "400" }],
+              "headline-lg": [
+                "24px",
+                { lineHeight: "32px", fontWeight: "700" },
+              ],
+              "headline-md": [
+                "18px",
+                { lineHeight: "24px", fontWeight: "600" },
+              ],
+              caption: ["12px", { lineHeight: "16px", fontWeight: "400" }],
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      .material-symbols-outlined {
+        font-variation-settings:
+          "FILL" 0,
+          "wght" 400,
+          "GRAD" 0,
+          "opsz" 24;
+      }
+      body {
+        background-color: #f7f9fb;
+      }
+      .custom-scroll::-webkit-scrollbar {
+        width: 4px;
+      }
+      .custom-scroll::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      .custom-scroll::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 10px;
+      }
+    </style>
+  </head>
+  <body class="font-body-md text-on-surface">
+    <!-- Side Navigation Bar -->
+    <aside
+      class="bg-[#0F172A] border-r border-outline-variant w-[240px] h-screen fixed left-0 top-0 flex flex-col py-6 z-50"
+    >
+      <div class="px-6 mb-10">
+        <h1
+          class="font-headline-md text-headline-md font-bold text-white tracking-tight leading-tight"
+        >
+          Welcome Back
+          <br />EduSync Academy<br />
+        </h1>
+        <p class="text-slate-400 text-[10px] font-caption mt-1">Mr.Bao</p>
+      </div>
+      <nav class="flex-1 px-2 space-y-1 overflow-y-auto custom-scroll">
+        <a
+          class="hover:text-white hover:bg-slate-800 text-white font-bold rounded-lg mx-2 my-1 flex items-center px-4 py-3 gap-3 transition-all opacity-90 shadow-md"
+          href="student.html"
+        >
+          <span class="material-symbols-outlined" data-icon="home">home</span>
+          <span class="font-body-md text-body-md">Home</span>
+        </a>
+        <a
+          class="text-slate-300 hover:text-white mx-2 my-1 flex items-center px-4 py-3 gap-3 hover:bg-slate-800 transition-colors"
+          href="student_classes.html"
+        >
+          <span class="material-symbols-outlined" data-icon="class">class</span>
+          <span class="font-body-md text-body-md">My Classes</span>
+        </a>
+        <a
+          class="text-slate-300 hover:text-white mx-2 my-1 flex items-center px-4 py-3 gap-3 hover:bg-slate-800 transition-colors"
+          href="student_schedules.html"
+        >
+          <span class="material-symbols-outlined" data-icon="calendar_today"
+            >calendar_today</span
+          >
+          <span class="font-body-md text-body-md">Schedules</span>
+        </a>
+        <a
+          class="text-slate-300 hover:text-white mx-2 my-1 flex items-center px-4 py-3 gap-3 hover:bg-slate-800 transition-colors"
+          href="student_assignments.html"
+        >
+          <span class="material-symbols-outlined" data-icon="assignment"
+            >assignment</span
+          >
+          <span class="font-body-md text-body-md">Assignments</span>
+        </a>
+        <a
+          class="text-slate-300 bg-primary mx-2 my-1 flex items-center px-4 py-3 gap-3 transition-colors"
+          href="student_grades.html"
+        >
+          <span class="material-symbols-outlined" data-icon="grade">grade</span>
+          <span class="font-body-md text-body-md">Grades</span>
+        </a>
+        <a
+          class="text-slate-300 hover:text-white mx-2 my-1 flex items-center px-4 py-3 gap-3 hover:bg-slate-800 transition-colors"
+          href="student_tuition.html"
+        >
+          <span class="material-symbols-outlined" data-icon="event_available"
+            >event_available</span
+          >
+          <span class="font-body-md text-body-md">Tuition</span>
+        </a>
+      </nav>
+      <div class="px-4 mt-auto pt-4 space-y-2">
+        <button
+          class="w-full bg-[#3b82f6] text-white flex items-center justify-center px-4 py-3 transition-colors rounded-lg mb-2 shadow-sm"
+        >
+          <span class="font-body-md text-body-md">Support Center</span>
+        </button>
+        <button
+          class="w-full text-slate-400 hover:text-white flex items-center px-4 py-3 gap-3 hover:bg-slate-800 transition-colors rounded-lg"
+        >
+          <span class="material-symbols-outlined" data-icon="logout"
+            >logout</span
+          >
+          <span class="font-body-md text-body-md">Log Out</span>
+        </button>
+      </div>
+    </aside>
+    <header
+      class="fixed top-0 w-[calc(100%-260px)] ml-[260px] h-16 bg-surface dark:bg-surface flex justify-between items-center px-lg z-40 border-b border-surface-container-highest"
+    >
+      <div class="flex items-center gap-sm">
+        <span class="font-headline-md text-headline-md text-on-surface"
+          >EduSync Academy</span
+        >
+      </div>
+      <div class="flex items-center gap-md">
+        <div class="relative hidden md:block">
+          <span
+            class="material-symbols-outlined absolute left-3 top-1/2 transform -translate-y-1/2 text-outline-variant text-sm"
+            >search</span
+          >
+          <input
+            class="pl-10 pr-4 py-2 bg-surface-container-highest border-none rounded-full text-body-md focus:ring-1 focus:ring-primary w-64 transition-all"
+            placeholder="Search..."
+            type="text"
+          />
+        </div>
+        <div class="flex items-center gap-sm text-on-surface-variant">
+          <button
+            class="p-2 hover:bg-surface-container-highest rounded-full transition-colors relative"
+          >
+            <span class="material-symbols-outlined">notifications</span>
+            <span
+              class="absolute top-1 right-1 w-2 h-2 bg-error rounded-full"
+            ></span>
+          </button>
+          <button
+            class="p-2 hover:bg-surface-container-highest rounded-full transition-colors"
+          >
+            <span class="material-symbols-outlined">settings</span>
+          </button>
+          <div
+            class="w-8 h-8 rounded-full overflow-hidden ml-2 border border-outline-variant bg-surface-container-highest flex items-center justify-center font-bold text-primary"
+          >
+            AD
+          </div>
+        </div>
+      </div>
+    </header>
+    <main class="ml-[260px] pt-[88px] px-lg pb-lg max-w-container-max">
+      <div class="mb-lg flex justify-between items-end">
+        <div>
+          <h2 class="font-display text-display text-on-surface mb-1">
+            Kết quả học tập
+          </h2>
+          <p class="font-body-md text-body-md text-on-surface-variant">
+            Tổng quan kết quả và tiến độ học tập qua các học kỳ.
+          </p>
+        </div>
+        <div class="text-right">
+          <span
+            class="font-label-sm text-label-sm text-outline uppercase tracking-wider"
+            >Cập nhật lần cuối: Vừa xong</span
+          >
+        </div>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-md mb-lg">
+        <div
+          class="bg-surface-container-lowest rounded-xl p-md border border-[#E2E8F0] card-shadow flex justify-between items-center relative overflow-hidden"
+        >
+          <div class="relative z-10">
+            <h3 class="font-headline-md text-headline-md text-on-surface mb-1">
+              Current GPA
+            </h3>
+            <div class="font-display text-display text-primary mb-2">3.45</div>
+            <span
+              class="font-label-md text-label-md text-primary-container bg-surface-container px-2 py-1 rounded-full"
+              >Xếp loại Giỏi</span
+            >
+          </div>
+          <div
+            class="w-16 h-16 rounded-lg bg-surface-container flex items-center justify-center relative z-10"
+          >
+            <span class="material-symbols-outlined text-3xl text-primary"
+              >analytics</span
+            >
+          </div>
+          <div
+            class="absolute -right-4 -bottom-4 w-32 h-32 bg-primary-fixed-dim rounded-full opacity-20 blur-xl"
+          ></div>
+        </div>
+        <div
+          class="bg-surface-container-lowest rounded-xl p-md border border-[#E2E8F0] card-shadow flex justify-between items-center relative overflow-hidden"
+        >
+          <div class="relative z-10">
+            <h3 class="font-headline-md text-headline-md text-on-surface mb-1">
+              Total Credits
+            </h3>
+            <div class="font-display text-display text-on-surface mb-2">
+              124
+              <span class="font-body-md text-body-md text-outline font-normal"
+                >/ 140</span
+              >
+            </div>
+            <div
+              class="w-48 h-2 bg-surface-container-highest rounded-full overflow-hidden mt-2"
+            >
+              <div
+                class="h-full bg-primary rounded-full"
+                style="width: 88%"
+              ></div>
+            </div>
+          </div>
+          <div
+            class="w-16 h-16 rounded-lg bg-secondary-container flex items-center justify-center relative z-10"
+          >
+            <span
+              class="material-symbols-outlined text-3xl text-on-secondary-container"
+              >local_library</span
+            >
+          </div>
+          <div
+            class="absolute -right-4 -bottom-4 w-32 h-32 bg-secondary-fixed-dim rounded-full opacity-20 blur-xl"
+          ></div>
+        </div>
+      </div>
+      <div
+        class="bg-surface-container-lowest rounded-xl p-md border border-[#E2E8F0] card-shadow mb-lg"
+      >
+        <div
+          class="flex justify-between items-center mb-md pb-sm border-b border-surface-container-highest"
+        >
+          <h3 class="font-headline-md text-headline-md text-on-surface">
+            GPA Trend
+          </h3>
+          <button
+            class="font-label-md text-label-md text-primary hover:underline"
+          >
+            Chi tiết học kỳ
+          </button>
+        </div>
+        <div
+          class="w-full h-64 bg-surface flex items-end justify-between px-4 pb-4 pt-8 rounded-lg relative overflow-hidden border border-surface-container-highest"
+        >
+          <div
+            class="absolute left-0 bottom-0 w-full h-[1px] bg-outline-variant/30 bottom-8"
+          ></div>
+          <div
+            class="absolute left-0 bottom-0 w-full h-[1px] bg-outline-variant/30 bottom-16"
+          ></div>
+          <div
+            class="absolute left-0 bottom-0 w-full h-[1px] bg-outline-variant/30 bottom-24"
+          ></div>
+          <div
+            class="absolute left-0 bottom-0 w-full h-[1px] bg-outline-variant/30 bottom-32"
+          ></div>
+          <div class="flex flex-col items-center gap-2 z-10 group">
+            <div
+              class="w-3 h-32 bg-primary/20 rounded-t-sm relative group-hover:bg-primary/40 transition-colors"
+            >
+              <div
+                class="absolute bottom-0 w-full h-[60%] bg-primary rounded-t-sm"
+              ></div>
+              <span
+                class="absolute -top-8 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 bg-inverse-surface text-inverse-on-surface text-xs py-1 px-2 rounded transition-opacity"
+                >2.8</span
+              >
+            </div>
+            <span class="font-label-sm text-label-sm text-on-surface-variant"
+              >HK1 2021</span
+            >
+          </div>
+          <div class="flex flex-col items-center gap-2 z-10 group">
+            <div
+              class="w-3 h-32 bg-primary/20 rounded-t-sm relative group-hover:bg-primary/40 transition-colors"
+            >
+              <div
+                class="absolute bottom-0 w-full h-[75%] bg-primary rounded-t-sm"
+              ></div>
+              <span
+                class="absolute -top-8 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 bg-inverse-surface text-inverse-on-surface text-xs py-1 px-2 rounded transition-opacity"
+                >3.1</span
+              >
+            </div>
+            <span class="font-label-sm text-label-sm text-on-surface-variant"
+              >HK2 2021</span
+            >
+          </div>
+          <div class="flex flex-col items-center gap-2 z-10 group">
+            <div
+              class="w-3 h-32 bg-primary/20 rounded-t-sm relative group-hover:bg-primary/40 transition-colors"
+            >
+              <div
+                class="absolute bottom-0 w-full h-[70%] bg-primary rounded-t-sm"
+              ></div>
+              <span
+                class="absolute -top-8 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 bg-inverse-surface text-inverse-on-surface text-xs py-1 px-2 rounded transition-opacity"
+                >3.0</span
+              >
+            </div>
+            <span class="font-label-sm text-label-sm text-on-surface-variant"
+              >HK1 2022</span
+            >
+          </div>
+          <div class="flex flex-col items-center gap-2 z-10 group">
+            <div
+              class="w-3 h-32 bg-primary/20 rounded-t-sm relative group-hover:bg-primary/40 transition-colors"
+            >
+              <div
+                class="absolute bottom-0 w-full h-[85%] bg-primary rounded-t-sm"
+              ></div>
+              <span
+                class="absolute -top-8 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 bg-inverse-surface text-inverse-on-surface text-xs py-1 px-2 rounded transition-opacity"
+                >3.4</span
+              >
+            </div>
+            <span class="font-label-sm text-label-sm text-on-surface-variant"
+              >HK2 2022</span
+            >
+          </div>
+          <div class="flex flex-col items-center gap-2 z-10 group">
+            <div
+              class="w-3 h-32 bg-primary/20 rounded-t-sm relative group-hover:bg-primary/40 transition-colors"
+            >
+              <div
+                class="absolute bottom-0 w-full h-[95%] bg-primary rounded-t-sm shadow-[0_0_10px_rgba(29,78,216,0.5)]"
+              ></div>
+              <span
+                class="absolute -top-8 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 bg-inverse-surface text-inverse-on-surface text-xs py-1 px-2 rounded transition-opacity"
+                >3.8</span
+              >
+            </div>
+            <span
+              class="font-label-sm text-label-sm text-on-surface-variant font-bold text-primary"
+              >HK1 2023</span
+            >
+          </div>
+        </div>
+      </div>
+      <div
+        class="bg-surface-container-lowest rounded-xl border border-[#E2E8F0] card-shadow overflow-hidden"
+      >
+        <div
+          class="p-md border-b border-surface-container-highest flex justify-between items-center bg-surface/50"
+        >
+          <h3 class="font-headline-md text-headline-md text-on-surface">
+            Bảng điểm chi tiết
+          </h3>
+          <div class="flex gap-sm">
+            <select
+              class="bg-surface border border-outline-variant rounded-md text-body-md py-1 px-3 focus:ring-primary"
+            >
+              <option>Tất cả học kỳ</option>
+              <option>Học kỳ 1, 2023-2024</option>
+              <option>Học kỳ 2, 2022-2023</option>
+            </select>
+          </div>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr
+                class="border-b border-surface-container-highest bg-surface-container-lowest"
+              >
+                <th
+                  class="p-sm font-label-md text-label-md text-on-surface-variant uppercase tracking-wider w-24"
+                >
+                  Mã Môn
+                </th>
+                <th
+                  class="p-sm font-label-md text-label-md text-on-surface-variant uppercase tracking-wider"
+                >
+                  Tên Môn Học
+                </th>
+                <th
+                  class="p-sm font-label-md text-label-md text-on-surface-variant uppercase tracking-wider text-center w-24"
+                >
+                  Tín Chỉ
+                </th>
+                <th
+                  class="p-sm font-label-md text-label-md text-on-surface-variant uppercase tracking-wider text-center w-24"
+                >
+                  Điểm Chữ
+                </th>
+              </tr>
+            </thead>
+            <tbody class="font-body-md text-body-md text-on-surface">
+              <tr
+                class="border-b border-surface-container-highest hover:bg-surface transition-colors"
+              >
+                <td class="p-sm text-outline">CS101</td>
+                <td class="p-sm font-medium">Nhập môn Lập trình</td>
+                <td class="p-sm text-center">3</td>
+                <td class="p-sm text-center">
+                  <span
+                    class="inline-flex items-center justify-center w-8 h-8 rounded bg-surface-container-highest text-primary font-bold text-sm"
+                    >A</span
+                  >
+                </td>
+              </tr>
+              <tr
+                class="border-b border-surface-container-highest hover:bg-surface transition-colors"
+              >
+                <td class="p-sm text-outline">MATH201</td>
+                <td class="p-sm font-medium">Toán rời rạc</td>
+                <td class="p-sm text-center">4</td>
+                <td class="p-sm text-center">
+                  <span
+                    class="inline-flex items-center justify-center w-8 h-8 rounded bg-secondary-container text-on-secondary-container font-bold text-sm"
+                    >B+</span
+                  >
+                </td>
+              </tr>
+              <tr
+                class="border-b border-surface-container-highest hover:bg-surface transition-colors"
+              >
+                <td class="p-sm text-outline">ENG102</td>
+                <td class="p-sm font-medium">Tiếng Anh chuyên ngành</td>
+                <td class="p-sm text-center">2</td>
+                <td class="p-sm text-center">
+                  <span
+                    class="inline-flex items-center justify-center w-8 h-8 rounded bg-surface-container-highest text-primary font-bold text-sm"
+                    >A-</span
+                  >
+                </td>
+              </tr>
+              <tr
+                class="border-b border-surface-container-highest hover:bg-surface transition-colors"
+              >
+                <td class="p-sm text-outline">CS202</td>
+                <td class="p-sm font-medium">Cấu trúc dữ liệu và Giải thuật</td>
+                <td class="p-sm text-center">4</td>
+                <td class="p-sm text-center">
+                  <span
+                    class="inline-flex items-center justify-center w-8 h-8 rounded bg-surface-container-highest text-primary font-bold text-sm"
+                    >A</span
+                  >
+                </td>
+              </tr>
+              <tr class="hover:bg-surface transition-colors">
+                <td class="p-sm text-outline">PHY101</td>
+                <td class="p-sm font-medium">Vật lý đại cương</td>
+                <td class="p-sm text-center">3</td>
+                <td class="p-sm text-center">
+                  <span
+                    class="inline-flex items-center justify-center w-8 h-8 rounded bg-tertiary-fixed text-tertiary font-bold text-sm"
+                    >C</span
+                  >
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>
