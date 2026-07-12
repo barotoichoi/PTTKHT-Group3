@@ -43,6 +43,18 @@ VALUES
 ('GV003','T003',3,N'Professor');
 GO
 
+INSERT INTO Courses
+(
+    CourseID,
+    CourseName,
+    DepartmentID,
+    Credits
+)
+VALUES
+('CS101',N'Programming Fundamentals',1,3),
+('CS102',N'Object Oriented Programming',1,3),
+('BA101',N'Principles of Business',2,3),
+('EN101',N'English Communication',3,3);
 
 /*=========================================================
     CLASSES
