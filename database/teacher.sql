@@ -22,16 +22,68 @@ ELSE
 BEGIN
     IF COL_LENGTH('dbo.Teachers', 'Password') IS NULL
     BEGIN
-        IF COL_LENGTH('dbo.Teachers', 'PasswordHash') IS NOT NULL
-        BEGIN
-            EXEC sp_rename 'dbo.Teachers.PasswordHash', 'Password', 'COLUMN';
-        END
-        ELSE
-        BEGIN
-            ALTER TABLE dbo.Teachers ADD Password NVARCHAR(100) NULL;
-        END;
+        ALTER TABLE dbo.Teachers ADD Password NVARCHAR(100) NULL;
     END;
 END;
+GO
+
+IF OBJECT_ID('dbo.Users', 'U') IS NULL
+BEGIN
+    CREATE TABLE dbo.Users (
+        UserID NVARCHAR(20) PRIMARY KEY,
+        Username NVARCHAR(50) UNIQUE NOT NULL,
+        Password NVARCHAR(50) NOT NULL,
+        Role NVARCHAR(20) CHECK (Role IN ('Student', 'Teacher', 'Admin')),
+        Status NVARCHAR(30) DEFAULT 'Active',
+        CreatedAt DATETIME DEFAULT GETDATE(),
+        FullName NVARCHAR(100) NOT NULL,
+        Email NVARCHAR(100) UNIQUE,
+        Phone NVARCHAR(20),
+        Gender NVARCHAR(20),
+        DOB DATE
+    );
+END;
+GO
+
+IF COL_LENGTH('dbo.Teachers', 'UserID') IS NULL
+BEGIN
+    ALTER TABLE dbo.Teachers ADD UserID NVARCHAR(20) NULL;
+END;
+GO
+
+IF NOT EXISTS (SELECT 1 FROM sys.foreign_keys WHERE name = 'FK_Teachers_Users')
+BEGIN
+    ALTER TABLE dbo.Teachers WITH NOCHECK
+    ADD CONSTRAINT FK_Teachers_Users
+    FOREIGN KEY (UserID) REFERENCES dbo.Users(UserID) ON DELETE CASCADE;
+END;
+GO
+
+MERGE dbo.Users AS target
+USING (VALUES
+    ('USR_TCH001', 'teacher1', 'abc123', 'Teacher', 'Active', N'Tran Minh', 'tranminh@edusync.edu.vn', '0901000001', N'Nam', '1980-01-01'),
+    ('USR_TCH002', 'teacher2', 'abc123', 'Teacher', 'Active', N'Le Hoa', 'lehoa@edusync.edu.vn', '0901000002', N'Nữ', '1985-05-12')
+) AS source (UserID,Username,Password,Role,Status,FullName,Email,Phone,Gender,DOB)
+ON target.UserID = source.UserID
+WHEN MATCHED THEN UPDATE SET
+    Username = source.Username,
+    Password = source.Password,
+    Role = source.Role,
+    Status = source.Status,
+    FullName = source.FullName,
+    Email = source.Email,
+    Phone = source.Phone,
+    Gender = source.Gender,
+    DOB = source.DOB
+WHEN NOT MATCHED THEN
+    INSERT (UserID,Username,Password,Role,Status,FullName,Email,Phone,Gender,DOB)
+    VALUES (source.UserID,source.Username,source.Password,source.Role,source.Status,source.FullName,source.Email,source.Phone,source.Gender,source.DOB);
+GO
+
+UPDATE t
+SET t.UserID = u.UserID
+FROM dbo.Teachers t
+JOIN dbo.Users u ON u.Email = t.Email OR u.Username = t.Username;
 GO
 
 IF OBJECT_ID('dbo.TeacherAssignedCourses', 'U') IS NULL
@@ -243,3 +295,6 @@ GO
 SELECT 'Teacher seed data is ready.' AS Result;
 SELECT TeacherID, Name, Email, Department, Phone, Username, Status FROM dbo.Teachers ORDER BY TeacherID;
 SELECT TeacherID, CourseID, CourseName, Semester, ClassID FROM dbo.TeacherAssignedCourses ORDER BY TeacherID, CourseID;
+
+SELECT COUNT(*) AS TotalTeachers
+FROM dbo.Teachers;
