@@ -4,11 +4,36 @@ GO
 
 USE StudentManagement;
 GO
+PRINT 'Using database: ' + DB_NAME();
+GO
+IF OBJECT_ID('dbo.Users', 'U') IS NULL
+BEGIN
+    PRINT 'Creating Users table';
+    CREATE TABLE dbo.Users (
+        UserID NVARCHAR(20) PRIMARY KEY,
+        Username NVARCHAR(50) UNIQUE NOT NULL,
+        Password NVARCHAR(50) NOT NULL,
+        Role NVARCHAR(20) CHECK (Role IN ('Student', 'Teacher', 'Admin')),
+        Status NVARCHAR(30) DEFAULT 'Active',
+        CreatedAt DATETIME DEFAULT GETDATE(),
+        FullName NVARCHAR(100) NOT NULL,
+        Email NVARCHAR(100) UNIQUE,
+        Phone NVARCHAR(20),
+        Gender NVARCHAR(20),
+        DOB DATE
+    );
+END
+ELSE
+BEGIN
+    PRINT 'Users table already exists';
+END;
+GO
 
 IF OBJECT_ID('dbo.Teachers', 'U') IS NULL
 BEGIN
     CREATE TABLE dbo.Teachers (
         TeacherID NVARCHAR(20) NOT NULL PRIMARY KEY,
+        UserID NVARCHAR(20) UNIQUE NULL,
         Name NVARCHAR(100) NOT NULL,
         Email NVARCHAR(100) NULL,
         Department NVARCHAR(100) NULL,
@@ -24,25 +49,20 @@ BEGIN
     BEGIN
         ALTER TABLE dbo.Teachers ADD Password NVARCHAR(100) NULL;
     END;
+    IF COL_LENGTH('dbo.Teachers', 'UserID') IS NULL
+    BEGIN
+        ALTER TABLE dbo.Teachers ADD UserID NVARCHAR(20) NULL;
+    END;
 END;
 GO
 
-IF OBJECT_ID('dbo.Users', 'U') IS NULL
-BEGIN
-    CREATE TABLE dbo.Users (
-        UserID NVARCHAR(20) PRIMARY KEY,
-        Username NVARCHAR(50) UNIQUE NOT NULL,
-        Password NVARCHAR(50) NOT NULL,
-        Role NVARCHAR(20) CHECK (Role IN ('Student', 'Teacher', 'Admin')),
-        Status NVARCHAR(30) DEFAULT 'Active',
-        CreatedAt DATETIME DEFAULT GETDATE(),
-        FullName NVARCHAR(100) NOT NULL,
-        Email NVARCHAR(100) UNIQUE,
-        Phone NVARCHAR(20),
-        Gender NVARCHAR(20),
-        DOB DATE
-    );
-END;
+SELECT 'Users table status:' AS Info,
+       CASE WHEN OBJECT_ID(N'dbo.Users','U') IS NOT NULL THEN 'Exists' ELSE 'Missing' END AS Status;
+GO
+
+SELECT TABLE_SCHEMA, TABLE_NAME
+FROM INFORMATION_SCHEMA.TABLES
+WHERE TABLE_NAME = 'Users';
 GO
 
 IF COL_LENGTH('dbo.Teachers', 'UserID') IS NULL
@@ -59,10 +79,37 @@ BEGIN
 END;
 GO
 
+WITH UniqueTeachers AS (
+    SELECT
+        t.TeacherID,
+        t.Name,
+        t.Email,
+        t.Phone,
+        t.Username,
+        t.Password,
+        t.Status,
+        ROW_NUMBER() OVER (
+            PARTITION BY COALESCE(NULLIF(t.Email, ''), NULLIF(t.Username, ''), t.TeacherID)
+            ORDER BY t.TeacherID
+        ) AS rn
+    FROM dbo.Teachers t
+    WHERE t.TeacherID IS NOT NULL
+)
 MERGE dbo.Users AS target
-USING (VALUES
-    ('USR_TCH001', 'teacher1', 'abc123', 'Teacher', 'Active', N'Tran Minh', 'tranminh@edusync.edu.vn', '0901000001', N'Nam', '1980-01-01'),
-    ('USR_TCH002', 'teacher2', 'abc123', 'Teacher', 'Active', N'Le Hoa', 'lehoa@edusync.edu.vn', '0901000002', N'Nữ', '1985-05-12')
+USING (
+    SELECT
+        'USR_' + TeacherID AS UserID,
+        COALESCE(NULLIF(Username, ''), 'teacher' + RIGHT('000' + CAST(SUBSTRING(TeacherID, 4, 10) AS NVARCHAR(10)), 3)) AS Username,
+        COALESCE(NULLIF(Password, ''), 'changeme') AS Password,
+        'Teacher' AS Role,
+        COALESCE(NULLIF(Status, ''), 'Active') AS Status,
+        Name AS FullName,
+        Email,
+        Phone,
+        NULL AS Gender,
+        NULL AS DOB
+    FROM UniqueTeachers
+    WHERE rn = 1
 ) AS source (UserID,Username,Password,Role,Status,FullName,Email,Phone,Gender,DOB)
 ON target.UserID = source.UserID
 WHEN MATCHED THEN UPDATE SET
@@ -83,7 +130,13 @@ GO
 UPDATE t
 SET t.UserID = u.UserID
 FROM dbo.Teachers t
-JOIN dbo.Users u ON u.Email = t.Email OR u.Username = t.Username;
+JOIN dbo.Users u ON u.Email = t.Email OR u.Username = t.Username
+WHERE t.UserID IS NULL;
+GO
+
+SELECT 'Users table rows' AS Info, COUNT(*) AS TotalUsers FROM dbo.Users;
+GO
+SELECT TOP 50 * FROM dbo.Users ORDER BY UserID;
 GO
 
 IF OBJECT_ID('dbo.TeacherAssignedCourses', 'U') IS NULL
@@ -100,10 +153,21 @@ BEGIN
 END;
 GO
 
+IF OBJECT_ID('dbo.TeacherAssignedCourses', 'U') IS NOT NULL
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'UQ_TeacherAssignedCourses_ClassID' AND object_id = OBJECT_ID('dbo.TeacherAssignedCourses'))
+    BEGIN
+        ALTER TABLE dbo.TeacherAssignedCourses
+        ADD CONSTRAINT UQ_TeacherAssignedCourses_ClassID UNIQUE (ClassID);
+    END;
+END;
+GO
+
 IF OBJECT_ID('dbo.TeacherClassStudents', 'U') IS NULL
 BEGIN
     CREATE TABLE dbo.TeacherClassStudents (
         ClassStudentID INT IDENTITY(1,1) PRIMARY KEY,
+        TeacherID NVARCHAR(20) NULL,
         ClassID NVARCHAR(20) NOT NULL,
         StudentID NVARCHAR(20) NOT NULL,
         Name NVARCHAR(100) NOT NULL,
@@ -112,6 +176,24 @@ BEGIN
         CONSTRAINT UQ_TeacherClassStudent UNIQUE (ClassID, StudentID)
     );
 END;
+GO
+
+IF COL_LENGTH('dbo.TeacherClassStudents', 'TeacherID') IS NULL
+BEGIN
+    ALTER TABLE dbo.TeacherClassStudents ADD TeacherID NVARCHAR(20) NULL;
+END;
+GO
+
+IF NOT EXISTS (SELECT 1 FROM sys.foreign_keys WHERE name = 'FK_TeacherClassStudents_Teachers')
+    ALTER TABLE dbo.TeacherClassStudents WITH NOCHECK
+    ADD CONSTRAINT FK_TeacherClassStudents_Teachers
+    FOREIGN KEY (TeacherID) REFERENCES dbo.Teachers(TeacherID) ON DELETE NO ACTION;
+GO
+
+IF NOT EXISTS (SELECT 1 FROM sys.foreign_keys WHERE name = 'FK_TeacherClassStudents_ClassID')
+    ALTER TABLE dbo.TeacherClassStudents WITH NOCHECK
+    ADD CONSTRAINT FK_TeacherClassStudents_ClassID
+    FOREIGN KEY (ClassID) REFERENCES dbo.TeacherAssignedCourses(ClassID) ON DELETE NO ACTION;
 GO
 
 IF OBJECT_ID('dbo.TeacherSchedules', 'U') IS NULL
@@ -246,6 +328,13 @@ WHEN MATCHED THEN UPDATE SET Name=source.Name, Major=source.Major, Email=source.
 WHEN NOT MATCHED THEN
     INSERT (ClassID,StudentID,Name,Major,Email)
     VALUES (source.ClassID,source.StudentID,source.Name,source.Major,source.Email);
+GO
+
+UPDATE tcs
+SET tcs.TeacherID = tac.TeacherID
+FROM dbo.TeacherClassStudents tcs
+JOIN dbo.TeacherAssignedCourses tac ON tcs.ClassID = tac.ClassID
+WHERE tcs.TeacherID IS NULL;
 GO
 
 IF NOT EXISTS (SELECT 1 FROM dbo.TeacherSchedules WHERE TeacherID='TCH001' AND CourseID='CS101' AND ClassID='CS101-A')
