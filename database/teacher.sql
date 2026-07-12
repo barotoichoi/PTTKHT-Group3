@@ -266,3 +266,6 @@ GO
 SELECT 'Teacher seed data is ready.' AS Result;
 SELECT TeacherID, Name, Email, Department, Phone, Username, Status FROM dbo.Teachers ORDER BY TeacherID;
 SELECT TeacherID, CourseID, CourseName, Semester, ClassID FROM dbo.TeacherAssignedCourses ORDER BY TeacherID, CourseID;
+
+SELECT COUNT(*) AS TotalTeachers
+FROM dbo.Teachers;
