@@ -61,6 +61,36 @@ app.get("/teachers/:id", async (req, res) => {
   }
 });
 
+//get all teacher
+app.get("/api/teachers/count", async (req, res) => {
+  try {
+    const result = await sql.query(`
+        SELECT COUNT(*) AS TotalTeachers
+        FROM Teachers
+    `);
+
+    res.json(result.recordset[0]);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send(err.message);
+  }
+});
+
+//get all student
+app.get("/api/students/count", async (req, res) => {
+  try {
+    const result = await sql.query(`
+        SELECT COUNT(*) AS TotalStudents
+        FROM Students
+    `);
+
+    res.json(result.recordset[0]);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send(err.message);
+  }
+});
+
 app.listen(3000, () => {
   console.log("Server running at http://localhost:3000");
 });
