@@ -1,8 +1,8 @@
-IF DB_ID('TeacherManagement') IS NULL
-    CREATE DATABASE TeacherManagement;
+IF DB_ID('StudentManagement') IS NULL
+    CREATE DATABASE StudentManagement;
 GO
 
-USE TeacherManagement;
+USE StudentManagement;
 GO
 
 IF OBJECT_ID('dbo.Teachers', 'U') IS NULL
@@ -118,31 +118,31 @@ GO
 IF NOT EXISTS (SELECT 1 FROM sys.foreign_keys WHERE name = 'FK_TeacherAssignedCourses_Teachers')
     ALTER TABLE dbo.TeacherAssignedCourses WITH NOCHECK
     ADD CONSTRAINT FK_TeacherAssignedCourses_Teachers
-    FOREIGN KEY (TeacherID) REFERENCES dbo.Teachers(TeacherID);
+    FOREIGN KEY (TeacherID) REFERENCES dbo.Teachers(TeacherID) ON DELETE CASCADE;
 GO
 
 IF NOT EXISTS (SELECT 1 FROM sys.foreign_keys WHERE name = 'FK_TeacherSchedules_Teachers')
     ALTER TABLE dbo.TeacherSchedules WITH NOCHECK
     ADD CONSTRAINT FK_TeacherSchedules_Teachers
-    FOREIGN KEY (TeacherID) REFERENCES dbo.Teachers(TeacherID);
+    FOREIGN KEY (TeacherID) REFERENCES dbo.Teachers(TeacherID) ON DELETE CASCADE;
 GO
 
 IF NOT EXISTS (SELECT 1 FROM sys.foreign_keys WHERE name = 'FK_TeacherScores_Teachers')
     ALTER TABLE dbo.TeacherScores WITH NOCHECK
     ADD CONSTRAINT FK_TeacherScores_Teachers
-    FOREIGN KEY (TeacherID) REFERENCES dbo.Teachers(TeacherID);
+    FOREIGN KEY (TeacherID) REFERENCES dbo.Teachers(TeacherID) ON DELETE CASCADE;
 GO
 
 IF NOT EXISTS (SELECT 1 FROM sys.foreign_keys WHERE name = 'FK_TeacherCourseContents_Teachers')
     ALTER TABLE dbo.TeacherCourseContents WITH NOCHECK
     ADD CONSTRAINT FK_TeacherCourseContents_Teachers
-    FOREIGN KEY (TeacherID) REFERENCES dbo.Teachers(TeacherID);
+    FOREIGN KEY (TeacherID) REFERENCES dbo.Teachers(TeacherID) ON DELETE CASCADE;
 GO
 
 IF NOT EXISTS (SELECT 1 FROM sys.foreign_keys WHERE name = 'FK_TeacherNotifications_Teachers')
     ALTER TABLE dbo.TeacherNotifications WITH NOCHECK
     ADD CONSTRAINT FK_TeacherNotifications_Teachers
-    FOREIGN KEY (TeacherID) REFERENCES dbo.Teachers(TeacherID);
+    FOREIGN KEY (TeacherID) REFERENCES dbo.Teachers(TeacherID) ON DELETE CASCADE;
 GO
 
 MERGE dbo.Teachers AS target
