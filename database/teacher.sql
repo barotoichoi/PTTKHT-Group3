@@ -57,10 +57,10 @@ INSERT INTO Courses
     Credits
 )
 VALUES
-('CS101', N'Programming Fundamentals', 1, 3),
-('CS102', N'Database Systems', 1, 3),
-('BA101', N'Business Management', 2, 3),
-('EN101', N'English Communication', 3, 3);
+('CS101', N'Programming Fundamentals', NULL, 3),
+('CS102', N'Database Systems', NULL, 3),
+('BA101', N'Business Management', NULL, 3),
+('EN101', N'English Communication', NULL, 3);
 GO
 
 /*=========================================================
