@@ -1,389 +1,92 @@
-IF DB_ID('StudentManagement') IS NULL
-    CREATE DATABASE StudentManagement;
-GO
+/*=========================================================
+    TEACHER.SQL: Insert Data for Teachers
+    Order: Users -> Teachers -> Classes -> ClassSchedules
+=========================================================*/
 
 USE StudentManagement;
 GO
-PRINT 'Using database: ' + DB_NAME();
-GO
-IF OBJECT_ID('dbo.Users', 'U') IS NULL
-BEGIN
-    PRINT 'Creating Users table';
-    CREATE TABLE dbo.Users (
-        UserID NVARCHAR(20) PRIMARY KEY,
-        Username NVARCHAR(50) UNIQUE NOT NULL,
-        Password NVARCHAR(50) NOT NULL,
-        Role NVARCHAR(20) CHECK (Role IN ('Student', 'Teacher', 'Admin')),
-        Status NVARCHAR(30) DEFAULT 'Active',
-        CreatedAt DATETIME DEFAULT GETDATE(),
-        FullName NVARCHAR(100) NOT NULL,
-        Email NVARCHAR(100) UNIQUE,
-        Phone NVARCHAR(20),
-        Gender NVARCHAR(20),
-        DOB DATE
-    );
-END
-ELSE
-BEGIN
-    PRINT 'Users table already exists';
-END;
+
+/*=========================================================
+    1. INSERT INTO USERS (Teachers)
+=========================================================*/
+
+INSERT INTO Users (UserID, Username, Password, Role, Status, FullName, Email, Phone, Gender, DOB)
+VALUES
+    ('T001', 'nguyenthong', 'pass123456', 'Teacher', 'Active', N'Nguyễn Thông', 'nguyenthong@school.edu', '0912345678', N'Nam', '1980-05-15'),
+    ('T002', 'phuongtrinh', 'pass123456', 'Teacher', 'Active', N'Phương Trinh', 'phuongtrinh@school.edu', '0912345679', N'Nữ', '1985-03-22'),
+    ('T003', 'hungquang', 'pass123456', 'Teacher', 'Active', N'Hùng Quang', 'hungquang@school.edu', '0912345680', N'Nam', '1982-07-10'),
+    ('T004', 'linhduc', 'pass123456', 'Teacher', 'Active', N'Linh Đức', 'linhduc@school.edu', '0912345681', N'Nữ', '1988-01-30'),
+    ('T005', 'minh_khanh', 'pass123456', 'Teacher', 'Active', N'Minh Khánh', 'minh.khanh@school.edu', '0912345682', N'Nam', '1986-11-05');
 GO
 
-IF OBJECT_ID('dbo.Teachers', 'U') IS NULL
-BEGIN
-    CREATE TABLE dbo.Teachers (
-        TeacherID NVARCHAR(20) NOT NULL PRIMARY KEY,
-        UserID NVARCHAR(20) UNIQUE NULL,
-        Name NVARCHAR(100) NOT NULL,
-        Email NVARCHAR(100) NULL,
-        Department NVARCHAR(100) NULL,
-        Phone NVARCHAR(20) NULL,
-        Username NVARCHAR(50) NULL,
-        Password NVARCHAR(100) NULL,
-        Status NVARCHAR(30) NOT NULL DEFAULT 'Active'
-    );
-END;
-ELSE
-BEGIN
-    IF COL_LENGTH('dbo.Teachers', 'Password') IS NULL
-    BEGIN
-        ALTER TABLE dbo.Teachers ADD Password NVARCHAR(100) NULL;
-    END;
-    IF COL_LENGTH('dbo.Teachers', 'UserID') IS NULL
-    BEGIN
-        ALTER TABLE dbo.Teachers ADD UserID NVARCHAR(20) NULL;
-    END;
-END;
+/*=========================================================
+    2. INSERT INTO DEPARTMENTS (if not already exists)
+=========================================================*/
+
+IF NOT EXISTS (SELECT 1 FROM Departments WHERE DepartmentName = N'Khoa Toán')
+    INSERT INTO Departments (DepartmentName) VALUES (N'Khoa Toán');
+
+IF NOT EXISTS (SELECT 1 FROM Departments WHERE DepartmentName = N'Khoa Lý')
+    INSERT INTO Departments (DepartmentName) VALUES (N'Khoa Lý');
+
+IF NOT EXISTS (SELECT 1 FROM Departments WHERE DepartmentName = N'Khoa Hóa')
+    INSERT INTO Departments (DepartmentName) VALUES (N'Khoa Hóa');
+
+IF NOT EXISTS (SELECT 1 FROM Departments WHERE DepartmentName = N'Khoa Văn')
+    INSERT INTO Departments (DepartmentName) VALUES (N'Khoa Văn');
+
 GO
 
-SELECT 'Users table status:' AS Info,
-       CASE WHEN OBJECT_ID(N'dbo.Users','U') IS NOT NULL THEN 'Exists' ELSE 'Missing' END AS Status;
+/*=========================================================
+    3. INSERT INTO TEACHERS
+=========================================================*/
+
+INSERT INTO Teachers (TeacherID, UserID, DepartmentID, Title)
+VALUES
+    ('T001', 'T001', (SELECT DepartmentID FROM Departments WHERE DepartmentName = N'Khoa Toán'), N'Tiến sĩ'),
+    ('T002', 'T002', (SELECT DepartmentID FROM Departments WHERE DepartmentName = N'Khoa Lý'), N'Thạc sĩ'),
+    ('T003', 'T003', (SELECT DepartmentID FROM Departments WHERE DepartmentName = N'Khoa Hóa'), N'Tiến sĩ'),
+    ('T004', 'T004', (SELECT DepartmentID FROM Departments WHERE DepartmentName = N'Khoa Văn'), N'Thạc sĩ'),
+    ('T005', 'T005', (SELECT DepartmentID FROM Departments WHERE DepartmentName = N'Khoa Toán'), N'Giảng viên');
 GO
 
-SELECT TABLE_SCHEMA, TABLE_NAME
-FROM INFORMATION_SCHEMA.TABLES
-WHERE TABLE_NAME = 'Users';
+/*=========================================================
+    4. INSERT INTO CLASSES
+=========================================================*/
+
+INSERT INTO Classes (ClassID, CourseID, TeacherID, Semester, MaxCapacity)
+VALUES
+    ('C001', 'MATH101', 'T001', N'2024-1', 40),
+    ('C002', 'MATH102', 'T001', N'2024-1', 40),
+    ('C003', 'PHYS101', 'T002', N'2024-1', 35),
+    ('C004', 'CHEM101', 'T003', N'2024-1', 35),
+    ('C005', 'LIT101', 'T004', N'2024-1', 40),
+    ('C006', 'MATH201', 'T005', N'2024-1', 30);
 GO
 
-IF COL_LENGTH('dbo.Teachers', 'UserID') IS NULL
-BEGIN
-    ALTER TABLE dbo.Teachers ADD UserID NVARCHAR(20) NULL;
-END;
+/*=========================================================
+    5. INSERT INTO CLASS SCHEDULES
+=========================================================*/
+
+INSERT INTO ClassSchedules (ClassID, DayOfWeek, TimeRange, Room)
+VALUES
+    ('C001', N'Thứ 2', '08:00-09:30', N'Phòng 101'),
+    ('C001', N'Thứ 4', '08:00-09:30', N'Phòng 101'),
+    ('C002', N'Thứ 3', '10:00-11:30', N'Phòng 102'),
+    ('C002', N'Thứ 5', '10:00-11:30', N'Phòng 102'),
+    ('C003', N'Thứ 2', '13:00-14:30', N'Phòng 201'),
+    ('C003', N'Thứ 5', '13:00-14:30', N'Phòng 201'),
+    ('C004', N'Thứ 3', '14:45-16:15', N'Phòng 202'),
+    ('C004', N'Thứ 6', '14:45-16:15', N'Phòng 202'),
+    ('C005', N'Thứ 2', '16:30-18:00', N'Phòng 301'),
+    ('C005', N'Thứ 4', '16:30-18:00', N'Phòng 301'),
+    ('C006', N'Thứ 3', '09:00-10:30', N'Phòng 103'),
+    ('C006', N'Thứ 6', '09:00-10:30', N'Phòng 103');
 GO
 
-IF NOT EXISTS (SELECT 1 FROM sys.foreign_keys WHERE name = 'FK_Teachers_Users')
-BEGIN
-    ALTER TABLE dbo.Teachers WITH NOCHECK
-    ADD CONSTRAINT FK_Teachers_Users
-    FOREIGN KEY (UserID) REFERENCES dbo.Users(UserID) ON DELETE CASCADE;
-END;
+/*=========================================================
+    DONE: Teacher data inserted successfully
+=========================================================*/
+
+PRINT 'Dữ liệu giáo viên đã được insert thành công!';
 GO
-
-WITH UniqueTeachers AS (
-    SELECT
-        t.TeacherID,
-        t.Name,
-        t.Email,
-        t.Phone,
-        t.Username,
-        t.Password,
-        t.Status,
-        ROW_NUMBER() OVER (
-            PARTITION BY COALESCE(NULLIF(t.Email, ''), NULLIF(t.Username, ''), t.TeacherID)
-            ORDER BY t.TeacherID
-        ) AS rn
-    FROM dbo.Teachers t
-    WHERE t.TeacherID IS NOT NULL
-)
-MERGE dbo.Users AS target
-USING (
-    SELECT
-        'USR_' + TeacherID AS UserID,
-        COALESCE(NULLIF(Username, ''), 'teacher' + RIGHT('000' + CAST(SUBSTRING(TeacherID, 4, 10) AS NVARCHAR(10)), 3)) AS Username,
-        COALESCE(NULLIF(Password, ''), 'changeme') AS Password,
-        'Teacher' AS Role,
-        COALESCE(NULLIF(Status, ''), 'Active') AS Status,
-        Name AS FullName,
-        Email,
-        Phone,
-        NULL AS Gender,
-        NULL AS DOB
-    FROM UniqueTeachers
-    WHERE rn = 1
-) AS source (UserID,Username,Password,Role,Status,FullName,Email,Phone,Gender,DOB)
-ON target.UserID = source.UserID
-WHEN MATCHED THEN UPDATE SET
-    Username = source.Username,
-    Password = source.Password,
-    Role = source.Role,
-    Status = source.Status,
-    FullName = source.FullName,
-    Email = source.Email,
-    Phone = source.Phone,
-    Gender = source.Gender,
-    DOB = source.DOB
-WHEN NOT MATCHED THEN
-    INSERT (UserID,Username,Password,Role,Status,FullName,Email,Phone,Gender,DOB)
-    VALUES (source.UserID,source.Username,source.Password,source.Role,source.Status,source.FullName,source.Email,source.Phone,source.Gender,source.DOB);
-GO
-
-UPDATE t
-SET t.UserID = u.UserID
-FROM dbo.Teachers t
-JOIN dbo.Users u ON u.Email = t.Email OR u.Username = t.Username
-WHERE t.UserID IS NULL;
-GO
-
-SELECT 'Users table rows' AS Info, COUNT(*) AS TotalUsers FROM dbo.Users;
-GO
-SELECT TOP 50 * FROM dbo.Users ORDER BY UserID;
-GO
-
-IF OBJECT_ID('dbo.TeacherAssignedCourses', 'U') IS NULL
-BEGIN
-    CREATE TABLE dbo.TeacherAssignedCourses (
-        AssignmentID INT IDENTITY(1,1) PRIMARY KEY,
-        TeacherID NVARCHAR(20) NOT NULL,
-        CourseID NVARCHAR(20) NOT NULL,
-        CourseName NVARCHAR(120) NOT NULL,
-        Semester NVARCHAR(30) NOT NULL,
-        ClassID NVARCHAR(20) NOT NULL,
-        CONSTRAINT UQ_TeacherAssignedCourse UNIQUE (TeacherID, CourseID, Semester, ClassID)
-    );
-END;
-GO
-
-IF OBJECT_ID('dbo.TeacherAssignedCourses', 'U') IS NOT NULL
-BEGIN
-    IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'UQ_TeacherAssignedCourses_ClassID' AND object_id = OBJECT_ID('dbo.TeacherAssignedCourses'))
-    BEGIN
-        ALTER TABLE dbo.TeacherAssignedCourses
-        ADD CONSTRAINT UQ_TeacherAssignedCourses_ClassID UNIQUE (ClassID);
-    END;
-END;
-GO
-
-IF OBJECT_ID('dbo.TeacherClassStudents', 'U') IS NULL
-BEGIN
-    CREATE TABLE dbo.TeacherClassStudents (
-        ClassStudentID INT IDENTITY(1,1) PRIMARY KEY,
-        TeacherID NVARCHAR(20) NULL,
-        ClassID NVARCHAR(20) NOT NULL,
-        StudentID NVARCHAR(20) NOT NULL,
-        Name NVARCHAR(100) NOT NULL,
-        Major NVARCHAR(100) NULL,
-        Email NVARCHAR(100) NULL,
-        CONSTRAINT UQ_TeacherClassStudent UNIQUE (ClassID, StudentID)
-    );
-END;
-GO
-
-IF COL_LENGTH('dbo.TeacherClassStudents', 'TeacherID') IS NULL
-BEGIN
-    ALTER TABLE dbo.TeacherClassStudents ADD TeacherID NVARCHAR(20) NULL;
-END;
-GO
-
-IF NOT EXISTS (SELECT 1 FROM sys.foreign_keys WHERE name = 'FK_TeacherClassStudents_Teachers')
-    ALTER TABLE dbo.TeacherClassStudents WITH NOCHECK
-    ADD CONSTRAINT FK_TeacherClassStudents_Teachers
-    FOREIGN KEY (TeacherID) REFERENCES dbo.Teachers(TeacherID) ON DELETE NO ACTION;
-GO
-
-IF NOT EXISTS (SELECT 1 FROM sys.foreign_keys WHERE name = 'FK_TeacherClassStudents_ClassID')
-    ALTER TABLE dbo.TeacherClassStudents WITH NOCHECK
-    ADD CONSTRAINT FK_TeacherClassStudents_ClassID
-    FOREIGN KEY (ClassID) REFERENCES dbo.TeacherAssignedCourses(ClassID) ON DELETE NO ACTION;
-GO
-
-IF OBJECT_ID('dbo.TeacherSchedules', 'U') IS NULL
-BEGIN
-    CREATE TABLE dbo.TeacherSchedules (
-        ScheduleID INT IDENTITY(1,1) PRIMARY KEY,
-        TeacherID NVARCHAR(20) NOT NULL,
-        CourseID NVARCHAR(20) NOT NULL,
-        ClassID NVARCHAR(20) NOT NULL,
-        DayOfWeek NVARCHAR(20) NOT NULL,
-        TimeRange NVARCHAR(30) NOT NULL,
-        Room NVARCHAR(30) NULL
-    );
-END;
-GO
-
-IF OBJECT_ID('dbo.TeacherScores', 'U') IS NULL
-BEGIN
-    CREATE TABLE dbo.TeacherScores (
-        ScoreID INT IDENTITY(1,1) PRIMARY KEY,
-        TeacherID NVARCHAR(20) NOT NULL,
-        CourseID NVARCHAR(20) NOT NULL,
-        StudentID NVARCHAR(20) NOT NULL,
-        Assessment NVARCHAR(50) NOT NULL,
-        Score FLOAT NOT NULL,
-        UpdatedAt DATETIME NOT NULL DEFAULT GETDATE(),
-        CONSTRAINT UQ_TeacherScore UNIQUE (CourseID, StudentID, Assessment)
-    );
-END;
-GO
-
-IF OBJECT_ID('dbo.TeacherCourseContents', 'U') IS NULL
-BEGIN
-    CREATE TABLE dbo.TeacherCourseContents (
-        ContentID INT IDENTITY(1,1) PRIMARY KEY,
-        TeacherID NVARCHAR(20) NOT NULL,
-        CourseID NVARCHAR(20) NOT NULL,
-        Content NVARCHAR(500) NOT NULL,
-        CreatedAt DATETIME NOT NULL DEFAULT GETDATE()
-    );
-END;
-GO
-
-IF OBJECT_ID('dbo.TeacherNotifications', 'U') IS NULL
-BEGIN
-    CREATE TABLE dbo.TeacherNotifications (
-        NotificationID INT IDENTITY(1,1) PRIMARY KEY,
-        TeacherID NVARCHAR(20) NULL,
-        Message NVARCHAR(500) NOT NULL,
-        CreatedAt DATETIME NOT NULL DEFAULT GETDATE(),
-        IsRead BIT NOT NULL DEFAULT 0
-    );
-END;
-GO
-
-IF NOT EXISTS (SELECT 1 FROM sys.foreign_keys WHERE name = 'FK_TeacherAssignedCourses_Teachers')
-    ALTER TABLE dbo.TeacherAssignedCourses WITH NOCHECK
-    ADD CONSTRAINT FK_TeacherAssignedCourses_Teachers
-    FOREIGN KEY (TeacherID) REFERENCES dbo.Teachers(TeacherID) ON DELETE CASCADE;
-GO
-
-IF NOT EXISTS (SELECT 1 FROM sys.foreign_keys WHERE name = 'FK_TeacherSchedules_Teachers')
-    ALTER TABLE dbo.TeacherSchedules WITH NOCHECK
-    ADD CONSTRAINT FK_TeacherSchedules_Teachers
-    FOREIGN KEY (TeacherID) REFERENCES dbo.Teachers(TeacherID) ON DELETE CASCADE;
-GO
-
-IF NOT EXISTS (SELECT 1 FROM sys.foreign_keys WHERE name = 'FK_TeacherScores_Teachers')
-    ALTER TABLE dbo.TeacherScores WITH NOCHECK
-    ADD CONSTRAINT FK_TeacherScores_Teachers
-    FOREIGN KEY (TeacherID) REFERENCES dbo.Teachers(TeacherID) ON DELETE CASCADE;
-GO
-
-IF NOT EXISTS (SELECT 1 FROM sys.foreign_keys WHERE name = 'FK_TeacherCourseContents_Teachers')
-    ALTER TABLE dbo.TeacherCourseContents WITH NOCHECK
-    ADD CONSTRAINT FK_TeacherCourseContents_Teachers
-    FOREIGN KEY (TeacherID) REFERENCES dbo.Teachers(TeacherID) ON DELETE CASCADE;
-GO
-
-IF NOT EXISTS (SELECT 1 FROM sys.foreign_keys WHERE name = 'FK_TeacherNotifications_Teachers')
-    ALTER TABLE dbo.TeacherNotifications WITH NOCHECK
-    ADD CONSTRAINT FK_TeacherNotifications_Teachers
-    FOREIGN KEY (TeacherID) REFERENCES dbo.Teachers(TeacherID) ON DELETE CASCADE;
-GO
-
-MERGE dbo.Teachers AS target
-USING (VALUES
-    ('TCH001', N'Tran Minh', 'tranminh@edusync.edu.vn', N'Computer Science', '0901000001', 'teacher1', 'teacher1', 'Active'),
-    ('TCH002', N'Le Hoa', 'lehoa@edusync.edu.vn', N'Software Engineering', '0901000002', 'teacher2', 'teacher2', 'Active')
-) AS source (TeacherID,Name,Email,Department,Phone,Username,Password,Status)
-ON target.TeacherID = source.TeacherID
-WHEN MATCHED THEN UPDATE SET
-    Name = source.Name,
-    Email = source.Email,
-    Department = source.Department,
-    Phone = source.Phone,
-    Username = source.Username,
-    Password = source.Password,
-    Status = source.Status
-WHEN NOT MATCHED THEN
-    INSERT (TeacherID,Name,Email,Department,Phone,Username,Password,Status)
-    VALUES (source.TeacherID,source.Name,source.Email,source.Department,source.Phone,source.Username,source.Password,source.Status);
-GO
-
-MERGE dbo.TeacherAssignedCourses AS target
-USING (VALUES
-    ('TCH001','CS101',N'Database Systems','2026A','CS101-A'),
-    ('TCH001','CS103',N'Computer Networks','2026A','CS103-A'),
-    ('TCH002','CS102',N'Object Oriented Programming','2026A','CS102-A'),
-    ('TCH002','CS104',N'Web Application Development','2026A','CS104-A')
-) AS source (TeacherID,CourseID,CourseName,Semester,ClassID)
-ON target.TeacherID = source.TeacherID
-   AND target.CourseID = source.CourseID
-   AND target.Semester = source.Semester
-   AND target.ClassID = source.ClassID
-WHEN MATCHED THEN UPDATE SET CourseName = source.CourseName
-WHEN NOT MATCHED THEN
-    INSERT (TeacherID,CourseID,CourseName,Semester,ClassID)
-    VALUES (source.TeacherID,source.CourseID,source.CourseName,source.Semester,source.ClassID);
-GO
-
-MERGE dbo.TeacherClassStudents AS target
-USING (VALUES
-    ('CS101-A','STU001',N'Nguyen Van A',N'Computer Science','a@student.edu.vn'),
-    ('CS101-A','STU002',N'Tran Thi B',N'Software Engineering','b@student.edu.vn'),
-    ('CS102-A','STU002',N'Tran Thi B',N'Software Engineering','b@student.edu.vn'),
-    ('CS103-A','STU003',N'Le Minh C',N'Information Systems','c@student.edu.vn'),
-    ('CS104-A','STU004',N'Pham Ngoc D',N'Computer Networks','d@student.edu.vn')
-) AS source (ClassID,StudentID,Name,Major,Email)
-ON target.ClassID = source.ClassID AND target.StudentID = source.StudentID
-WHEN MATCHED THEN UPDATE SET Name=source.Name, Major=source.Major, Email=source.Email
-WHEN NOT MATCHED THEN
-    INSERT (ClassID,StudentID,Name,Major,Email)
-    VALUES (source.ClassID,source.StudentID,source.Name,source.Major,source.Email);
-GO
-
-UPDATE tcs
-SET tcs.TeacherID = tac.TeacherID
-FROM dbo.TeacherClassStudents tcs
-JOIN dbo.TeacherAssignedCourses tac ON tcs.ClassID = tac.ClassID
-WHERE tcs.TeacherID IS NULL;
-GO
-
-IF NOT EXISTS (SELECT 1 FROM dbo.TeacherSchedules WHERE TeacherID='TCH001' AND CourseID='CS101' AND ClassID='CS101-A')
-INSERT INTO dbo.TeacherSchedules (TeacherID,CourseID,ClassID,DayOfWeek,TimeRange,Room)
-VALUES ('TCH001','CS101','CS101-A','Monday','07:30-09:30','A101');
-
-IF NOT EXISTS (SELECT 1 FROM dbo.TeacherSchedules WHERE TeacherID='TCH001' AND CourseID='CS103' AND ClassID='CS103-A')
-INSERT INTO dbo.TeacherSchedules (TeacherID,CourseID,ClassID,DayOfWeek,TimeRange,Room)
-VALUES ('TCH001','CS103','CS103-A','Friday','13:00-15:00','C303');
-
-IF NOT EXISTS (SELECT 1 FROM dbo.TeacherSchedules WHERE TeacherID='TCH002' AND CourseID='CS102' AND ClassID='CS102-A')
-INSERT INTO dbo.TeacherSchedules (TeacherID,CourseID,ClassID,DayOfWeek,TimeRange,Room)
-VALUES ('TCH002','CS102','CS102-A','Wednesday','09:45-11:45','B202');
-GO
-
-IF NOT EXISTS (SELECT 1 FROM dbo.TeacherScores WHERE CourseID='CS101' AND StudentID='STU001' AND Assessment='Midterm')
-INSERT INTO dbo.TeacherScores (TeacherID,CourseID,StudentID,Assessment,Score)
-VALUES ('TCH001','CS101','STU001','Midterm',7.5);
-
-IF NOT EXISTS (SELECT 1 FROM dbo.TeacherScores WHERE CourseID='CS101' AND StudentID='STU002' AND Assessment='Final')
-INSERT INTO dbo.TeacherScores (TeacherID,CourseID,StudentID,Assessment,Score)
-VALUES ('TCH001','CS101','STU002','Final',9.0);
-
-IF NOT EXISTS (SELECT 1 FROM dbo.TeacherScores WHERE CourseID='CS102' AND StudentID='STU002' AND Assessment='Assignment')
-INSERT INTO dbo.TeacherScores (TeacherID,CourseID,StudentID,Assessment,Score)
-VALUES ('TCH002','CS102','STU002','Assignment',8.0);
-GO
-
-IF NOT EXISTS (SELECT 1 FROM dbo.TeacherCourseContents WHERE TeacherID='TCH001' AND CourseID='CS101' AND Content=N'Chapter 1: SQL basics')
-INSERT INTO dbo.TeacherCourseContents (TeacherID,CourseID,Content)
-VALUES ('TCH001','CS101',N'Chapter 1: SQL basics');
-
-IF NOT EXISTS (SELECT 1 FROM dbo.TeacherCourseContents WHERE TeacherID='TCH002' AND CourseID='CS102' AND Content=N'OOP lab exercise 01')
-INSERT INTO dbo.TeacherCourseContents (TeacherID,CourseID,Content)
-VALUES ('TCH002','CS102',N'OOP lab exercise 01');
-GO
-
-IF NOT EXISTS (SELECT 1 FROM dbo.TeacherNotifications WHERE TeacherID='TCH001' AND Message=N'Remember to submit grade reports this week.')
-INSERT INTO dbo.TeacherNotifications (TeacherID,Message)
-VALUES ('TCH001',N'Remember to submit grade reports this week.');
-
-IF NOT EXISTS (SELECT 1 FROM dbo.TeacherNotifications WHERE TeacherID IS NULL AND Message=N'Faculty meeting at 14:00 on Friday.')
-INSERT INTO dbo.TeacherNotifications (TeacherID,Message)
-VALUES (NULL,N'Faculty meeting at 14:00 on Friday.');
-GO
-
-SELECT 'Teacher seed data is ready.' AS Result;
-SELECT TeacherID, Name, Email, Department, Phone, Username, Status FROM dbo.Teachers ORDER BY TeacherID;
-SELECT TeacherID, CourseID, CourseName, Semester, ClassID FROM dbo.TeacherAssignedCourses ORDER BY TeacherID, CourseID;
-
-SELECT COUNT(*) AS TotalTeachers
-FROM dbo.Teachers;
