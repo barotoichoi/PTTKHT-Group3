@@ -43,19 +43,6 @@ VALUES
 ('GV003','T003',3,N'Professor');
 GO
 
-INSERT INTO Courses
-(
-    CourseID,
-    CourseName,
-    DepartmentID,
-    Credits
-)
-VALUES
-('CS101',N'Programming Fundamentals',1,3),
-('CS102',N'Object Oriented Programming',1,3),
-('BA101',N'Principles of Business',2,3),
-('EN101',N'English Communication',3,3);
-
 /*=========================================================
     CLASSES
 =========================================================*/
@@ -69,10 +56,10 @@ INSERT INTO Classes
     MaxCapacity
 )
 VALUES
-('CLS001','CS101','GV001','Fall 2026',40),
-('CLS002','CS102','GV001','Fall 2026',40),
-('CLS003','BA101','GV002','Fall 2026',35),
-('CLS004','EN101','GV003','Fall 2026',30);
+('CLS001','CS001','GV001','Fall 2026',40),
+('CLS002','CS002','GV001','Fall 2026',40),
+('CLS003','CS003','GV002','Fall 2026',35),
+('CLS004','CS004','GV003','Fall 2026',30);
 GO
 
 
