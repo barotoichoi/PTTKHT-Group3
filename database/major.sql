@@ -1,21 +1,3 @@
-IF DB_ID('StudentManagement') IS NULL
-    CREATE DATABASE StudentManagement;
-GO
-
-USE StudentManagement;
-GO
-
-IF OBJECT_ID('dbo.Majors', 'U') IS NULL
-BEGIN
-    CREATE TABLE dbo.Majors (
-        MajorID NVARCHAR(20) NOT NULL PRIMARY KEY,
-        Name NVARCHAR(100) NOT NULL,
-        Description NVARCHAR(255) NULL,
-        Status NVARCHAR(30) NOT NULL DEFAULT 'Active'
-    );
-END;
-GO
-
 INSERT INTO dbo.Majors (MajorID, Name, Description, Status) VALUES
 (N'MJR001', N'Công nghệ thông tin', N'Công nghệ thông tin description', 'Active'),
 (N'MJR002', N'Kinh tế', N'Kinh tế description', 'Active'),

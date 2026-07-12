@@ -1,21 +1,4 @@
-IF DB_ID('StudentManagement') IS NULL
-    CREATE DATABASE StudentManagement;
-GO
-
 USE StudentManagement;
-GO
-
-IF OBJECT_ID('dbo.Courses', 'U') IS NULL
-BEGIN
-    CREATE TABLE dbo.Courses (
-        CourseID NVARCHAR(20) NOT NULL PRIMARY KEY,
-        Name NVARCHAR(120) NOT NULL,
-        Credits INT NOT NULL DEFAULT 3,
-        PrerequisiteCourseID NVARCHAR(20) NULL,
-        Status NVARCHAR(30) NOT NULL DEFAULT 'Active',
-        CONSTRAINT FK_Courses_PrerequisiteCourse FOREIGN KEY (PrerequisiteCourseID) REFERENCES dbo.Courses(CourseID)
-    );
-END;
 GO
 
 INSERT INTO dbo.Courses (CourseID, Name, Credits, PrerequisiteCourseID, Status) VALUES
