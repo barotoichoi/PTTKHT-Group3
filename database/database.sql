@@ -136,8 +136,68 @@ CREATE TABLE Courses
 );
 GO
 
-/*=========================================================
-    6. CLASSES
+/*=========================================================    4.1 SAMPLE TEACHER DATA
+=========================================================*/
+
+IF NOT EXISTS (SELECT 1 FROM Departments WHERE DepartmentName = N'Computer Science')
+    INSERT INTO Departments (DepartmentName)
+    VALUES (N'Computer Science');
+GO
+
+IF NOT EXISTS (SELECT 1 FROM Departments WHERE DepartmentName = N'Software Engineering')
+    INSERT INTO Departments (DepartmentName)
+    VALUES (N'Software Engineering');
+GO
+
+IF NOT EXISTS (SELECT 1 FROM Users WHERE UserID = 'USR_TCH001')
+BEGIN
+    INSERT INTO Users (UserID, Username, Password, Role, Status, FullName, Email, Phone, Gender, DOB)
+    VALUES ('USR_TCH001', 'teacher1', '123456', 'Teacher', 'Active', N'Trần Minh', 'tranminh@edusync.edu.vn', '0901000001', N'Male', '1985-05-15');
+END;
+GO
+
+IF NOT EXISTS (SELECT 1 FROM Users WHERE UserID = 'USR_TCH002')
+BEGIN
+    INSERT INTO Users (UserID, Username, Password, Role, Status, FullName, Email, Phone, Gender, DOB)
+    VALUES ('USR_TCH002', 'teacher2', '123456', 'Teacher', 'Active', N'Lê Hoa', 'lehoa@edusync.edu.vn', '0901000002', N'Female', '1987-08-20');
+END;
+GO
+
+IF NOT EXISTS (SELECT 1 FROM Users WHERE UserID = 'USR_TCH003')
+BEGIN
+    INSERT INTO Users (UserID, Username, Password, Role, Status, FullName, Email, Phone, Gender, DOB)
+    VALUES ('USR_TCH003', 'teacher3', '123456', 'Teacher', 'Active', N'Phạm Hùng', 'phamhung@edusync.edu.vn', '0901000003', N'Male', '1983-11-10');
+END;
+GO
+
+IF NOT EXISTS (SELECT 1 FROM Teachers WHERE TeacherID = 'TCH001')
+BEGIN
+    INSERT INTO Teachers (TeacherID, UserID, DepartmentID, Title)
+    SELECT 'TCH001', 'USR_TCH001', DepartmentID, N'Professor'
+    FROM Departments
+    WHERE DepartmentName = N'Computer Science';
+END;
+GO
+
+IF NOT EXISTS (SELECT 1 FROM Teachers WHERE TeacherID = 'TCH002')
+BEGIN
+    INSERT INTO Teachers (TeacherID, UserID, DepartmentID, Title)
+    SELECT 'TCH002', 'USR_TCH002', DepartmentID, N'Associate Professor'
+    FROM Departments
+    WHERE DepartmentName = N'Software Engineering';
+END;
+GO
+
+IF NOT EXISTS (SELECT 1 FROM Teachers WHERE TeacherID = 'TCH003')
+BEGIN
+    INSERT INTO Teachers (TeacherID, UserID, DepartmentID, Title)
+    SELECT 'TCH003', 'USR_TCH003', DepartmentID, N'Lecturer'
+    FROM Departments
+    WHERE DepartmentName = N'Computer Science';
+END;
+GO
+
+/*=========================================================    6. CLASSES
 =========================================================*/
 
 CREATE TABLE Classes
