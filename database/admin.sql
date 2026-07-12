@@ -6,81 +6,135 @@ USE StudentManagement;
 GO
 
 -- 1. BẢNG TÀI KHOẢN & THÔNG TIN CÁ NHÂN (Đã gộp Users và Profiles)
-CREATE TABLE Users (
-    UserID NVARCHAR(20) PRIMARY KEY, -- VD: US001, US002...
-    Username NVARCHAR(50) UNIQUE NOT NULL,
-    Password NVARCHAR(50) NOT NULL,
-    Role NVARCHAR(20) CHECK (Role IN ('Student', 'Teacher', 'Admin')),
-    Status NVARCHAR(30) DEFAULT 'Active',
-    CreatedAt DATETIME DEFAULT GETDATE(),
-    
-    -- Thông tin cá nhân từ bảng Profiles cũ chuyển sang
-    FullName NVARCHAR(100) NOT NULL,
-    Email NVARCHAR(100) UNIQUE,
-    Phone NVARCHAR(20),
-    Gender NVARCHAR(20),
-    DOB DATE
-);
+IF OBJECT_ID('dbo.Users', 'U') IS NULL
+BEGIN
+    CREATE TABLE Users (
+        UserID NVARCHAR(20) PRIMARY KEY, -- VD: US001, US002...
+        Username NVARCHAR(50) UNIQUE NOT NULL,
+        Password NVARCHAR(50) NOT NULL,
+        Role NVARCHAR(20) CHECK (Role IN ('Student', 'Teacher', 'Admin')),
+        Status NVARCHAR(30) DEFAULT 'Active',
+        CreatedAt DATETIME DEFAULT GETDATE(),
+        
+        -- Thông tin cá nhân từ bảng Profiles cũ chuyển sang
+        FullName NVARCHAR(100) NOT NULL,
+        Email NVARCHAR(100) UNIQUE,
+        Phone NVARCHAR(20),
+        Gender NVARCHAR(20),
+        DOB DATE
+    );
+END;
+GO
 
 -- 2. BẢNG PHÒNG BAN/KHOA
-CREATE TABLE Departments (
-    DepartmentID INT IDENTITY(1,1) PRIMARY KEY,
-    DepartmentName NVARCHAR(100) NOT NULL UNIQUE
-);
+IF OBJECT_ID('dbo.Departments', 'U') IS NULL
+BEGIN
+    CREATE TABLE Departments (
+        DepartmentID INT IDENTITY(1,1) PRIMARY KEY,
+        DepartmentName NVARCHAR(100) NOT NULL UNIQUE
+    );
+END;
+GO
+
+-- 3. BẢNG SINH VIÊN (UserID là khóa phụ)
+IF OBJECT_ID('dbo.Students', 'U') IS NULL
+BEGIN
+    CREATE TABLE Students (
+        StudentID NVARCHAR(20) PRIMARY KEY, -- Mã sinh viên độc lập (VD: SV202601)
+        UserID NVARCHAR(20) UNIQUE NOT NULL, -- Khóa phụ liên kết sang bảng Users
+        Major NVARCHAR(100),
+        GPA FLOAT CONSTRAINT DF_Students_GPA DEFAULT 0,
+        TuitionOwed FLOAT CONSTRAINT DF_Students_TuitionOwed DEFAULT 0,
+        FOREIGN KEY (UserID) REFERENCES Users(UserID) ON DELETE CASCADE
+    );
+    END;
+GO
+
+-- 4. BẢNG GIẢNG VIÊN (UserID là khóa phụ)
+IF OBJECT_ID('dbo.Teachers', 'U') IS NULL
+BEGIN
+    CREATE TABLE Teachers (
+        TeacherID NVARCHAR(20) PRIMARY KEY, -- Mã giảng viên độc lập (VD: GV001)
+        UserID NVARCHAR(20) UNIQUE NOT NULL,  -- Khóa phụ liên kết sang bảng Users
+        DepartmentID INT,
+        Title NVARCHAR(50), -- VD: 'Professor', 'Lecturer'
+        FOREIGN KEY (UserID) REFERENCES Users(UserID) ON DELETE CASCADE,
+        FOREIGN KEY (DepartmentID) REFERENCES Departments(DepartmentID) ON DELETE SET NULL
+    );
+    END;
+GO
 
 -- 5. BẢNG MÔN HỌC (Courses)
-CREATE TABLE Courses (
-    CourseID NVARCHAR(20) PRIMARY KEY,
-    CourseName NVARCHAR(150) NOT NULL,
-    DepartmentID INT,
-    Credits INT DEFAULT 3,
-    FOREIGN KEY (DepartmentID) REFERENCES Departments(DepartmentID) ON DELETE SET NULL
-);
+IF OBJECT_ID('dbo.Courses', 'U') IS NULL
+BEGIN
+    CREATE TABLE Courses (
+        CourseID NVARCHAR(20) PRIMARY KEY,
+        CourseName NVARCHAR(150) NOT NULL,
+        DepartmentID INT,
+        Credits INT DEFAULT 3,
+        FOREIGN KEY (DepartmentID) REFERENCES Departments(DepartmentID) ON DELETE SET NULL
+    );
+    END;
+GO
 
 -- 6. BẢNG LỚP HỌC (Classes/Sections)
-CREATE TABLE Classes (
-    ClassID NVARCHAR(20) PRIMARY KEY,
-    CourseID NVARCHAR(20) NOT NULL,
-    TeacherID NVARCHAR(20),
-    Semester NVARCHAR(30) NOT NULL, -- VD: '2026A'
-    MaxCapacity INT DEFAULT 40,
-    FOREIGN KEY (CourseID) REFERENCES Courses(CourseID) ON DELETE CASCADE,
-    FOREIGN KEY (TeacherID) REFERENCES Teachers(TeacherID) ON DELETE SET NULL
-);
+IF OBJECT_ID('dbo.Classes', 'U') IS NULL
+BEGIN
+    CREATE TABLE Classes (
+        ClassID NVARCHAR(20) PRIMARY KEY,
+        CourseID NVARCHAR(20) NOT NULL,
+        TeacherID NVARCHAR(20),
+        Semester NVARCHAR(30) NOT NULL, -- VD: '2026A'
+        MaxCapacity INT DEFAULT 40,
+        FOREIGN KEY (CourseID) REFERENCES Courses(CourseID) ON DELETE CASCADE,
+        FOREIGN KEY (TeacherID) REFERENCES Teachers(TeacherID) ON DELETE SET NULL
+    );
+END;
+GO
 
 -- 7. BẢNG LỊCH TRÌNH LỚP HỌC
-CREATE TABLE ClassSchedules (
-    ScheduleID INT IDENTITY(1,1) PRIMARY KEY,
-    ClassID NVARCHAR(20) NOT NULL,
-    DayOfWeek NVARCHAR(20) NOT NULL,
-    TimeRange NVARCHAR(30) NOT NULL,
-    Room NVARCHAR(30),
-    FOREIGN KEY (ClassID) REFERENCES Classes(ClassID) ON DELETE CASCADE
-);
+IF OBJECT_ID('dbo.ClassSchedules', 'U') IS NULL
+BEGIN
+    CREATE TABLE ClassSchedules (
+        ScheduleID INT IDENTITY(1,1) PRIMARY KEY,
+        ClassID NVARCHAR(20) NOT NULL,
+        DayOfWeek NVARCHAR(20) NOT NULL,
+        TimeRange NVARCHAR(30) NOT NULL,
+        Room NVARCHAR(30),
+        FOREIGN KEY (ClassID) REFERENCES Classes(ClassID) ON DELETE CASCADE
+    );
+    END;
+GO
 
 -- 8. BẢNG DANH SÁCH LỚP (Sinh viên đăng ký lớp - Junction Table)
-CREATE TABLE Enrollments (
-    EnrollmentID INT IDENTITY(1,1) PRIMARY KEY,
-    ClassID NVARCHAR(20) NOT NULL,
-    StudentID NVARCHAR(20) NOT NULL,
-    EnrollmentDate DATE DEFAULT GETDATE(),
-    Status NVARCHAR(30) DEFAULT 'Enrolled', -- Enrolled, Dropped, Completed
-    CONSTRAINT UQ_Class_Student UNIQUE (ClassID, StudentID),
-    FOREIGN KEY (ClassID) REFERENCES Classes(ClassID) ON DELETE CASCADE,
-    FOREIGN KEY (StudentID) REFERENCES Students(StudentID) ON DELETE CASCADE
-);
+IF OBJECT_ID('dbo.Enrollments', 'U') IS NULL
+BEGIN
+    CREATE TABLE Enrollments (
+        EnrollmentID INT IDENTITY(1,1) PRIMARY KEY,
+        ClassID NVARCHAR(20) NOT NULL,
+        StudentID NVARCHAR(20) NOT NULL,
+        EnrollmentDate DATE DEFAULT GETDATE(),
+        Status NVARCHAR(30) DEFAULT 'Enrolled', -- Enrolled, Dropped, Completed
+        CONSTRAINT UQ_Class_Student UNIQUE (ClassID, StudentID),
+        FOREIGN KEY (ClassID) REFERENCES Classes(ClassID) ON DELETE CASCADE,
+        FOREIGN KEY (StudentID) REFERENCES Students(StudentID) ON DELETE CASCADE
+    );
+END;
+GO
 
 -- 9. BẢNG ĐIỂM SỐ (Gắn với Enrollment)
-CREATE TABLE Scores (
-    ScoreID INT IDENTITY(1,1) PRIMARY KEY,
-    EnrollmentID INT NOT NULL,
-    AssessmentType NVARCHAR(50) NOT NULL, -- Midterm, Final, Assignment
-    Score FLOAT NOT NULL,
-    UpdatedAt DATETIME DEFAULT GETDATE(),
-    CONSTRAINT UQ_Enrollment_Assessment UNIQUE (EnrollmentID, AssessmentType),
-    FOREIGN KEY (EnrollmentID) REFERENCES Enrollments(EnrollmentID) ON DELETE CASCADE
-);
-USE StudentManagement;
+IF OBJECT_ID('dbo.Scores', 'U') IS NULL
+BEGIN
+    CREATE TABLE Scores (
+        ScoreID INT IDENTITY(1,1) PRIMARY KEY,
+        EnrollmentID INT NOT NULL,
+        AssessmentType NVARCHAR(50) NOT NULL, -- Midterm, Final, Assignment
+        Score FLOAT NOT NULL,
+        UpdatedAt DATETIME DEFAULT GETDATE(),
+        CONSTRAINT UQ_Enrollment_Assessment UNIQUE (EnrollmentID, AssessmentType),
+        FOREIGN KEY (EnrollmentID) REFERENCES Enrollments(EnrollmentID) ON DELETE CASCADE
+    );
+END;
 GO
 
 --------------------------------------------------------------------------------
