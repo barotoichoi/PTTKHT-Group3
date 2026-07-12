@@ -307,9 +307,11 @@
           </button>
         </div>
       </aside>
-    <!-- Main Workspace -->
-    <main class="flex-1 ml-[240px] flex flex-col h-full min-w-0 bg-background">
-              <header
+      <!-- Main Workspace -->
+      <main
+        class="flex-1 ml-[240px] flex flex-col h-full min-w-0 bg-background"
+      >
+        <header
           class="fixed top-0 right-0 w-[calc(100%-240px)] z-40 bg-surface border-b border-outline-variant flex justify-between items-center h-16 px-8"
         >
           <div class="flex items-center gap-4">
@@ -361,317 +363,233 @@
             </div>
           </div>
         </header>
-      <!-- Page Content -->
-      <div class="flex-1 overflow-y-auto pt-24 px-8 pb-8 relative">
-        <!-- Page Header -->
-        <div class="flex flex-wrap items-center justify-between gap-4 mb-8">
-          <div>
-            <h1
-              class="text-[28px] font-bold text-text leading-tight tracking-tight"
+        <!-- Page Content -->
+        <div class="flex-1 overflow-y-auto pt-24 px-8 pb-8 relative">
+          <!-- Page Header -->
+          <div class="flex flex-wrap items-center justify-between gap-4 mb-8">
+            <div>
+              <h1
+                class="text-[28px] font-bold text-text leading-tight tracking-tight"
+              >
+                Teachers Directory
+              </h1>
+              <p class="text-sm text-slate-500 mt-1 font-medium">
+                Manage and view all faculty members across departments.
+              </p>
+            </div>
+            <button
+              class="btn-primary flex items-center justify-center rounded-lg h-10 px-5 text-sm font-semibold shadow-sm transition-all hover:-translate-y-0.5 gap-2"
             >
-              Teachers Directory
-            </h1>
-            <p class="text-sm text-slate-500 mt-1 font-medium">
-              Manage and view all faculty members across departments.
-            </p>
+              <span class="material-symbols-outlined text-[20px]">add</span>
+              <span class="truncate">Add Teacher</span>
+            </button>
           </div>
-          <button
-            class="btn-primary flex items-center justify-center rounded-lg h-10 px-5 text-sm font-semibold shadow-sm transition-all hover:-translate-y-0.5 gap-2"
+          <!-- Content Grid -->
+          <div class="overflow-x-auto bg-white rounded-xl shadow">
+            <table class="min-w-full">
+              <thead class="bg-slate-100">
+                <tr>
+                  <th class="px-6 py-4 text-left">ID</th>
+                  <th class="px-6 py-4 text-left">Name</th>
+                  <th class="px-6 py-4 text-left">Department</th>
+                  <th class="px-6 py-4 text-left">Email</th>
+                  <th class="px-6 py-4 text-left">Phone</th>
+                  <th class="px-6 py-4 text-left">Status</th>
+                  <th class="px-6 py-4 text-center">Action</th>
+                </tr>
+              </thead>
+
+              <tbody id="teacherTable"></tbody>
+            </table>
+          </div>
+          <div
+            id="teacherModal"
+            class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50"
           >
-            <span class="material-symbols-outlined text-[20px]">add</span>
-            <span class="truncate">Add Teacher</span>
-          </button>
-        </div>
-        <!-- Content Grid -->
-        <div
-          class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 pb-12"
-        >
-          <!-- Card 1 -->
-          <div class="card-custom p-6 flex flex-col group">
-            <div class="flex justify-between items-start w-full mb-4">
-              <span
-                class="bg-light text-muted border border-border text-xs font-bold px-2.5 py-1 rounded-md tracking-wide"
-                >GV001</span
-              >
-              <button
-                class="text-slate-400 hover:text-primary transition-colors opacity-0 group-hover:opacity-100"
-              >
-                <span class="material-symbols-outlined text-[20px]"
-                  >more_horiz</span
+            <div class="bg-white rounded-2xl shadow-2xl w-[700px] max-w-[95%]">
+              <div class="flex justify-between items-center px-8 py-5 border-b">
+                <h2 class="text-2xl font-bold">Teacher Information</h2>
+
+                <button
+                  onclick="closeModal()"
+                  class="text-3xl text-gray-500 hover:text-red-500"
                 >
-              </button>
-            </div>
-            <div class="flex flex-col items-center mb-6">
-              <div
-                class="w-20 h-20 rounded-full overflow-hidden mb-3 border-2 border-border shadow-sm"
-              >
-                <img
-                  class="w-full h-full object-cover"
-                  data-alt="Professional headshot of a female teacher, bright lighting, neutral background, looking at camera with a warm smile, modern corporate education style, clean aesthetic."
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuBSdhVXqMySbtczwnH6_OLw64IFylX62lKpujvDgvJiu_vwlm_X2uxGd6DIATKBOXee5reb-0IoafPMcIfgWWOwNlwSXIS1F06BpVkzNcgzFwTfMRaVkRTK5YXoznmHp9hiHWWm2r91w8cnaJJI9V1ethmmIGn5KV4IxkLVPq3_59xiwNS398mSAPbaqDPDH75DZu7e8Vkz7Og2fLQXJb0X5uCQh6kGy5wLFUFlqOkiOdMC5BazImbK"
-                />
+                  &times;
+                </button>
               </div>
-              <h2 class="text-lg font-bold text-text">Eleanor Pena</h2>
-              <p class="text-xs text-muted font-medium mt-0.5">
-                Senior Lecturer
-              </p>
-            </div>
-            <div
-              class="w-full bg-light rounded-lg p-3 mb-5 border border-border/50 space-y-2"
-            >
-              <div class="flex justify-between items-center">
-                <span
-                  class="text-[11px] font-semibold text-muted uppercase tracking-wider flex items-center gap-1"
-                  ><span class="material-symbols-outlined text-[14px]"
-                    >domain</span
-                  >
-                  Dept</span
-                >
-                <span class="text-sm font-semibold text-text text-right"
-                  >IT &amp; Eng</span
-                >
-              </div>
-              <div class="flex justify-between items-center">
-                <span
-                  class="text-[11px] font-semibold text-muted uppercase tracking-wider flex items-center gap-1"
-                  ><span class="material-symbols-outlined text-[14px]"
-                    >menu_book</span
-                  >
-                  Load</span
-                >
-                <span
-                  class="text-xs font-bold text-primary bg-blue-50 px-2 py-0.5 rounded border border-blue-100"
-                  >4 Courses</span
-                >
-              </div>
-            </div>
-            <div class="mt-auto flex gap-2 w-full">
-              <button
-                class="btn-outline flex-[2] rounded-lg py-2 flex items-center justify-center gap-2 font-semibold text-sm text-text"
-              >
-                View Profile
-              </button>
-              <button
-                class="btn-outline w-10 flex-shrink-0 rounded-lg flex items-center justify-center text-muted hover:text-primary"
-              >
-                <span class="material-symbols-outlined text-[18px]">mail</span>
-              </button>
-            </div>
-          </div>
-          <!-- Card 2 -->
-          <div class="card-custom p-6 flex flex-col group">
-            <div class="flex justify-between items-start w-full mb-4">
-              <span
-                class="bg-light text-muted border border-border text-xs font-bold px-2.5 py-1 rounded-md tracking-wide"
-                >GV002</span
-              >
-              <button
-                class="text-slate-400 hover:text-primary transition-colors opacity-0 group-hover:opacity-100"
-              >
-                <span class="material-symbols-outlined text-[20px]"
-                  >more_horiz</span
-                >
-              </button>
-            </div>
-            <div class="flex flex-col items-center mb-6">
-              <div
-                class="w-20 h-20 rounded-full overflow-hidden mb-3 border-2 border-border shadow-sm"
-              >
-                <img
-                  class="w-full h-full object-cover"
-                  data-alt="Professional headshot of a female teacher, mathematical context, bright lighting, looking at camera, modern education style, clean and approachable aesthetic."
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuDTZa26abLGTw-U_8WaT7AGXO13JwuYk8wPxSEcNTMY0m-lMupgLvdtJRQWvmIUoLaJqYRS6ToQfzTuI5G3_flmmpIhR3uoPSjxTlecPNNIzOosBF9STScUuTUhIcYyVMiLofNBvSxQ70cKIoMxvvbxBCoc0hrMVZ69Zqp0nUne5oSi0z8jgmrY4007bma2JPVg6MZIGKG3BFtuj6uGAWSN3k9hO0XyLRpsxabmSGYYbkuHGYur-pyJ"
-                />
-              </div>
-              <h2 class="text-lg font-bold text-text">Jane Cooper</h2>
-              <p class="text-xs text-muted font-medium mt-0.5">Professor</p>
-            </div>
-            <div
-              class="w-full bg-light rounded-lg p-3 mb-5 border border-border/50 space-y-2"
-            >
-              <div class="flex justify-between items-center">
-                <span
-                  class="text-[11px] font-semibold text-muted uppercase tracking-wider flex items-center gap-1"
-                  ><span class="material-symbols-outlined text-[14px]"
-                    >domain</span
-                  >
-                  Dept</span
-                >
-                <span class="text-sm font-semibold text-text text-right"
-                  >Mathematics</span
-                >
-              </div>
-              <div class="flex justify-between items-center">
-                <span
-                  class="text-[11px] font-semibold text-muted uppercase tracking-wider flex items-center gap-1"
-                  ><span class="material-symbols-outlined text-[14px]"
-                    >menu_book</span
-                  >
-                  Load</span
-                >
-                <span
-                  class="text-xs font-bold text-primary bg-blue-50 px-2 py-0.5 rounded border border-blue-100"
-                  >3 Courses</span
-                >
-              </div>
-            </div>
-            <div class="mt-auto flex gap-2 w-full">
-              <button
-                class="btn-outline flex-[2] rounded-lg py-2 flex items-center justify-center gap-2 font-semibold text-sm text-text"
-              >
-                View Profile
-              </button>
-              <button
-                class="btn-outline w-10 flex-shrink-0 rounded-lg flex items-center justify-center text-muted hover:text-primary"
-              >
-                <span class="material-symbols-outlined text-[18px]">mail</span>
-              </button>
-            </div>
-          </div>
-          <!-- Card 3 -->
-          <div class="card-custom p-6 flex flex-col group">
-            <div class="flex justify-between items-start w-full mb-4">
-              <span
-                class="bg-light text-muted border border-border text-xs font-bold px-2.5 py-1 rounded-md tracking-wide"
-                >GV003</span
-              >
-              <button
-                class="text-slate-400 hover:text-primary transition-colors opacity-0 group-hover:opacity-100"
-              >
-                <span class="material-symbols-outlined text-[20px]"
-                  >more_horiz</span
-                >
-              </button>
-            </div>
-            <div class="flex flex-col items-center mb-6">
-              <div
-                class="w-20 h-20 rounded-full overflow-hidden mb-3 border-2 border-border shadow-sm"
-              >
-                <img
-                  class="w-full h-full object-cover"
-                  data-alt="Professional headshot of a male teacher, science context, soft natural light, looking confident, modern educational setting, high quality."
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuDQvueEc4XoeFrYFox_v8S0DSiGQiE2JUSjDuFa-Gd4dsW-VNKz9slc1xQMDDF0NRMHl57-wDIhRruaSGPhnKJ4P7udxxrBrnYQ1aXsjGCBMsuebaUNdqdvWJLmBRVM3cldfjSm5uuXKlVbza2Fg2EFy-f0Q1CLvpB7S-OmA0sB2v5Nfn9dsO6p3EzNqHwSXEevxjuUIngXX09tSvIosu8UQ1g8vmxRIaQYreheBXmlIriTFO4lanSu"
-                />
-              </div>
-              <h2 class="text-lg font-bold text-text">Wade Warren</h2>
-              <p class="text-xs text-muted font-medium mt-0.5">
-                Lab Instructor
-              </p>
-            </div>
-            <div
-              class="w-full bg-light rounded-lg p-3 mb-5 border border-border/50 space-y-2"
-            >
-              <div class="flex justify-between items-center">
-                <span
-                  class="text-[11px] font-semibold text-muted uppercase tracking-wider flex items-center gap-1"
-                  ><span class="material-symbols-outlined text-[14px]"
-                    >domain</span
-                  >
-                  Dept</span
-                >
-                <span class="text-sm font-semibold text-text text-right"
-                  >Science</span
-                >
-              </div>
-              <div class="flex justify-between items-center">
-                <span
-                  class="text-[11px] font-semibold text-muted uppercase tracking-wider flex items-center gap-1"
-                  ><span class="material-symbols-outlined text-[14px]"
-                    >menu_book</span
-                  >
-                  Load</span
-                >
-                <span
-                  class="text-xs font-bold text-primary bg-blue-50 px-2 py-0.5 rounded border border-blue-100"
-                  >5 Courses</span
-                >
-              </div>
-            </div>
-            <div class="mt-auto flex gap-2 w-full">
-              <button
-                class="btn-outline flex-[2] rounded-lg py-2 flex items-center justify-center gap-2 font-semibold text-sm text-text"
-              >
-                View Profile
-              </button>
-              <button
-                class="btn-outline w-10 flex-shrink-0 rounded-lg flex items-center justify-center text-muted hover:text-primary"
-              >
-                <span class="material-symbols-outlined text-[18px]">mail</span>
-              </button>
-            </div>
-          </div>
-          <!-- Card 4 -->
-          <div class="card-custom p-6 flex flex-col group">
-            <div class="flex justify-between items-start w-full mb-4">
-              <span
-                class="bg-light text-muted border border-border text-xs font-bold px-2.5 py-1 rounded-md tracking-wide"
-                >GV004</span
-              >
-              <button
-                class="text-slate-400 hover:text-primary transition-colors opacity-0 group-hover:opacity-100"
-              >
-                <span class="material-symbols-outlined text-[20px]"
-                  >more_horiz</span
-                >
-              </button>
-            </div>
-            <div class="flex flex-col items-center mb-6">
-              <div
-                class="w-20 h-20 rounded-full overflow-hidden mb-3 border-2 border-border shadow-sm"
-              >
-                <img
-                  class="w-full h-full object-cover"
-                  data-alt="Professional headshot of a female teacher, arts and humanities context, warm lighting, approachable demeanor, modern academic styling."
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuAtA8IWlwPySV6alEAS1M7z3LRRp4mdp2UTdjoqDvQNBR4p9MerpPkBxQK_8Xwc89zq9dh4yDwA7CND12VwYcGG6dP827vTUsKBxuQbBnNOYOGlL3LuWDSg0iJZwr2fKsG5fQbLFyy9xqL3k_qj6HUvph_pCh_yOAm1wWGXYqHO1gBrrtQvubcDzDuDbxjZ1mAm1zgl4krZ2eHcHqpGUG2pliUj3J1pkEVw6K-SjM0cwaWpJqrgb1Pq"
-                />
-              </div>
-              <h2 class="text-lg font-bold text-text">Esther Howard</h2>
-              <p class="text-xs text-muted font-medium mt-0.5">Lecturer</p>
-            </div>
-            <div
-              class="w-full bg-light rounded-lg p-3 mb-5 border border-border/50 space-y-2"
-            >
-              <div class="flex justify-between items-center">
-                <span
-                  class="text-[11px] font-semibold text-muted uppercase tracking-wider flex items-center gap-1"
-                  ><span class="material-symbols-outlined text-[14px]"
-                    >domain</span
-                  >
-                  Dept</span
-                >
-                <span class="text-sm font-semibold text-text text-right"
-                  >English</span
-                >
-              </div>
-              <div class="flex justify-between items-center">
-                <span
-                  class="text-[11px] font-semibold text-muted uppercase tracking-wider flex items-center gap-1"
-                  ><span class="material-symbols-outlined text-[14px]"
-                    >menu_book</span
-                  >
-                  Load</span
-                >
-                <span
-                  class="text-xs font-bold text-primary bg-blue-50 px-2 py-0.5 rounded border border-blue-100"
-                  >2 Courses</span
-                >
-              </div>
-            </div>
-            <div class="mt-auto flex gap-2 w-full">
-              <button
-                class="btn-outline flex-[2] rounded-lg py-2 flex items-center justify-center gap-2 font-semibold text-sm text-text"
-              >
-                View Profile
-              </button>
-              <button
-                class="btn-outline w-10 flex-shrink-0 rounded-lg flex items-center justify-center text-muted hover:text-primary"
-              >
-                <span class="material-symbols-outlined text-[18px]">mail</span>
-              </button>
+
+              <div id="teacherDetail" class="p-8"></div>
             </div>
           </div>
         </div>
-      </div>
-    </main>
+      </main>
+    </div>
+
+    <script>
+      async function loadTeachers() {
+        const response = await fetch("http://localhost:3000/teachers");
+
+        const teachers = await response.json();
+
+        let html = "";
+
+        teachers.forEach((t) => {
+          html += `
+        <tr class="border-b hover:bg-slate-50">
+
+            <td class="px-6 py-4">${t.TeacherID}</td>
+
+            <td class="px-6 py-4 font-semibold">
+                ${t.Name}
+            </td>
+
+            <td class="px-6 py-4">
+                ${t.Department}
+            </td>
+
+            <td class="px-6 py-4">
+                ${t.Email}
+            </td>
+
+            <td class="px-6 py-4">
+                ${t.Phone}
+            </td>
+
+            <td class="px-6 py-4">
+
+                <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs">
+                    ${t.Status}
+                </span>
+
+            </td>
+
+            <td class="px-6 py-4 text-center">
+
+                <button
+                    onclick="viewTeacher('${t.TeacherID}')"
+                    class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">
+
+                    View
+
+                </button>
+
+            </td>
+
+        </tr>
+        `;
+        });
+
+        document.getElementById("teacherTable").innerHTML = html;
+      }
+
+      loadTeachers();
+      async function viewTeacher(id) {
+        const response = await fetch(`http://localhost:3000/teachers/${id}`);
+
+        const t = await response.json();
+
+        document.getElementById("teacherDetail").innerHTML = `
+
+    <div class="flex gap-8">
+
+        <img
+        src="https://ui-avatars.com/api/?name=${encodeURIComponent(t.Name)}&background=2563eb&color=fff&size=200"
+        class="w-36 h-36 rounded-full border-4 border-blue-100">
+
+        <div class="grid grid-cols-2 gap-x-10 gap-y-4 flex-1">
+
+            <div>
+
+                <label class="text-sm text-gray-500">Teacher ID</label>
+
+                <p class="font-semibold">${t.TeacherID}</p>
+
+            </div>
+
+            <div>
+
+                <label class="text-sm text-gray-500">Department</label>
+
+                <p class="font-semibold">${t.Department}</p>
+
+            </div>
+
+            <div>
+
+                <label class="text-sm text-gray-500">Full Name</label>
+
+                <p class="font-semibold">${t.Name}</p>
+
+            </div>
+
+            <div>
+
+                <label class="text-sm text-gray-500">Status</label>
+
+                <span class="px-3 py-1 rounded-full bg-green-100 text-green-700 text-sm">
+                    ${t.Status}
+                </span>
+
+            </div>
+
+            <div>
+
+                <label class="text-sm text-gray-500">Email</label>
+
+                <p>${t.Email}</p>
+
+            </div>
+
+            <div>
+
+                <label class="text-sm text-gray-500">Phone</label>
+
+                <p>${t.Phone}</p>
+
+            </div>
+
+            <div class="col-span-2">
+
+                <label class="text-sm text-gray-500">Username</label>
+
+                <p>${t.Username}</p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="mt-8 flex justify-end gap-3">
+
+        <button
+            class="px-5 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600">
+
+            Edit
+
+        </button>
+
+        <button
+            onclick="closeModal()"
+            class="px-5 py-2 bg-gray-700 text-white rounded-lg">
+
+            Close
+
+        </button>
+
+    </div>
+
+    `;
+
+        document.getElementById("teacherModal").classList.remove("hidden");
+
+        document.getElementById("teacherModal").classList.add("flex");
+      }
+      function closeModal() {
+        document.getElementById("teacherModal").classList.remove("flex");
+
+        document.getElementById("teacherModal").classList.add("hidden");
+      }
+    </script>
   </body>
 </html>
