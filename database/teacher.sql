@@ -14,9 +14,23 @@ BEGIN
         Department NVARCHAR(100) NULL,
         Phone NVARCHAR(20) NULL,
         Username NVARCHAR(50) NULL,
-        PasswordHash NVARCHAR(64) NULL,
+        Password NVARCHAR(100) NULL,
         Status NVARCHAR(30) NOT NULL DEFAULT 'Active'
     );
+END;
+ELSE
+BEGIN
+    IF COL_LENGTH('dbo.Teachers', 'Password') IS NULL
+    BEGIN
+        IF COL_LENGTH('dbo.Teachers', 'PasswordHash') IS NOT NULL
+        BEGIN
+            EXEC sp_rename 'dbo.Teachers.PasswordHash', 'Password', 'COLUMN';
+        END
+        ELSE
+        BEGIN
+            ALTER TABLE dbo.Teachers ADD Password NVARCHAR(100) NULL;
+        END;
+    END;
 END;
 GO
 
@@ -133,9 +147,9 @@ GO
 
 MERGE dbo.Teachers AS target
 USING (VALUES
-    ('TCH001', N'Tran Minh', 'tranminh@edusync.edu.vn', N'Computer Science', '0901000001', 'teacher1', 'f0b96f9d4f2d61a750e6c6a9c2096f6b682a3f0602b7a26b3d0f9b2eb19e3f7a', 'Active'),
-    ('TCH002', N'Le Hoa', 'lehoa@edusync.edu.vn', N'Software Engineering', '0901000002', 'teacher2', 'b14d7da907d8b3c0938575ba7b2e5f1ab5f3428228e03b717eb1f5f035e5651b', 'Active')
-) AS source (TeacherID,Name,Email,Department,Phone,Username,PasswordHash,Status)
+    ('TCH001', N'Tran Minh', 'tranminh@edusync.edu.vn', N'Computer Science', '0901000001', 'teacher1', 'teacher1', 'Active'),
+    ('TCH002', N'Le Hoa', 'lehoa@edusync.edu.vn', N'Software Engineering', '0901000002', 'teacher2', 'teacher2', 'Active')
+) AS source (TeacherID,Name,Email,Department,Phone,Username,Password,Status)
 ON target.TeacherID = source.TeacherID
 WHEN MATCHED THEN UPDATE SET
     Name = source.Name,
@@ -143,11 +157,11 @@ WHEN MATCHED THEN UPDATE SET
     Department = source.Department,
     Phone = source.Phone,
     Username = source.Username,
-    PasswordHash = source.PasswordHash,
+    Password = source.Password,
     Status = source.Status
 WHEN NOT MATCHED THEN
-    INSERT (TeacherID,Name,Email,Department,Phone,Username,PasswordHash,Status)
-    VALUES (source.TeacherID,source.Name,source.Email,source.Department,source.Phone,source.Username,source.PasswordHash,source.Status);
+    INSERT (TeacherID,Name,Email,Department,Phone,Username,Password,Status)
+    VALUES (source.TeacherID,source.Name,source.Email,source.Department,source.Phone,source.Username,source.Password,source.Status);
 GO
 
 MERGE dbo.TeacherAssignedCourses AS target
