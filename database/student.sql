@@ -610,6 +610,7 @@ WHEN NOT MATCHED THEN
 GO
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 IF OBJECT_ID('dbo.Payments', 'U') IS NOT NULL AND OBJECT_ID('dbo.Tuitions', 'U') IS NOT NULL
 BEGIN
     DELETE FROM dbo.Payments WHERE TuitionID IN (SELECT TuitionID FROM dbo.Tuitions WHERE StudentID LIKE 'SV[0-9][0-9][0-9][0-9][0-9]');
@@ -622,6 +623,8 @@ GO
 IF OBJECT_ID('dbo.Enrollments', 'U') IS NOT NULL BEGIN DELETE FROM dbo.Enrollments WHERE StudentID LIKE 'SV[0-9][0-9][0-9][0-9][0-9]'; END;
 GO
 
+=======
+>>>>>>> 4533905ee809b0dd6a6f3be500b57b588ad51d81
 SELECT 'CSV student data is ready.' AS Result;
 SELECT COUNT(*) AS TotalStudentsFromCsv FROM dbo.Students WHERE StudentID LIKE 'SV[0-9][0-9][0-9][0-9][0-9]';
 SELECT Major, COUNT(*) AS StudentCount FROM dbo.Students WHERE StudentID LIKE 'SV[0-9][0-9][0-9][0-9][0-9]' GROUP BY Major ORDER BY Major;
@@ -1175,8 +1178,11 @@ ORDER BY StudentID;
 
 SELECT COUNT(*) AS TotalTeachers
 FROM dbo.Students;
+<<<<<<< HEAD
 =======
 SELECT 'Final student data is ready.' AS Result;
 SELECT COUNT(*) AS TotalStudents FROM dbo.Students WHERE StudentID LIKE 'SV[0-9][0-9][0-9][0-9][0-9]';
 SELECT StudentID, Name, Gender, DOB, ClassID, Email, Phone, Status, Major, Username, [Password], GPA, TuitionOwed FROM dbo.Students WHERE StudentID LIKE 'SV[0-9][0-9][0-9][0-9][0-9]' ORDER BY StudentID;
 >>>>>>> 4bdf15a9cba1e54bd54c2f1263351aaadbbc2c0b
+=======
+>>>>>>> 4533905ee809b0dd6a6f3be500b57b588ad51d81
