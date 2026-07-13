@@ -604,8 +604,7 @@
           const data = await response.json();
 
           if (response.ok) {
-            // Đăng nhập thành công, chuyển hướng trang
-            alert(data.message);
+            // Đăng nhập thành công, chuyển hướng trang thẳng luôn
             window.location.href = data.redirectUrl;
           } else {
             // Báo lỗi (sai email, mật khẩu, bị khóa...)
