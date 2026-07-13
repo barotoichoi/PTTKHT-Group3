@@ -307,13 +307,13 @@
           </button>
         </div>
       </aside>
-    <!-- END: Sidebar -->
-    <!-- BEGIN: Main Content Area -->
-    <div class="flex-1 flex flex-col min-h-screen ml-[240px] overflow-hidden">
-      <!-- BEGIN: Top Header -->
-      <header
+      <!-- END: Sidebar -->
+      <!-- BEGIN: Main Content Area -->
+      <div class="flex-1 flex flex-col min-h-screen ml-[240px] overflow-hidden">
+        <!-- BEGIN: Top Header -->
+        <header
           class="fixed top-0 right-0 w-[calc(100%-240px)] z-40 bg-white border-b border-gray-200 flex justify-between items-center h-16 px-8"
-          >
+        >
           <div class="flex items-center gap-4">
             <span
               class="font-headline-sm text-headline-sm font-semibold text-on-surface"
@@ -363,326 +363,131 @@
             </div>
           </div>
         </header>
-      <!-- END: Top Header -->
-      <!-- BEGIN: Page Content -->
-      <main
-        class="flex-1 overflow-y-auto bg-gray-50 p-8 mt-16"
-        data-purpose="page-content"
+        <!-- END: Top Header -->
+        <!-- BEGIN: Page Content -->
+        <main
+          class="flex-1 overflow-y-auto bg-gray-50 p-8 mt-16"
+          data-purpose="page-content"
         >
-        <!-- Page Header -->
-        <div class="flex justify-between items-center mb-8">
-          <div>
-            <h2 class="text-2xl font-bold text-gray-900">Users Management</h2>
-            <p class="mt-1 text-sm text-gray-500">
-              Manage all registered users in the system.
-            </p>
+          <!-- Page Header -->
+          <div class="flex justify-between items-center mb-8">
+            <div>
+              <h2 class="text-2xl font-bold text-gray-900">Users Management</h2>
+              <p class="mt-1 text-sm text-gray-500">
+                Manage all registered users in the system.
+              </p>
+            </div>
+            <button
+              class="bg-[#0058BE] hover:bg-blue-700 text-white font-medium py-2.5 px-4 rounded-lg shadow-sm transition-colors flex items-center text-sm"
+            >
+              <i class="fa-solid fa-plus mr-2"></i>
+              Add New User
+            </button>
           </div>
-          <button
-            class="bg-[#0058BE] hover:bg-blue-700 text-white font-medium py-2.5 px-4 rounded-lg shadow-sm transition-colors flex items-center text-sm"
-          >
-            <i class="fa-solid fa-plus mr-2"></i>
-            Add New User
-          </button>
-        </div>
-        <!-- Users Table Card -->
-        <div
-          class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden"
-        >
-          <!-- Table Tools (Optional - e.g. filters) -->
+          <!-- Users Table Card -->
           <div
-            class="px-6 py-4 border-b border-gray-200 flex justify-between items-center bg-gray-50/50"
+            class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden"
           >
-            <div class="flex space-x-2">
-              <button
-                class="px-3 py-1.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50"
-              >
-                All Users
-              </button>
-              <button
-                class="px-3 py-1.5 text-sm font-medium text-gray-500 hover:text-gray-700"
-              >
-                Students
-              </button>
-              <button
-                class="px-3 py-1.5 text-sm font-medium text-gray-500 hover:text-gray-700"
-              >
-                Teachers
-              </button>
-              <button
-                class="px-3 py-1.5 text-sm font-medium text-gray-500 hover:text-gray-700"
-              >
-                Admins
-              </button>
+            <!-- Table Tools (Optional - e.g. filters) -->
+            <div
+              class="px-6 py-4 border-b border-gray-200 flex justify-between items-center bg-gray-50/50"
+            >
+              <div class="flex space-x-2">
+                <button
+                  class="px-3 py-1.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50"
+                >
+                  All Users
+                </button>
+                <button
+                  class="px-3 py-1.5 text-sm font-medium text-gray-500 hover:text-gray-700"
+                >
+                  Students
+                </button>
+                <button
+                  class="px-3 py-1.5 text-sm font-medium text-gray-500 hover:text-gray-700"
+                >
+                  Teachers
+                </button>
+                <button
+                  class="px-3 py-1.5 text-sm font-medium text-gray-500 hover:text-gray-700"
+                >
+                  Admins
+                </button>
+              </div>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="min-w-full divide-y divide-gray-200">
+                <thead>
+                  <tr>
+                    <th class="table-header" scope="col">User</th>
+                    <th class="table-header" scope="col">User ID</th>
+                    <th class="table-header" scope="col">Email</th>
+                    <th class="table-header" scope="col">Role</th>
+                    <th class="table-header" scope="col">Status</th>
+                    <th class="table-header text-right" scope="col">Actions</th>
+                  </tr>
+                </thead>
+                <tbody
+                  id="userTableBody"
+                  class="bg-white divide-y divide-gray-100"
+                ></tbody>
+              </table>
+            </div>
+            <!-- Pagination -->
+            <div
+              class="px-6 py-4 border-t border-gray-200 flex items-center justify-between bg-white"
+            >
+              <div class="text-sm text-gray-500">
+                Showing <span class="font-medium text-gray-900">1</span> to
+                <span class="font-medium text-gray-900">5</span> of
+                <span class="font-medium text-gray-900">2,735</span> results
+              </div>
+              <div class="flex space-x-2">
+                <button
+                  class="px-3 py-1 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                  disabled=""
+                >
+                  Previous
+                </button>
+                <button
+                  class="px-3 py-1 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
+                >
+                  Next
+                </button>
+              </div>
             </div>
           </div>
-          <div class="overflow-x-auto">
-            <table class="min-w-full divide-y divide-gray-200">
-              <thead>
-                <tr>
-                  <th class="table-header" scope="col">User</th>
-                  <th class="table-header" scope="col">User ID</th>
-                  <th class="table-header" scope="col">Email</th>
-                  <th class="table-header" scope="col">Role</th>
-                  <th class="table-header" scope="col">Status</th>
-                  <th class="table-header text-right" scope="col">Actions</th>
-                </tr>
-              </thead>
-              <tbody class="bg-white divide-y divide-gray-100">
-                <!-- Row 1 -->
-                <tr class="hover:bg-gray-50 transition-colors">
-                  <td class="table-cell">
-                    <div class="flex items-center">
-                      <div class="flex-shrink-0 h-10 w-10">
-                        <div
-                          class="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-700 font-bold text-sm"
-                        >
-                          BH
-                        </div>
-                      </div>
-                      <div class="ml-4">
-                        <div class="text-sm font-medium text-gray-900">
-                          Bao Ha Van
-                        </div>
-                      </div>
-                    </div>
-                  </td>
-                  <td class="table-cell font-mono text-gray-500">ST220015</td>
-                  <td class="table-cell text-gray-500">
-                    bao.ha@student.edusync.edu
-                  </td>
-                  <td class="table-cell">
-                    <span class="badge bg-blue-100 text-blue-800">Student</span>
-                  </td>
-                  <td class="table-cell">
-                    <span
-                      class="badge bg-status-success text-status-successText"
-                      >Active</span
-                    >
-                  </td>
-                  <td class="table-cell text-right text-sm font-medium">
-                    <button
-                      class="text-gray-400 hover:text-blue-600 mx-2 transition-colors"
-                      title="Edit"
-                    >
-                      <i class="fa-solid fa-pen"></i>
-                    </button>
-                    <button
-                      class="text-gray-400 hover:text-red-600 mx-2 transition-colors"
-                      title="Delete"
-                    >
-                      <i class="fa-solid fa-trash"></i>
-                    </button>
-                  </td>
-                </tr>
-                <!-- Row 2 -->
-                <tr class="hover:bg-gray-50 transition-colors">
-                  <td class="table-cell">
-                    <div class="flex items-center">
-                      <div class="flex-shrink-0 h-10 w-10">
-                        <div
-                          class="h-10 w-10 rounded-full bg-purple-100 flex items-center justify-center text-purple-700 font-bold text-sm"
-                        >
-                          MT
-                        </div>
-                      </div>
-                      <div class="ml-4">
-                        <div class="text-sm font-medium text-gray-900">
-                          Mr. Tran
-                        </div>
-                      </div>
-                    </div>
-                  </td>
-                  <td class="table-cell font-mono text-gray-500">GV001</td>
-                  <td class="table-cell text-gray-500">
-                    tran.teacher@edusync.edu
-                  </td>
-                  <td class="table-cell">
-                    <span class="badge bg-purple-100 text-purple-800"
-                      >Teacher</span
-                    >
-                  </td>
-                  <td class="table-cell">
-                    <span
-                      class="badge bg-status-success text-status-successText"
-                      >Active</span
-                    >
-                  </td>
-                  <td class="table-cell text-right text-sm font-medium">
-                    <button
-                      class="text-gray-400 hover:text-blue-600 mx-2 transition-colors"
-                    >
-                      <i class="fa-solid fa-pen"></i>
-                    </button>
-                    <button
-                      class="text-gray-400 hover:text-red-600 mx-2 transition-colors"
-                    >
-                      <i class="fa-solid fa-trash"></i>
-                    </button>
-                  </td>
-                </tr>
-                <!-- Row 3 -->
-                <tr class="hover:bg-gray-50 transition-colors">
-                  <td class="table-cell">
-                    <div class="flex items-center">
-                      <div class="flex-shrink-0 h-10 w-10">
-                        <img
-                          alt=""
-                          class="h-10 w-10 rounded-full object-cover"
-                          src="https://lh3.googleusercontent.com/aida-public/AB6AXuCj5ytEvbjB1m6quEiTi0GNdJusiZFTILW4fE41q4Ly6PyyM-KcIHkrF_js67DRj9T0KNOfnvELI0PlMIY_DBF4ctEc_eo9TcAfGI1QIgEn_81DW0377Z1jM6Eo1wYEvh0MsXONTj_P1Hix3L2d676hfjdGxU0mEO18x94BeROr8DFEFOiwFlvsF7jeSWeCtI4J4xOPXS956wXZw0mENyKjMPP7FMOJXkfNb42_gd63YWc1XO5d34Lk"
-                        />
-                      </div>
-                      <div class="ml-4">
-                        <div class="text-sm font-medium text-gray-900">
-                          Admin
-                        </div>
-                      </div>
-                    </div>
-                  </td>
-                  <td class="table-cell font-mono text-gray-500">AD001</td>
-                  <td class="table-cell text-gray-500">admin@edusync.edu</td>
-                  <td class="table-cell">
-                    <span class="badge bg-gray-800 text-white"
-                      >Administrator</span
-                    >
-                  </td>
-                  <td class="table-cell">
-                    <span
-                      class="badge bg-status-success text-status-successText"
-                      >Active</span
-                    >
-                  </td>
-                  <td class="table-cell text-right text-sm font-medium">
-                    <button
-                      class="text-gray-400 hover:text-blue-600 mx-2 transition-colors"
-                    >
-                      <i class="fa-solid fa-pen"></i>
-                    </button>
-                    <button
-                      class="text-gray-400 hover:text-red-600 mx-2 transition-colors"
-                    >
-                      <i class="fa-solid fa-trash"></i>
-                    </button>
-                  </td>
-                </tr>
-                <!-- Row 4 -->
-                <tr class="hover:bg-gray-50 transition-colors">
-                  <td class="table-cell">
-                    <div class="flex items-center">
-                      <div class="flex-shrink-0 h-10 w-10">
-                        <div
-                          class="h-10 w-10 rounded-full bg-red-100 flex items-center justify-center text-red-700 font-bold text-sm"
-                        >
-                          LN
-                        </div>
-                      </div>
-                      <div class="ml-4">
-                        <div class="text-sm font-medium text-gray-900">
-                          Le Nguyen
-                        </div>
-                      </div>
-                    </div>
-                  </td>
-                  <td class="table-cell font-mono text-gray-500">ST220251</td>
-                  <td class="table-cell text-gray-500">
-                    le.nguyen@student.edusync.edu
-                  </td>
-                  <td class="table-cell">
-                    <span class="badge bg-blue-100 text-blue-800">Student</span>
-                  </td>
-                  <td class="table-cell">
-                    <span class="badge bg-status-danger text-status-dangerText"
-                      >Inactive</span
-                    >
-                  </td>
-                  <td class="table-cell text-right text-sm font-medium">
-                    <button
-                      class="text-gray-400 hover:text-blue-600 mx-2 transition-colors"
-                    >
-                      <i class="fa-solid fa-pen"></i>
-                    </button>
-                    <button
-                      class="text-gray-400 hover:text-red-600 mx-2 transition-colors"
-                    >
-                      <i class="fa-solid fa-trash"></i>
-                    </button>
-                  </td>
-                </tr>
-                <!-- Row 5 -->
-                <tr class="hover:bg-gray-50 transition-colors">
-                  <td class="table-cell">
-                    <div class="flex items-center">
-                      <div class="flex-shrink-0 h-10 w-10">
-                        <div
-                          class="h-10 w-10 rounded-full bg-green-100 flex items-center justify-center text-green-700 font-bold text-sm"
-                        >
-                          SJ
-                        </div>
-                      </div>
-                      <div class="ml-4">
-                        <div class="text-sm font-medium text-gray-900">
-                          Sarah Jenkins
-                        </div>
-                      </div>
-                    </div>
-                  </td>
-                  <td class="table-cell font-mono text-gray-500">GV042</td>
-                  <td class="table-cell text-gray-500">
-                    s.jenkins@edusync.edu
-                  </td>
-                  <td class="table-cell">
-                    <span class="badge bg-purple-100 text-purple-800"
-                      >Teacher</span
-                    >
-                  </td>
-                  <td class="table-cell">
-                    <span
-                      class="badge bg-status-success text-status-successText"
-                      >Active</span
-                    >
-                  </td>
-                  <td class="table-cell text-right text-sm font-medium">
-                    <button
-                      class="text-gray-400 hover:text-blue-600 mx-2 transition-colors"
-                    >
-                      <i class="fa-solid fa-pen"></i>
-                    </button>
-                    <button
-                      class="text-gray-400 hover:text-red-600 mx-2 transition-colors"
-                    >
-                      <i class="fa-solid fa-trash"></i>
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <!-- Pagination -->
-          <div
-            class="px-6 py-4 border-t border-gray-200 flex items-center justify-between bg-white"
-          >
-            <div class="text-sm text-gray-500">
-              Showing <span class="font-medium text-gray-900">1</span> to
-              <span class="font-medium text-gray-900">5</span> of
-              <span class="font-medium text-gray-900">2,735</span> results
-            </div>
-            <div class="flex space-x-2">
-              <button
-                class="px-3 py-1 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-                disabled=""
-              >
-                Previous
-              </button>
-              <button
-                class="px-3 py-1 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
-              >
-                Next
-              </button>
-            </div>
-          </div>
-        </div>
-      </main>
-      <!-- END: Page Content -->
+        </main>
+        <!-- END: Page Content -->
+      </div>
     </div>
     <!-- END: Main Content Area -->
+
+    <script>
+      async function loadUsers() {
+        const response = await fetch("http://localhost:3000/users");
+        const users = await response.json();
+
+        const tbody = document.getElementById("userTableBody");
+        tbody.innerHTML = "";
+
+        users.forEach((user) => {
+          tbody.innerHTML += `
+                <tr>
+                    <td>${user.FullName}</td>
+                    <td>${user.UserID}</td>
+                    <td>${user.Email}</td>
+                    <td>${user.Role}</td>
+                    <td>${user.Status}</td>
+                    <td>
+                        <button>View</button>
+                    </td>
+                </tr>
+            `;
+        });
+      }
+
+      loadUsers();
+    </script>
   </body>
 </html>
