@@ -99,8 +99,8 @@ app.post("/login", async (req, res) => {
 
     // Kiểm tra xem người dùng có gửi đủ email và password không
     if (!email || !password) {
-      return res.status(400).json({ 
-        message: "Vui lòng cung cấp đầy đủ Email và Password" 
+      return res.status(400).json({
+        message: "Vui lòng cung cấp đầy đủ Email và Password",
       });
     }
 
@@ -113,17 +113,17 @@ app.post("/login", async (req, res) => {
 
     // Nếu không tìm thấy user hoặc sai mật khẩu
     if (result.recordset.length === 0) {
-      return res.status(401).json({ 
-        message: "Email hoặc mật khẩu không chính xác" 
+      return res.status(401).json({
+        message: "Email hoặc mật khẩu không chính xác",
       });
     }
 
     const user = result.recordset[0];
 
     // (Tùy chọn) Kiểm tra trạng thái tài khoản
-    if (user.Status !== 'Active') {
-      return res.status(403).json({ 
-        message: "Tài khoản của bạn đang bị khóa hoặc không hoạt động" 
+    if (user.Status !== "Active") {
+      return res.status(403).json({
+        message: "Tài khoản của bạn đang bị khóa hoặc không hoạt động",
       });
     }
 
@@ -136,8 +136,8 @@ app.post("/login", async (req, res) => {
     } else if (user.Role === "Admin") {
       redirectUrl = "admin.html";
     } else {
-      return res.status(403).json({ 
-        message: "Quyền truy cập (Role) không hợp lệ" 
+      return res.status(403).json({
+        message: "Quyền truy cập (Role) không hợp lệ",
       });
     }
 
@@ -145,9 +145,8 @@ app.post("/login", async (req, res) => {
     res.json({
       message: "Đăng nhập thành công",
       role: user.Role,
-      redirectUrl: redirectUrl
+      redirectUrl: redirectUrl,
     });
-
   } catch (err) {
     console.log(err);
     res.status(500).send(err.message);
