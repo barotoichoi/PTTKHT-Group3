@@ -309,7 +309,7 @@
       </aside>
 
       <div class="flex-1 ml-[240px]">
-<header
+        <header
           class="fixed top-0 right-0 w-[calc(100%-240px)] z-40 bg-white border-b border-border flex justify-between items-center h-16 px-8"
         >
           <div class="flex items-center gap-4">
@@ -374,14 +374,6 @@
                   Monitor and manage the entire Student Management System.
                 </p>
               </div>
-
-              <button
-                class="btn-primary px-5 py-3 rounded-lg flex items-center gap-2 shadow"
-              >
-                <span class="material-symbols-outlined"> download </span>
-
-                Export Report
-              </button>
             </div>
           </section>
 
@@ -397,7 +389,7 @@
 
               <p class="text-slate-500 text-sm">Total Students</p>
 
-              <h2 class="text-4xl font-bold mt-2">2,548</h2>
+              <h2 class="text-4xl font-bold mt-2" id="studentCount"></h2>
 
               <div class="mt-6 flex items-center gap-2 text-emerald-600">
                 <span class="material-symbols-outlined text-lg">
@@ -423,7 +415,7 @@
 
               <p class="text-slate-500 text-sm">Teachers</p>
 
-              <h2 class="text-4xl font-bold mt-2">186</h2>
+              <h2 class="text-4xl font-bold mt-2" id="teacherCount"></h2>
 
               <div class="mt-6 flex items-center gap-2 text-slate-500">
                 <span class="material-symbols-outlined"> schedule </span>
@@ -845,5 +837,41 @@
         </main>
       </div>
     </div>
+
+    <script>
+      async function loadTeacherCount() {
+        try {
+          const response = await fetch(
+            "http://localhost:3000/api/teachers/count",
+          );
+          const data = await response.json();
+
+          document.getElementById("teacherCount").textContent =
+            data.TotalTeachers;
+        } catch (error) {
+          console.error(error);
+          document.getElementById("teacherCount").textContent = "0";
+        }
+      }
+
+      loadTeacherCount();
+
+      async function loadStudentCount() {
+        try {
+          const response = await fetch(
+            "http://localhost:3000/api/students/count",
+          );
+          const data = await response.json();
+
+          document.getElementById("studentCount").textContent =
+            data.TotalStudents;
+        } catch (error) {
+          console.error(error);
+          document.getElementById("studentCount").textContent = "0";
+        }
+      }
+
+      loadStudentCount();
+    </script>
   </body>
 </html>
