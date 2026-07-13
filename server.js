@@ -9,7 +9,7 @@ app.use(express.json());
 
 const config = {
   connectionString:
-    "Driver={ODBC Driver 17 for SQL Server};Server=MSI;Database=StudentManagement;Trusted_Connection=Yes;",
+    "Driver={ODBC Driver 17 for SQL Server};Server=LAPTOP-5CBMHEF9;Database=StudentManagement;Trusted_Connection=Yes;",
 };
 
 async function start() {
