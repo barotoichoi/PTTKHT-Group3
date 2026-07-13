@@ -91,53 +91,69 @@ app.get("/api/students/count", async (req, res) => {
   }
 });
 
-//get all users
-// Get all users
-app.get("/users", async (req, res) => {
+// Login
+// API xử lý đăng nhập (Login)
+app.post("/login", async (req, res) => {
   try {
-    const result = await sql.query(`
-      SELECT
-          UserID,
-          FullName,
-          Email,
-          Role,
-          Status
-      FROM Users
-      ORDER BY UserID
-    `);
+    const { email, password } = req.body;
 
-    res.json(result.recordset);
-  } catch (err) {
-    console.log(err);
-    res.status(500).send(err.message);
-  }
-});
-
-//get 1 users
-// Get user by ID
-app.get("/users/:id", async (req, res) => {
-  try {
-    const id = req.params.id;
-
-    const result = await sql.query`
-      SELECT *
-      FROM Users
-      WHERE UserID = ${id}
-    `;
-
-    if (result.recordset.length === 0) {
-      return res.status(404).json({
-        message: "User not found",
+    // Kiểm tra xem người dùng có gửi đủ email và password không
+    if (!email || !password) {
+      return res.status(400).json({ 
+        message: "Vui lòng cung cấp đầy đủ Email và Password" 
       });
     }
 
-    res.json(result.recordset[0]);
+    // Truy vấn kiểm tra thông tin trong bảng Users
+    const result = await sql.query`
+        SELECT Role, Status
+        FROM Users
+        WHERE Email = ${email} AND Password = ${password}
+    `;
+
+    // Nếu không tìm thấy user hoặc sai mật khẩu
+    if (result.recordset.length === 0) {
+      return res.status(401).json({ 
+        message: "Email hoặc mật khẩu không chính xác" 
+      });
+    }
+
+    const user = result.recordset[0];
+
+    // (Tùy chọn) Kiểm tra trạng thái tài khoản
+    if (user.Status !== 'Active') {
+      return res.status(403).json({ 
+        message: "Tài khoản của bạn đang bị khóa hoặc không hoạt động" 
+      });
+    }
+
+    // Xác định trang chuyển hướng dựa trên Role
+    let redirectUrl = "";
+    if (user.Role === "Student") {
+      redirectUrl = "student.html";
+    } else if (user.Role === "Teacher") {
+      redirectUrl = "teacher.html";
+    } else if (user.Role === "Admin") {
+      redirectUrl = "admin.html";
+    } else {
+      return res.status(403).json({ 
+        message: "Quyền truy cập (Role) không hợp lệ" 
+      });
+    }
+
+    // Trả về JSON thành công kèm theo đường dẫn để phía Frontend chuyển trang
+    res.json({
+      message: "Đăng nhập thành công",
+      role: user.Role,
+      redirectUrl: redirectUrl
+    });
+
   } catch (err) {
     console.log(err);
     res.status(500).send(err.message);
   }
 });
-
+// End login
 app.listen(3000, () => {
   console.log("Server running at http://localhost:3000");
 });
