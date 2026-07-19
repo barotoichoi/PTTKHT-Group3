@@ -173,7 +173,7 @@ app.post("/login", async (req, res) => {
 
     // Truy vấn kiểm tra thông tin trong bảng Users
     const result = await sql.query`
-        SELECT Role, Status
+        SELECT UserID, Role, Status
         FROM Users
         WHERE Email = ${email} AND Password = ${password}
     `;
@@ -212,6 +212,7 @@ app.post("/login", async (req, res) => {
     res.json({
       message: "Đăng nhập thành công",
       role: user.Role,
+      userId: user.UserID,
       redirectUrl: redirectUrl,
     });
   } catch (err) {
@@ -222,4 +223,30 @@ app.post("/login", async (req, res) => {
 // End login
 app.listen(3000, () => {
   console.log("Server running at http://localhost:3000");
+});
+// Lấy thông tin Dashboard của Sinh viên đang đăng nhập
+app.get("/api/student/dashboard/:userId", async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    
+    // Nối bảng Users và Students dựa trên UserID
+    const result = await sql.query`
+        SELECT 
+            U.UserID, U.FullName, U.Email, U.Phone, 
+            S.StudentID, S.Major, S.GPA
+        FROM Users U
+        JOIN Students S ON U.UserID = S.UserID
+        WHERE U.UserID = ${userId}
+    `;
+
+    if (result.recordset.length === 0) {
+      return res.status(404).json({ message: "Không tìm thấy thông tin sinh viên" });
+    }
+
+    // Trả về dữ liệu sinh viên
+    res.json(result.recordset[0]);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send(err.message);
+  }
 });
