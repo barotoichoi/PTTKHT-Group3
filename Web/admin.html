@@ -300,7 +300,7 @@
               >EduSync Academy</span
             >
           </div>
-          
+
           <!-- Phần bên phải: Chỉ giữ lại Avatar -->
           <div class="flex items-center gap-6">
             <div
@@ -343,7 +343,7 @@
 
               <p class="text-slate-500 text-sm">Total Students</p>
 
-              <h2 class="text-4xl font-bold mt-2" id="studentCount"></h2>
+              <h2 class="text-3xl font-bold mt-2" id="studentCount"></h2>
 
               <div class="mt-6 flex items-center gap-2 text-emerald-600">
                 <span class="material-symbols-outlined text-lg">
@@ -369,7 +369,7 @@
 
               <p class="text-slate-500 text-sm">Teachers</p>
 
-              <h2 class="text-4xl font-bold mt-2" id="teacherCount"></h2>
+              <h2 class="text-3xl font-bold mt-2" id="teacherCount"></h2>
 
               <div class="mt-6 flex items-center gap-2 text-slate-500">
                 <span class="material-symbols-outlined"> schedule </span>
@@ -391,7 +391,9 @@
 
               <p class="text-slate-500 text-sm">Active Courses</p>
 
-              <h2 class="text-4xl font-bold mt-2">132</h2>
+              <h2 class="text-3xl font-bold mt-2">
+                <span id="courseCount">0</span>
+              </h2>
 
               <div class="mt-6 flex items-center gap-2 text-emerald-600">
                 <span class="material-symbols-outlined"> add </span>
@@ -413,7 +415,9 @@
 
               <p class="text-slate-500 text-sm">Revenue</p>
 
-              <h2 class="text-4xl font-bold mt-2">$125K</h2>
+              <h2 class="text-3xl font-bold mt-2">
+                <span id="totalPaidTuition">0</span>
+              </h2>
 
               <div class="mt-6 flex items-center gap-2 text-emerald-600">
                 <span class="material-symbols-outlined"> trending_up </span>
@@ -434,7 +438,7 @@
                   </h3>
 
                   <button class="text-primary font-semibold hover:underline">
-                    View All
+                    <a href="admin_users.html">View All</a>
                   </button>
                 </div>
 
@@ -464,127 +468,7 @@
                       </tr>
                     </thead>
 
-                    <tbody class="divide-y">
-                      <tr class="hover:bg-slate-50 transition">
-                        <td class="px-6 py-4 flex items-center gap-3">
-                          <div
-                            class="w-10 h-10 rounded-full bg-blue-100 text-primary flex items-center justify-center font-bold"
-                          >
-                            BH
-                          </div>
-
-                          <div>
-                            <p class="font-semibold">Bao Ha Van</p>
-
-                            <p class="text-sm text-slate-500">ST220015</p>
-                          </div>
-                        </td>
-
-                        <td class="px-6 py-4">Student</td>
-
-                        <td class="px-6 py-4">Registered Database Course</td>
-
-                        <td class="px-6 py-4 text-slate-500">2 mins ago</td>
-
-                        <td class="px-6 py-4 text-right">
-                          <span
-                            class="bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full text-xs font-semibold"
-                          >
-                            Success
-                          </span>
-                        </td>
-                      </tr>
-
-                      <tr class="hover:bg-slate-50 transition">
-                        <td class="px-6 py-4 flex items-center gap-3">
-                          <div
-                            class="w-10 h-10 rounded-full bg-purple-100 text-purple-700 flex items-center justify-center font-bold"
-                          >
-                            MT
-                          </div>
-
-                          <div>
-                            <p class="font-semibold">Mr. Tran</p>
-
-                            <p class="text-sm text-slate-500">GV001</p>
-                          </div>
-                        </td>
-
-                        <td class="px-6 py-4">Teacher</td>
-
-                        <td class="px-6 py-4">Updated Student Grades</td>
-
-                        <td class="px-6 py-4 text-slate-500">12 mins ago</td>
-
-                        <td class="px-6 py-4 text-right">
-                          <span
-                            class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-semibold"
-                          >
-                            Updated
-                          </span>
-                        </td>
-                      </tr>
-
-                      <tr class="hover:bg-slate-50 transition">
-                        <td class="px-6 py-4 flex items-center gap-3">
-                          <div
-                            class="w-10 h-10 rounded-full bg-orange-100 text-orange-700 flex items-center justify-center font-bold"
-                          >
-                            AD
-                          </div>
-
-                          <div>
-                            <p class="font-semibold">Admin</p>
-
-                            <p class="text-sm text-slate-500">AD001</p>
-                          </div>
-                        </td>
-
-                        <td class="px-6 py-4">Administrator</td>
-
-                        <td class="px-6 py-4">Created New Course</td>
-
-                        <td class="px-6 py-4 text-slate-500">1 hour ago</td>
-
-                        <td class="px-6 py-4 text-right">
-                          <span
-                            class="bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full text-xs font-semibold"
-                          >
-                            Completed
-                          </span>
-                        </td>
-                      </tr>
-
-                      <tr class="hover:bg-slate-50 transition">
-                        <td class="px-6 py-4 flex items-center gap-3">
-                          <div
-                            class="w-10 h-10 rounded-full bg-red-100 text-red-700 flex items-center justify-center font-bold"
-                          >
-                            LN
-                          </div>
-
-                          <div>
-                            <p class="font-semibold">Le Nguyen</p>
-
-                            <p class="text-sm text-slate-500">ST220251</p>
-                          </div>
-                        </td>
-
-                        <td class="px-6 py-4">Student</td>
-
-                        <td class="px-6 py-4">Tuition Payment Pending</td>
-
-                        <td class="px-6 py-4 text-slate-500">Today</td>
-
-                        <td class="px-6 py-4 text-right">
-                          <span
-                            class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-xs font-semibold"
-                          >
-                            Pending
-                          </span>
-                        </td>
-                      </tr>
-                    </tbody>
+                    <tbody id="recentActivity" class="divide-y"></tbody>
                   </table>
                 </div>
               </div>
@@ -826,6 +710,108 @@
       }
 
       loadStudentCount();
+
+      async function loadCourseCount() {
+        try {
+          const response = await fetch(
+            "http://localhost:3000/api/courses/count",
+          );
+          const data = await response.json();
+
+          document.getElementById("courseCount").textContent =
+            data.TotalCourses;
+        } catch (err) {
+          console.error(err);
+        }
+      }
+
+      loadCourseCount();
+
+      async function loadTotalTuition() {
+        try {
+          const response = await fetch(
+            "http://localhost:3000/api/tuition/total",
+          );
+          const data = await response.json();
+
+          document.getElementById("totalPaidTuition").textContent =
+            Number(data.TotalPaidAmount).toLocaleString("vi-VN") + " ₫";
+        } catch (err) {
+          console.error(err);
+        }
+      }
+
+      loadTotalTuition();
+
+      // get 4 user random
+      async function loadRecentUsers() {
+        const response = await fetch("http://localhost:3000/api/users/random");
+        const users = await response.json();
+
+        const tbody = document.getElementById("recentActivity");
+
+        tbody.innerHTML = "";
+
+        users.forEach((user) => {
+          const initials = user.FullName.split(" ")
+            .map((x) => x[0])
+            .join("")
+            .substring(0, 2)
+            .toUpperCase();
+
+          const avatarColor = {
+            Student: "bg-blue-100 text-blue-700",
+            Teacher: "bg-purple-100 text-purple-700",
+            Admin: "bg-orange-100 text-orange-700",
+          };
+
+          const statusColor = {
+            Active: "bg-emerald-100 text-emerald-700",
+            Inactive: "bg-red-100 text-red-700",
+          };
+
+          tbody.innerHTML += `
+            <tr class="hover:bg-slate-50 transition">
+
+            <td class="px-6 py-4 flex items-center gap-3">
+
+            <div class="w-10 h-10 rounded-full ${avatarColor[user.Role] || "bg-gray-100 text-gray-700"} flex items-center justify-center font-bold">
+            ${initials}
+            </div>
+
+            <div>
+            <p class="font-semibold">${user.FullName}</p>
+            <p class="text-sm text-slate-500">${user.UserID}</p>
+            </div>
+
+            </td>
+
+            <td class="px-6 py-4">
+            ${user.Role}
+            </td>
+
+            <td class="px-6 py-4">
+            Logged into system
+            </td>
+
+            <td class="px-6 py-4 text-slate-500">
+            Just now
+            </td>
+
+            <td class="px-6 py-4 text-right">
+
+            <span class="${statusColor[user.Status] || "bg-gray-100 text-gray-700"} px-3 py-1 rounded-full text-xs font-semibold">
+            ${user.Status}
+            </span>
+
+            </td>
+
+            </tr>
+            `;
+        });
+      }
+
+      loadRecentUsers();
     </script>
   </body>
 </html>
