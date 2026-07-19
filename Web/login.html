@@ -604,6 +604,9 @@
           const data = await response.json();
 
           if (response.ok) {
+            // LƯU USERID VÀO LOCALSTORAGE ===
+            localStorage.setItem("userId", data.userId);
+
             // Đăng nhập thành công, chuyển hướng trang
             window.location.href = data.redirectUrl;
           } else {
