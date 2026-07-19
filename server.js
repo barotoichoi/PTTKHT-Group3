@@ -24,6 +24,23 @@ async function start() {
 
 start();
 
+// lấy all users
+app.get("/users", async (req, res) => {
+  try {
+    const result = await sql.query(`
+      SELECT UserID, FullName, Email, Role, Status
+      FROM Users
+      ORDER BY UserID
+    `);
+
+    res.json(result.recordset);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send(err.message);
+  }
+});
+
+// lấy teacher
 app.get("/teachers", async (req, res) => {
   try {
     const result = await sql.query("SELECT * FROM Teachers");
@@ -85,6 +102,56 @@ app.get("/api/students/count", async (req, res) => {
     `);
 
     res.json(result.recordset[0]);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send(err.message);
+  }
+});
+
+// Get total courses
+app.get("/api/courses/count", async (req, res) => {
+  try {
+    const result = await sql.query(`
+      SELECT COUNT(*) AS TotalCourses
+      FROM Courses
+    `);
+
+    res.json(result.recordset[0]);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send(err.message);
+  }
+});
+
+// Get total tuition paid amount
+app.get("/api/tuition/total", async (req, res) => {
+  try {
+    const result = await sql.query(`
+      SELECT ISNULL(SUM(PaidAmount), 0) AS TotalPaidAmount
+      FROM Tuition
+    `);
+
+    res.json(result.recordset[0]);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send(err.message);
+  }
+});
+
+// Get 4 random users
+app.get("/api/users/random", async (req, res) => {
+  try {
+    const result = await sql.query(`
+      SELECT TOP 4
+          UserID,
+          FullName,
+          Role,
+          Status
+      FROM Users
+      ORDER BY NEWID()
+    `);
+
+    res.json(result.recordset);
   } catch (err) {
     console.error(err);
     res.status(500).send(err.message);
