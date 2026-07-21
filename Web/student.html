@@ -330,12 +330,10 @@
                       >
                     </div>
                   </div>
-                  <div class="text-display font-display text-on-surface mb-xs">
-                    5
-                  </div>
+                  <div id="stat-classes-count" class="text-display font-display text-on-surface mb-xs">0</div>
                   <a
                     class="text-label-sm font-label-sm text-primary hover:underline flex items-center"
-                    href="#"
+                    href="student_courses.html"
                   >
                     View all courses
                     <span class="material-symbols-outlined text-[14px] ml-1"
@@ -439,7 +437,7 @@
                     </h3>
                     <a
                       class="text-label-md font-label-md text-primary hover:underline"
-                      href="#"
+                      href="student_courses.html"
                       >View All</a
                     >
                   </div>
@@ -655,6 +653,77 @@
             // Format GPA lấy 2 chữ số thập phân
             document.getElementById('stat-gpa').innerText = student.GPA ? student.GPA.toFixed(2) : "0.00";
 
+            // ... (Code gán dữ liệu profile cũ của bạn ở đây) ...
+
+            // --- TÍNH NĂNG MỚI: FETCH MY CLASSES ---
+            const classesRes = await fetch(`http://localhost:3000/api/student/${userId}/classes`);
+            if (classesRes.ok) {
+              const classes = await classesRes.json();
+              
+              // ĐÂY LÀ DÒNG MỚI THÊM VÀO: Cập nhật số lượng lớp học trên thẻ Stat
+              document.getElementById('stat-classes-count').innerText = classes.length;
+              
+              const tbody = document.querySelector('tbody');
+              tbody.innerHTML = ''; // Xóa dữ liệu tĩnh (mock data)
+              
+              classes.forEach(cls => {
+                // Database hiện chưa có trường % hoàn thành khóa học, ta mock một số tiến độ ngẫu nhiên
+                const progress = Math.floor(Math.random() * 40) + 60; 
+                tbody.innerHTML += `
+                  <tr class="hover:bg-surface-bright transition-colors">
+                    <td class="px-md py-sm font-medium text-on-surface">${cls.CourseName}</td>
+                    <td class="px-md py-sm text-on-surface-variant">${cls.StudentCount}</td>
+                    <td class="px-md py-sm text-on-surface-variant">${cls.Room || 'TBA'}</td>
+                    <td class="px-md py-sm">
+                      <div class="flex items-center gap-2">
+                        <div class="w-full h-2 bg-surface-variant rounded-full overflow-hidden">
+                          <div class="bg-primary h-full rounded-full" style="width: ${progress}%"></div>
+                        </div>
+                        <span class="text-label-sm text-outline">${progress}%</span>
+                      </div>
+                    </td>
+                  </tr>
+                `;
+              });
+            }
+
+            // --- TÍNH NĂNG MỚI: FETCH TODAY'S SCHEDULE ---
+            const scheduleRes = await fetch(`http://localhost:3000/api/student/${userId}/schedule/today`);
+            if (scheduleRes.ok) {
+              const schedules = await scheduleRes.json();
+              // Lấy element chứa các thẻ div lịch học
+              const scheduleContainer = document.querySelector('.xl\\:col-span-1 .space-y-sm');
+              scheduleContainer.innerHTML = ''; // Xóa dữ liệu tĩnh
+              
+              if (schedules.length === 0) {
+                scheduleContainer.innerHTML = '<p class="text-body-md text-on-surface-variant italic">No classes scheduled for today.</p>';
+              } else {
+                // Các màu ngẫu nhiên để UI sinh động giống bản gốc
+                const colorThemes = [
+                  { bg: 'bg-primary-fixed', text: 'text-on-primary-fixed-variant' },
+                  { bg: 'bg-[#D1FAE5]', text: 'text-[#065F46]' },
+                  { bg: 'bg-[#F3E8FF]', text: 'text-[#6B21A8]' }
+                ];
+
+                schedules.forEach((sched, index) => {
+                  const startTime = sched.TimeRange.split('-')[0]; // Tách lấy giờ bắt đầu từ chuỗi '07:30-09:30'
+                  const theme = colorThemes[index % colorThemes.length];
+                  
+                  scheduleContainer.innerHTML += `
+                    <div class="flex gap-sm items-start p-sm rounded-lg hover:bg-surface-container-low transition-colors border border-transparent hover:border-surface-variant">
+                      <div class="px-2 py-1 ${theme.bg} ${theme.text} rounded text-label-sm font-label-sm font-bold shrink-0 mt-1">
+                        ${startTime}
+                      </div>
+                      <div>
+                        <h4 class="text-body-md font-body-md font-semibold text-on-surface">${sched.CourseName}</h4>
+                        <p class="text-label-sm font-label-sm text-on-surface-variant">Room ${sched.Room}</p>
+                      </div>
+                    </div>
+                  `;
+                });
+              }
+            }
+
           } else {
             console.error('Không thể lấy dữ liệu sinh viên');
           }
@@ -670,6 +739,7 @@
           localStorage.removeItem('userId'); // Xóa session khi logout
         });
       }
+      
     </script>
   </body>
 </html>
