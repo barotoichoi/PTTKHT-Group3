@@ -250,3 +250,55 @@ app.get("/api/student/dashboard/:userId", async (req, res) => {
     res.status(500).send(err.message);
   }
 });
+
+// API: Lấy danh sách lớp học của sinh viên (My Classes)
+app.get("/api/student/:userId/classes", async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const result = await sql.query`
+      SELECT 
+        c.ClassID,
+        co.CourseName,
+        -- Đếm số lượng sinh viên trong lớp
+        (SELECT COUNT(*) FROM Enrollments e2 WHERE e2.ClassID = c.ClassID AND e2.Status = 'Enrolled') AS StudentCount,
+        -- Lấy 1 phòng học đại diện từ thời khóa biểu
+        (SELECT TOP 1 Room FROM ClassSchedules cs WHERE cs.ClassID = c.ClassID) AS Room
+      FROM Enrollments e
+      JOIN Students s ON e.StudentID = s.StudentID
+      JOIN Classes c ON e.ClassID = c.ClassID
+      JOIN Courses co ON c.CourseID = co.CourseID
+      WHERE s.UserID = ${userId} AND e.Status = 'Enrolled'
+    `;
+    res.json(result.recordset);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send(err.message);
+  }
+});
+
+// API: Lấy lịch học trong ngày hôm nay của sinh viên (Today's Schedule)
+app.get("/api/student/:userId/schedule/today", async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    // Dùng DATENAME(dw, GETDATE()) của SQL Server để tự động lấy thứ của ngày hiện tại
+    const result = await sql.query`
+      SELECT 
+        co.CourseName,
+        cs.TimeRange,
+        cs.Room
+      FROM Enrollments e
+      JOIN Students s ON e.StudentID = s.StudentID
+      JOIN Classes c ON e.ClassID = c.ClassID
+      JOIN Courses co ON c.CourseID = co.CourseID
+      JOIN ClassSchedules cs ON c.ClassID = cs.ClassID
+      WHERE s.UserID = ${userId} 
+        AND e.Status = 'Enrolled'
+        AND cs.DayOfWeek = DATENAME(dw, GETDATE())
+      ORDER BY cs.TimeRange
+    `;
+    res.json(result.recordset);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send(err.message);
+  }
+});
