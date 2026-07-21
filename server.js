@@ -259,10 +259,14 @@ app.get("/api/student/:userId/classes", async (req, res) => {
       SELECT 
         c.ClassID,
         co.CourseName,
-        -- Đếm số lượng sinh viên trong lớp
         (SELECT COUNT(*) FROM Enrollments e2 WHERE e2.ClassID = c.ClassID AND e2.Status = 'Enrolled') AS StudentCount,
-        -- Lấy 1 phòng học đại diện từ thời khóa biểu
-        (SELECT TOP 1 Room FROM ClassSchedules cs WHERE cs.ClassID = c.ClassID) AS Room
+        (SELECT TOP 1 Room FROM ClassSchedules cs WHERE cs.ClassID = c.ClassID) AS Room,
+        
+        -- TÍNH TIẾN ĐỘ THẬT: (Số cột điểm hiện có của sinh viên / 3 cột điểm chuẩn) * 100
+        ISNULL(
+          (SELECT COUNT(*) FROM Scores sc WHERE sc.EnrollmentID = e.EnrollmentID) * 100 / 3
+        , 0) AS Progress
+
       FROM Enrollments e
       JOIN Students s ON e.StudentID = s.StudentID
       JOIN Classes c ON e.ClassID = c.ClassID

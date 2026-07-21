@@ -657,18 +657,20 @@
 
             // --- TÍNH NĂNG MỚI: FETCH MY CLASSES ---
             const classesRes = await fetch(`http://localhost:3000/api/student/${userId}/classes`);
+            // ... mã fetch dữ liệu My Classes ...
+            
             if (classesRes.ok) {
               const classes = await classesRes.json();
-              
-              // ĐÂY LÀ DÒNG MỚI THÊM VÀO: Cập nhật số lượng lớp học trên thẻ Stat
               document.getElementById('stat-classes-count').innerText = classes.length;
               
               const tbody = document.querySelector('tbody');
-              tbody.innerHTML = ''; // Xóa dữ liệu tĩnh (mock data)
+              tbody.innerHTML = ''; 
               
               classes.forEach(cls => {
-                // Database hiện chưa có trường % hoàn thành khóa học, ta mock một số tiến độ ngẫu nhiên
-                const progress = Math.floor(Math.random() * 40) + 60; 
+                // XÓA DÒNG NÀY: const progress = Math.floor(Math.random() * 40) + 60;
+                // THAY BẰNG DỮ LIỆU THẬT TỪ SQL:
+                const progress = cls.Progress; 
+                
                 tbody.innerHTML += `
                   <tr class="hover:bg-surface-bright transition-colors">
                     <td class="px-md py-sm font-medium text-on-surface">${cls.CourseName}</td>
@@ -739,7 +741,6 @@
           localStorage.removeItem('userId'); // Xóa session khi logout
         });
       }
-      
     </script>
   </body>
 </html>
