@@ -1,4 +1,7 @@
-﻿-- Tao Data Admin 
+﻿USE StudentManagement;
+GO
+
+-- Tao Data Admin 
 INSERT INTO Users
 (UserID,Username,Password,Role,Status,FullName,Email,Phone,Gender,DOB)
 VALUES
