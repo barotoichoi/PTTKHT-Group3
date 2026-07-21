@@ -306,3 +306,44 @@ app.get("/api/student/:userId/schedule/today", async (req, res) => {
     res.status(500).send(err.message);
   }
 });
+
+// API: Lấy chi tiết các khóa học của sinh viên cho trang student_courses.html
+app.get("/api/student/:userId/course-details", async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    
+    const result = await sql.query`
+      SELECT 
+          c.CourseID,
+          c.CourseName,
+          tu.FullName AS TeacherName,
+          
+          -- Lấy phòng học đầu tiên tìm thấy trong lịch
+          (SELECT TOP 1 cs.Room FROM ClassSchedules cs WHERE cs.ClassID = cl.ClassID) AS Room,
+          
+          -- Nối các ngày học lại với nhau (VD: Monday, Wednesday)
+          (SELECT STRING_AGG(cs.DayOfWeek, ', ') FROM ClassSchedules cs WHERE cs.ClassID = cl.ClassID) AS ScheduleDays,
+          
+          -- Lấy giờ bắt đầu (cắt 5 ký tự đầu từ chuỗi VD: '07:30-09:30')
+          (SELECT TOP 1 LEFT(cs.TimeRange, 5) FROM ClassSchedules cs WHERE cs.ClassID = cl.ClassID) AS StartTime,
+          
+          -- Tính Tiến độ tương tự logic đã dùng: (Số cột điểm hiện có / 3 cột điểm chuẩn) * 100
+          ISNULL(
+            (SELECT COUNT(*) FROM Scores sc WHERE sc.EnrollmentID = e.EnrollmentID) * 100 / 3
+          , 0) AS Progress
+
+      FROM Enrollments e
+      JOIN Students s ON e.StudentID = s.StudentID
+      JOIN Classes cl ON e.ClassID = cl.ClassID
+      JOIN Courses c ON cl.CourseID = c.CourseID
+      LEFT JOIN Teachers t ON cl.TeacherID = t.TeacherID
+      LEFT JOIN Users tu ON t.UserID = tu.UserID
+      WHERE s.UserID = ${userId} AND e.Status = 'Enrolled'
+    `;
+    
+    res.json(result.recordset);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send(err.message);
+  }
+});
