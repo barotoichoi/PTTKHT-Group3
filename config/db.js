@@ -5,15 +5,17 @@ const config = {
     "Driver={ODBC Driver 17 for SQL Server};Server=MSI;Database=StudentManagement;Trusted_Connection=Yes;",
 };
 
-async function connectDB() {
-  try {
-    await sql.connect(config);
+const poolPromise = sql
+  .connect(config)
+  .then((pool) => {
     console.log("✅ Connected to SQL Server");
-  } catch (err) {
-    console.error(err);
-  }
-}
+    return pool;
+  })
+  .catch((err) => {
+    console.error("❌ Database connection failed:", err);
+  });
 
-connectDB();
-
-module.exports = sql;
+module.exports = {
+  sql,
+  poolPromise,
+};

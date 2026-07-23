@@ -268,7 +268,6 @@
             >
             <span class="font-body-md text-body-md">Tuition</span>
           </a>
-
         </nav>
 
         <!-- Bottom -->
@@ -289,41 +288,40 @@
           </a>
         </div>
       </aside>
+    </div>
     <!-- END: Sidebar -->
-<!-- BEGIN: Main Content Area -->
+    <!-- BEGIN: Main Content Area -->
     <div class="flex-1 flex flex-col min-w-0 min-h-screen ml-[240px]">
-      
       <!-- BEGIN: Top Header -->
-<header
-          class="fixed top-0 right-0 w-[calc(100%-240px)] z-40 bg-white border-b border-border flex justify-between items-center h-16 px-8"
-        >
-          <!-- Phần bên trái: Tên hệ thống -->
-          <div class="flex items-center gap-4">
-            <span
-              class="font-headline-sm text-headline-sm font-semibold text-text"
-              >EduSync Academy</span
-            >
+      <header
+        class="fixed top-0 right-0 w-[calc(100%-240px)] z-40 bg-white border-b border-border flex justify-between items-center h-16 px-8"
+      >
+        <!-- Phần bên trái: Tên hệ thống -->
+        <div class="flex items-center gap-4">
+          <span
+            class="font-headline-sm text-headline-sm font-semibold text-text"
+            >EduSync Academy</span
+          >
+        </div>
+
+        <!-- Phần bên phải: Chỉ giữ lại Avatar -->
+        <div class="flex items-center gap-6">
+          <div
+            class="w-8 h-8 rounded-full bg-border overflow-hidden border border-border ml-2"
+          >
+            <img
+              alt="Teacher Profile Picture"
+              class="w-full h-full object-cover"
+              data-alt="A professional headshot of a teacher smiling warmly in a well-lit modern classroom setting, conveying trust and competence in a corporate education environment."
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuB9nqivP6SdtbfY00e0U6aII7l50YDTItHAxeewNaaGSX521TbIm1NuyR_BCtOWaBQ2d9hlrYYs4j2bTtmCwN5m-GxOjN96_DOB97SvUU4FxX7s3hoBQbROvIMM-_6DpXMSyMkJPRwIe4OCKLISuBpUxKzT6Kh2I0OueItnPBeG2moXAkX-U1eev81JqlXU_zgykv4APgxHQjIIHgUsmOJ8YWQ4f6617T5paJPOhFMqsXd8Az2n84xF7Q"
+            />
           </div>
-          
-          <!-- Phần bên phải: Chỉ giữ lại Avatar -->
-          <div class="flex items-center gap-6">
-            <div
-              class="w-8 h-8 rounded-full bg-border overflow-hidden border border-border ml-2"
-            >
-              <img
-                alt="Teacher Profile Picture"
-                class="w-full h-full object-cover"
-                data-alt="A professional headshot of a teacher smiling warmly in a well-lit modern classroom setting, conveying trust and competence in a corporate education environment."
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuB9nqivP6SdtbfY00e0U6aII7l50YDTItHAxeewNaaGSX521TbIm1NuyR_BCtOWaBQ2d9hlrYYs4j2bTtmCwN5m-GxOjN96_DOB97SvUU4FxX7s3hoBQbROvIMM-_6DpXMSyMkJPRwIe4OCKLISuBpUxKzT6Kh2I0OueItnPBeG2moXAkX-U1eev81JqlXU_zgykv4APgxHQjIIHgUsmOJ8YWQ4f6617T5paJPOhFMqsXd8Az2n84xF7Q"
-              />
-            </div>
-          </div>
-        </header>
+        </div>
+      </header>
       <!-- END: Top Header -->
 
       <!-- BEGIN: Page Content -->
       <main class="flex-1 overflow-y-auto p-8 mt-16">
-        
         <!-- Page Header Section -->
         <div class="flex justify-between items-end mb-8">
           <div>
@@ -335,14 +333,18 @@
             </p>
           </div>
           <div>
-            <button class="bg-primary hover:bg-[#0048a0] text-white px-5 py-2.5 rounded-lg font-medium shadow-sm transition-colors flex items-center gap-2">
+            <button
+              class="bg-primary hover:bg-[#0048a0] text-white px-5 py-2.5 rounded-lg font-medium shadow-sm transition-colors flex items-center gap-2"
+            >
               <i class="fa-solid fa-plus"></i> Register Student
             </button>
           </div>
         </div>
 
         <!-- Filters/Search Bar -->
-        <div class="bg-white p-4 rounded-xl shadow-sm border border-border mb-6 flex gap-4 items-center">
+        <div
+          class="bg-white p-4 rounded-xl shadow-sm border border-border mb-6 flex gap-4 items-center"
+        >
           <div class="relative flex-1 max-w-md">
             <span class="absolute inset-y-0 left-0 flex items-center pl-3">
               <i class="fa-solid fa-search text-muted"></i>
@@ -353,323 +355,25 @@
               type="text"
             />
           </div>
-          <select class="bg-light border border-border text-text text-sm rounded-lg focus:ring-primary focus:border-primary block p-2">
+          <select
+            class="bg-light border border-border text-text text-sm rounded-lg focus:ring-primary focus:border-primary block p-2"
+          >
             <option>All Courses</option>
             <option>Computer Science</option>
             <option>Business Admin</option>
             <option>Graphic Design</option>
           </select>
-          <button class="text-muted hover:text-text px-3 py-2 rounded-lg border border-border hover:bg-light transition-colors">
+          <button
+            class="text-muted hover:text-text px-3 py-2 rounded-lg border border-border hover:bg-light transition-colors"
+          >
             <i class="fa-solid fa-filter"></i> Filters
           </button>
         </div>
         <!-- Student Grid -->
         <div
+          id="studentContainer"
           class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
-        >
-          <!-- Card 1 -->
-          <div
-            class="bg-cardBg rounded-xl p-5 shadow-sm border border-borderLight hover:shadow-md transition-shadow relative group"
-          >
-            <!-- Status Badge -->
-            <div class="absolute top-4 right-4">
-              <span
-                class="bg-successBg text-successText text-xs font-semibold px-2.5 py-0.5 rounded-full border border-success/20"
-                >Active</span
-              >
-            </div>
-            <div class="flex flex-col items-center mt-2">
-              <img
-                alt="Student photo"
-                class="w-20 h-20 rounded-full object-cover border-4 border-gray-50 mb-3 shadow-sm"
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuASSe9SgMxdibjzLDyz8SyfWZugyj6W5VtaYxqs1naZrrCC19Y-7Zqk6vzbXXsAKFWgQ25hnOcPw3eeKHttAxOtQKhDqXQggSQAjHUWO9hkVWk8daT5JB6m0dqb7LCbBRnPonVAdtsN2YAytzrgQshtI05ZKNKHUXKkrxK4RMNKqDBM1walDAz0MADvQkbTyrnZzbmFSpV8SztF1lcHN4adP8_OOXYWOsrugeyVtjgNpRk30JTdZpgWYA"
-              />
-              <h3
-                class="text-lg font-semibold text-gray-900 text-center leading-tight"
-              >
-                Bao Ha Van
-              </h3>
-              <p
-                class="text-sm text-textMuted font-mono mt-1 bg-gray-100 px-2 py-0.5 rounded"
-              >
-                ST220015
-              </p>
-            </div>
-            <div class="mt-4 pt-4 border-t border-gray-100">
-              <div class="flex items-center text-sm text-gray-600 mb-2">
-                <i class="fa-solid fa-book-open w-5 text-gray-400"></i>
-                <span>Database Course</span>
-              </div>
-              <div class="flex items-center text-sm text-gray-600">
-                <i class="fa-solid fa-building w-5 text-gray-400"></i>
-                <span>Class CS-101</span>
-              </div>
-            </div>
-            <div class="mt-5 flex gap-2">
-              <button
-                class="flex-1 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 py-1.5 rounded-lg text-sm font-medium transition-colors"
-              >
-                View Profile
-              </button>
-              <button
-                class="w-10 bg-white border border-gray-300 text-gray-500 hover:text-primary hover:border-primary hover:bg-blue-50 py-1.5 rounded-lg flex items-center justify-center transition-colors"
-              >
-                <i class="fa-solid fa-envelope"></i>
-              </button>
-            </div>
-          </div>
-          <!-- Card 2 -->
-          <div
-            class="bg-cardBg rounded-xl p-5 shadow-sm border border-borderLight hover:shadow-md transition-shadow relative group"
-          >
-            <div class="absolute top-4 right-4">
-              <span
-                class="bg-successBg text-successText text-xs font-semibold px-2.5 py-0.5 rounded-full border border-success/20"
-                >Active</span
-              >
-            </div>
-            <div class="flex flex-col items-center mt-2">
-              <img
-                alt="Student photo"
-                class="w-20 h-20 rounded-full object-cover border-4 border-gray-50 mb-3 shadow-sm"
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuA8wpMBFNiwjTDnKelavx6_souEy91MF8yQfwP-9hjqquy6-NvFIlpW7UgkchHspe5uxeIffigRSaV1QOejtj25XfUU8W3f4ty3RDs5g0gypK65w6imAIbWiqCspwx2loBLvJXiPKIaFWkcL1-2WC9YtGhnYnkPThRhejtfdNdQ1mRZU09nz4J9I_iFHM58GMPObnL7pxMHf_SeQFiTNYI4Qn4OMZdadObVtVvVap5ISIMpi9UK53O-Bw"
-              />
-              <h3
-                class="text-lg font-semibold text-gray-900 text-center leading-tight"
-              >
-                Linh Nguyen
-              </h3>
-              <p
-                class="text-sm text-textMuted font-mono mt-1 bg-gray-100 px-2 py-0.5 rounded"
-              >
-                ST220042
-              </p>
-            </div>
-            <div class="mt-4 pt-4 border-t border-gray-100">
-              <div class="flex items-center text-sm text-gray-600 mb-2">
-                <i class="fa-solid fa-book-open w-5 text-gray-400"></i>
-                <span>Web Development</span>
-              </div>
-              <div class="flex items-center text-sm text-gray-600">
-                <i class="fa-solid fa-building w-5 text-gray-400"></i>
-                <span>Class WD-202</span>
-              </div>
-            </div>
-            <div class="mt-5 flex gap-2">
-              <button
-                class="flex-1 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 py-1.5 rounded-lg text-sm font-medium transition-colors"
-              >
-                View Profile
-              </button>
-              <button
-                class="w-10 bg-white border border-gray-300 text-gray-500 hover:text-primary hover:border-primary hover:bg-blue-50 py-1.5 rounded-lg flex items-center justify-center transition-colors"
-              >
-                <i class="fa-solid fa-envelope"></i>
-              </button>
-            </div>
-          </div>
-          <!-- Card 3 -->
-          <div
-            class="bg-cardBg rounded-xl p-5 shadow-sm border border-borderLight hover:shadow-md transition-shadow relative group"
-          >
-            <div class="absolute top-4 right-4">
-              <span
-                class="bg-successBg text-successText text-xs font-semibold px-2.5 py-0.5 rounded-full border border-success/20"
-                >Active</span
-              >
-            </div>
-            <div class="flex flex-col items-center mt-2">
-              <!-- Using initials if no image is a common pattern, but we'll use pravatar for consistency in the mockup -->
-              <img
-                alt="Student photo"
-                class="w-20 h-20 rounded-full object-cover border-4 border-gray-50 mb-3 shadow-sm"
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuB1Z6q91uPKG3PtLD4_zvVyr5TdTlZfJaH3Cn12C46rP_AfxIUyOXGLuO8bYek2mYx11lmnLO-GxiZfgnpmkTa8erv0dPU149fQezMpG_o6SWzxWK-0ck1QLGEN2PB__Jx3wCI0KkoPLdkm8CwSqfAiODj0ABrlDhHoVakhtJBVTgnVUB7jTu78FZvUGqFHeUjAKrc696CIVA2bHPJ3_deXLsRosp2Kp81nFbKuxbTTWM4vuxh5Fkaokg"
-              />
-              <h3
-                class="text-lg font-semibold text-gray-900 text-center leading-tight"
-              >
-                Minh Tran
-              </h3>
-              <p
-                class="text-sm text-textMuted font-mono mt-1 bg-gray-100 px-2 py-0.5 rounded"
-              >
-                ST220088
-              </p>
-            </div>
-            <div class="mt-4 pt-4 border-t border-gray-100">
-              <div class="flex items-center text-sm text-gray-600 mb-2">
-                <i class="fa-solid fa-book-open w-5 text-gray-400"></i>
-                <span>Data Structures</span>
-              </div>
-              <div class="flex items-center text-sm text-gray-600">
-                <i class="fa-solid fa-building w-5 text-gray-400"></i>
-                <span>Class CS-102</span>
-              </div>
-            </div>
-            <div class="mt-5 flex gap-2">
-              <button
-                class="flex-1 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 py-1.5 rounded-lg text-sm font-medium transition-colors"
-              >
-                View Profile
-              </button>
-              <button
-                class="w-10 bg-white border border-gray-300 text-gray-500 hover:text-primary hover:border-primary hover:bg-blue-50 py-1.5 rounded-lg flex items-center justify-center transition-colors"
-              >
-                <i class="fa-solid fa-envelope"></i>
-              </button>
-            </div>
-          </div>
-          <!-- Card 4 -->
-          <div
-            class="bg-cardBg rounded-xl p-5 shadow-sm border border-borderLight hover:shadow-md transition-shadow relative group"
-          >
-            <div class="absolute top-4 right-4">
-              <span
-                class="bg-successBg text-successText text-xs font-semibold px-2.5 py-0.5 rounded-full border border-success/20"
-                >Active</span
-              >
-            </div>
-            <div class="flex flex-col items-center mt-2">
-              <img
-                alt="Student photo"
-                class="w-20 h-20 rounded-full object-cover border-4 border-gray-50 mb-3 shadow-sm"
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuC381Cg78xdfJaJRNy15zpiKzVOkBRoR0CuTaGmTh0d4ysdGjnj3PYJfO8Fkjk2iYWXq5rb0eX8tVFJ55Iu-qnTqISZKko8w7Ovp-8mmp2PnOzPM4NlXAUwYzKiSLorDSXHlaqyj0pPEZigJpOW1K-gFPmunlhw4xhDcbFIXbAx5ai9MSuwdtnJxJfgfqG7Cb3PKRguTJa15yDjLCCkAvqQoHpOmIw3zscf8go-6FjJIgAdDIwGfb1Ngg"
-              />
-              <h3
-                class="text-lg font-semibold text-gray-900 text-center leading-tight"
-              >
-                Sarah Jenkins
-              </h3>
-              <p
-                class="text-sm text-textMuted font-mono mt-1 bg-gray-100 px-2 py-0.5 rounded"
-              >
-                ST230104
-              </p>
-            </div>
-            <div class="mt-4 pt-4 border-t border-gray-100">
-              <div class="flex items-center text-sm text-gray-600 mb-2">
-                <i class="fa-solid fa-book-open w-5 text-gray-400"></i>
-                <span>Graphic Design I</span>
-              </div>
-              <div class="flex items-center text-sm text-gray-600">
-                <i class="fa-solid fa-building w-5 text-gray-400"></i>
-                <span>Class GD-101</span>
-              </div>
-            </div>
-            <div class="mt-5 flex gap-2">
-              <button
-                class="flex-1 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 py-1.5 rounded-lg text-sm font-medium transition-colors"
-              >
-                View Profile
-              </button>
-              <button
-                class="w-10 bg-white border border-gray-300 text-gray-500 hover:text-primary hover:border-primary hover:bg-blue-50 py-1.5 rounded-lg flex items-center justify-center transition-colors"
-              >
-                <i class="fa-solid fa-envelope"></i>
-              </img>
-            </div>
-          </div>
-          <!-- Card 5 -->
-          <div
-            class="bg-cardBg rounded-xl p-5 shadow-sm border border-borderLight hover:shadow-md transition-shadow relative group"
-          >
-            <div class="absolute top-4 right-4">
-              <span
-                class="bg-successBg text-successText text-xs font-semibold px-2.5 py-0.5 rounded-full border border-success/20"
-                >Active</span
-              >
-            </div>
-            <div class="flex flex-col items-center mt-2">
-              <img
-                alt="Student photo"
-                class="w-20 h-20 rounded-full object-cover border-4 border-gray-50 mb-3 shadow-sm"
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuBKxWmfdfIarODeNeMGMkSqzY-WyUH53rsuTH0-jcsoEFp26lXocoSJ8uBTJt05f1MlH_gqChdFBk73WKVl6ibnomLqO7uDjPlpuRXB577FXQuDcJLuvfeE47E_3rR17CA65240UA-C9ghZ1GIBQdV4eqwfZ_A5S5Ha8HccPy0JiHWxolpcAcHvTSWAsc6IJyaTm2IW7cBvhA1-KnbB_YWGwn6tYjaJVnVnaBXqgZyFzGrD5ayDtW6cAg"
-              />
-              <h3
-                class="text-lg font-semibold text-gray-900 text-center leading-tight"
-              >
-                David Chen
-              </h3>
-              <p
-                class="text-sm text-textMuted font-mono mt-1 bg-gray-100 px-2 py-0.5 rounded"
-              >
-                ST230255
-              </p>
-            </div>
-            <div class="mt-4 pt-4 border-t border-gray-100">
-              <div class="flex items-center text-sm text-gray-600 mb-2">
-                <i class="fa-solid fa-book-open w-5 text-gray-400"></i>
-                <span>Machine Learning</span>
-              </div>
-              <div class="flex items-center text-sm text-gray-600">
-                <i class="fa-solid fa-building w-5 text-gray-400"></i>
-                <span>Class AI-301</span>
-              </div>
-            </div>
-            <div class="mt-5 flex gap-2">
-              <button
-                class="flex-1 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 py-1.5 rounded-lg text-sm font-medium transition-colors"
-              >
-                View Profile
-              </button>
-              <button
-                class="w-10 bg-white border border-gray-300 text-gray-500 hover:text-primary hover:border-primary hover:bg-blue-50 py-1.5 rounded-lg flex items-center justify-center transition-colors"
-              >
-                <i class="fa-solid fa-envelope"></i>
-              </button>
-            </div>
-          </div>
-          <!-- Card 6 -->
-          <div
-            class="bg-cardBg rounded-xl p-5 shadow-sm border border-borderLight hover:shadow-md transition-shadow relative group"
-          >
-            <div class="absolute top-4 right-4">
-              <span
-                class="bg-successBg text-successText text-xs font-semibold px-2.5 py-0.5 rounded-full border border-success/20"
-                >Active</span
-              >
-            </div>
-            <div class="flex flex-col items-center mt-2">
-              <img
-                alt="Student photo"
-                class="w-20 h-20 rounded-full object-cover border-4 border-gray-50 mb-3 shadow-sm"
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuCj9Y6RS9rZ3fukiBRxiSOwdvEh0KMOW9RzEsthuL7O9VPcfQr0Gy35xXkkhTe7rHRtcZre2aEDhNK-77XqnsIf4A2qWGd8Atg73912SMrbGT-jedH9oVgR-8nVGQjZs-2gVuS0HBDN3eDcujycdxL3kDIKJ-Q1FoBzrzLJ9fPyXJ-PaQ6Pxrkq4jZantWvblK1eJHPrNBT5QFaaH-U3bHFSLb0WN9tqb5IE0vqn5bgH6zrE_-W8pTAvg"
-              />
-              <h3
-                class="text-lg font-semibold text-gray-900 text-center leading-tight"
-              >
-                Emma Watson
-              </h3>
-              <p
-                class="text-sm text-textMuted font-mono mt-1 bg-gray-100 px-2 py-0.5 rounded"
-              >
-                ST240012
-              </p>
-            </div>
-            <div class="mt-4 pt-4 border-t border-gray-100">
-              <div class="flex items-center text-sm text-gray-600 mb-2">
-                <i class="fa-solid fa-book-open w-5 text-gray-400"></i>
-                <span>Business Ethics</span>
-              </div>
-              <div class="flex items-center text-sm text-gray-600">
-                <i class="fa-solid fa-building w-5 text-gray-400"></i>
-                <span>Class BA-205</span>
-              </div>
-            </div>
-            <div class="mt-5 flex gap-2">
-              <button
-                class="flex-1 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 py-1.5 rounded-lg text-sm font-medium transition-colors"
-              >
-                View Profile
-              </button>
-              <button
-                class="w-10 bg-white border border-gray-300 text-gray-500 hover:text-primary hover:border-primary hover:bg-blue-50 py-1.5 rounded-lg flex items-center justify-center transition-colors"
-              >
-                <i class="fa-solid fa-envelope"></i>
-              </button>
-            </div>
-          </div>
-        </div>
+        ></div>
         <!-- Pagination -->
         <div
           class="mt-8 flex items-center justify-between border-t border-gray-200 pt-4"
@@ -721,5 +425,90 @@
       <!-- END: Page Content -->
     </div>
     <!-- END: Main Content Area -->
+
+    <script>
+      const userId = "SV001"; // đổi theo UserID trong database
+
+      async function loadStudent() {
+        try {
+          const res = await fetch(
+            `http://localhost:3000/api/student/${userId}`,
+          );
+
+          const student = await res.json();
+
+          const container = document.getElementById("studentContainer");
+
+          container.innerHTML = `
+
+        <div
+        class="bg-white rounded-xl p-5 shadow-sm border border-border hover:shadow-md transition-shadow"
+        >
+
+            <div class="flex flex-col items-center">
+
+                <div
+                class="w-20 h-20 rounded-full bg-blue-100 flex items-center justify-center text-primary text-2xl font-bold mb-3"
+                >
+                    ${student.FullName.charAt(0)}
+                </div>
+
+
+                <h3 class="text-lg font-semibold text-gray-900">
+                    ${student.FullName}
+                </h3>
+
+
+                <p class="text-sm font-mono bg-gray-100 px-2 py-1 rounded mt-1">
+                    ${student.StudentID}
+                </p>
+
+            </div>
+
+
+            <div class="mt-4 pt-4 border-t">
+
+
+                <p class="text-sm text-gray-600 mb-2">
+                📧 ${student.Email}
+                </p>
+
+
+                <p class="text-sm text-gray-600 mb-2">
+                📱 ${student.Phone}
+                </p>
+
+
+                <p class="text-sm text-gray-600">
+                🎓 ${student.Major}
+                </p>
+
+
+                <p class="text-sm text-gray-600">
+                GPA: ${student.GPA}
+                </p>
+
+
+            </div>
+
+
+            <button
+            class="mt-5 w-full border rounded-lg py-2 hover:bg-blue-50 text-primary"
+            >
+                View Profile
+            </button>
+
+
+        </div>
+
+
+        `;
+        } catch (err) {
+          console.log(err);
+        }
+      }
+
+      loadStudent();
+    </script>
   </body>
 </html>
