@@ -1,16 +1,19 @@
 const express = require("express");
 const router = express.Router();
-const sql = require("../config/db");
+
+const { poolPromise } = require("../config/db");
 
 // =========================
 // TOTAL TEACHERS
 // =========================
 router.get("/api/teachers/count", async (req, res) => {
   try {
-    const result = await sql.query(`
-      SELECT COUNT(*) AS TotalTeachers
-      FROM Teachers
-    `);
+    const pool = await poolPromise;
+
+    const result = await pool.request().query(`
+        SELECT COUNT(*) AS TotalTeachers
+        FROM Teachers
+      `);
 
     res.json(result.recordset[0]);
   } catch (err) {
@@ -24,10 +27,12 @@ router.get("/api/teachers/count", async (req, res) => {
 // =========================
 router.get("/api/students/count", async (req, res) => {
   try {
-    const result = await sql.query(`
-      SELECT COUNT(*) AS TotalStudents
-      FROM Students
-    `);
+    const pool = await poolPromise;
+
+    const result = await pool.request().query(`
+        SELECT COUNT(*) AS TotalStudents
+        FROM Students
+      `);
 
     res.json(result.recordset[0]);
   } catch (err) {
@@ -41,10 +46,12 @@ router.get("/api/students/count", async (req, res) => {
 // =========================
 router.get("/api/courses/count", async (req, res) => {
   try {
-    const result = await sql.query(`
-      SELECT COUNT(*) AS TotalCourses
-      FROM Courses
-    `);
+    const pool = await poolPromise;
+
+    const result = await pool.request().query(`
+        SELECT COUNT(*) AS TotalCourses
+        FROM Courses
+      `);
 
     res.json(result.recordset[0]);
   } catch (err) {
@@ -58,10 +65,12 @@ router.get("/api/courses/count", async (req, res) => {
 // =========================
 router.get("/api/tuition/total", async (req, res) => {
   try {
-    const result = await sql.query(`
-      SELECT ISNULL(SUM(PaidAmount),0) AS TotalPaidAmount
-      FROM Tuition
-    `);
+    const pool = await poolPromise;
+
+    const result = await pool.request().query(`
+        SELECT ISNULL(SUM(PaidAmount),0) AS TotalPaidAmount
+        FROM Tuition
+      `);
 
     res.json(result.recordset[0]);
   } catch (err) {

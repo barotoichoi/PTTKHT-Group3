@@ -6,9 +6,6 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Database
-require("./config/db");
-
 // Routes
 app.use(require("./routes/users"));
 app.use(require("./routes/dashboard"));
@@ -19,6 +16,7 @@ app.use("/api/students", studentRoutes);
 
 const teacherRoutes = require("./routes/teachers");
 app.use("/teachers", teacherRoutes);
+
 app.use(require("./routes/student_grades"));
 app.use(require("./routes/student_tuition"));
 

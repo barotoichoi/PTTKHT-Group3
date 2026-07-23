@@ -1,29 +1,33 @@
 const express = require("express");
-const { sql, poolPromise } = require("../config/db");
 const router = express.Router();
-//
+
+const { sql, poolPromise } = require("../config/db");
+
+// ===============================
 // GET ALL TEACHERS
-//
+// ===============================
 router.get("/", async (req, res) => {
   try {
-    const result = await sql.query(`
-      SELECT
-          t.TeacherID,
-          t.UserID,
-          u.FullName AS Name,
-          d.DepartmentName AS Department,
-          u.Email,
-          u.Phone,
-          u.Username,
-          u.Status,
-          t.Title
-      FROM Teachers t
-      JOIN Users u
-          ON t.UserID = u.UserID
-      LEFT JOIN Departments d
-          ON t.DepartmentID = d.DepartmentID
-      ORDER BY t.TeacherID
-    `);
+    const pool = await poolPromise;
+
+    const result = await pool.request().query(`
+        SELECT
+            t.TeacherID,
+            t.UserID,
+            u.FullName AS Name,
+            d.DepartmentName AS Department,
+            u.Email,
+            u.Phone,
+            u.Username,
+            u.Status,
+            t.Title
+        FROM Teachers t
+        JOIN Users u
+            ON t.UserID = u.UserID
+        LEFT JOIN Departments d
+            ON t.DepartmentID = d.DepartmentID
+        ORDER BY t.TeacherID
+      `);
 
     res.json(result.recordset);
   } catch (err) {
@@ -32,31 +36,43 @@ router.get("/", async (req, res) => {
   }
 });
 
-//
+// ===============================
 // GET ONE TEACHER
-//
+// ===============================
 router.get("/:id", async (req, res) => {
   try {
-    const id = req.params.id;
+    const pool = await poolPromise;
 
-    const result = await sql.query`
-      SELECT
-          t.TeacherID,
-          t.UserID,
-          u.FullName AS Name,
-          d.DepartmentName AS Department,
-          u.Email,
-          u.Phone,
-          u.Username,
-          u.Status,
-          t.Title
-      FROM Teachers t
-      JOIN Users u
-          ON t.UserID = u.UserID
-      LEFT JOIN Departments d
-          ON t.DepartmentID = d.DepartmentID
-      WHERE t.TeacherID = ${id}
-    `;
+    const result = await pool
+      .request()
+      .input("TeacherID", sql.NVarChar(20), req.params.id).query(`
+        SELECT
+            t.TeacherID,
+            t.UserID,
+            u.FullName AS Name,
+            d.DepartmentName AS Department,
+            u.Email,
+            u.Phone,
+            u.Username,
+            u.Status,
+            t.Title
+
+        FROM Teachers t
+
+        JOIN Users u
+            ON t.UserID = u.UserID
+
+        LEFT JOIN Departments d
+            ON t.DepartmentID = d.DepartmentID
+
+        WHERE t.TeacherID = @TeacherID
+      `);
+
+    if (result.recordset.length === 0) {
+      return res.status(404).json({
+        message: "Teacher not found",
+      });
+    }
 
     res.json(result.recordset[0]);
   } catch (err) {
@@ -65,58 +81,89 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-//
+// ===============================
 // UPDATE TEACHER
-//
+// ===============================
 router.put("/:id", async (req, res) => {
   try {
+    const pool = await poolPromise;
+
     const t = req.body;
 
-    await sql.query`
-      UPDATE Users
-      SET
-        FullName = ${t.Name},
-        Email = ${t.Email},
-        Phone = ${t.Phone},
-        Status = ${t.Status}
-      WHERE UserID = ${t.UserID}
-    `;
+    await pool
+      .request()
 
-    res.sendStatus(200);
+      .input("FullName", sql.NVarChar(100), t.Name)
+      .input("Email", sql.NVarChar(100), t.Email)
+      .input("Phone", sql.NVarChar(20), t.Phone)
+      .input("Status", sql.NVarChar(20), t.Status)
+      .input("UserID", sql.NVarChar(20), t.UserID).query(`
+        UPDATE Users
+        SET
+            FullName = @FullName,
+            Email = @Email,
+            Phone = @Phone,
+            Status = @Status
+
+        WHERE UserID = @UserID
+      `);
+
+    res.json({
+      success: true,
+      message: "Teacher updated successfully",
+    });
   } catch (err) {
     console.log(err);
     res.status(500).send(err.message);
   }
 });
 
-//
+// ===============================
 // DELETE TEACHER
-//
+// ===============================
 router.delete("/:id", async (req, res) => {
   try {
-    const id = req.params.id;
+    const pool = await poolPromise;
 
-    const user = await sql.query`
-      SELECT UserID
-      FROM Teachers
-      WHERE TeacherID = ${id}
-    `;
+    const teacherID = req.params.id;
 
-    if (user.recordset.length === 0) return res.sendStatus(404);
+    const user = await pool
+      .request()
+
+      .input("TeacherID", sql.NVarChar(20), teacherID).query(`
+        SELECT UserID
+        FROM Teachers
+        WHERE TeacherID = @TeacherID
+      `);
+
+    if (user.recordset.length === 0) {
+      return res.status(404).json({
+        message: "Teacher not found",
+      });
+    }
 
     const userID = user.recordset[0].UserID;
 
-    await sql.query`
-      DELETE FROM Teachers
-      WHERE TeacherID = ${id}
-    `;
+    await pool
+      .request()
 
-    await sql.query`
-      DELETE FROM Users
-      WHERE UserID = ${userID}
-    `;
+      .input("TeacherID", sql.NVarChar(20), teacherID).query(`
+        DELETE FROM Teachers
+        WHERE TeacherID = @TeacherID
+      `);
 
-    res.sendStatus(200);
+    await pool
+      .request()
+
+      .input("UserID", sql.NVarChar(20), userID).query(`
+        DELETE FROM Users
+        WHERE UserID = @UserID
+      `);
+
+    res.json({
+      success: true,
+      message: "Teacher deleted successfully",
+    });
   } catch (err) {
     console.log(err);
     res.status(500).send(err.message);
@@ -126,7 +173,6 @@ router.delete("/:id", async (req, res) => {
 // ===============================
 // ADD TEACHER
 // ===============================
-
 router.post("/", async (req, res) => {
   const {
     TeacherID,
@@ -147,7 +193,8 @@ router.post("/", async (req, res) => {
   try {
     await transaction.begin();
 
-    // Insert Users
+    // INSERT USERS
+
     await transaction
       .request()
 
@@ -160,34 +207,34 @@ router.post("/", async (req, res) => {
       .input("Phone", sql.NVarChar(20), Phone)
       .input("Gender", sql.NVarChar(10), Gender)
       .input("DOB", sql.Date, DOB).query(`
-                INSERT INTO Users
-                (
-                    UserID,
-                    Username,
-                    Password,
-                    Role,
-                    FullName,
-                    Email,
-                    Phone,
-                    Gender,
-                    DOB
-                )
+        INSERT INTO Users
+        (
+          UserID,
+          Username,
+          Password,
+          Role,
+          FullName,
+          Email,
+          Phone,
+          Gender,
+          DOB
+        )
 
-                VALUES
-                (
-                    @UserID,
-                    @Username,
-                    @Password,
-                    @Role,
-                    @FullName,
-                    @Email,
-                    @Phone,
-                    @Gender,
-                    @DOB
-                )
-            `);
+        VALUES
+        (
+          @UserID,
+          @Username,
+          @Password,
+          @Role,
+          @FullName,
+          @Email,
+          @Phone,
+          @Gender,
+          @DOB
+        )
+      `);
 
-    // Insert Teachers
+    // INSERT TEACHERS
 
     await transaction
       .request()
@@ -195,35 +242,37 @@ router.post("/", async (req, res) => {
       .input("TeacherID", sql.NVarChar(20), TeacherID)
       .input("UserID", sql.NVarChar(20), TeacherID)
       .input("DepartmentID", sql.Int, DepartmentID).query(`
-                INSERT INTO Teachers
-                (
-                    TeacherID,
-                    UserID,
-                    DepartmentID
-                )
+        INSERT INTO Teachers
+        (
+          TeacherID,
+          UserID,
+          DepartmentID
+        )
 
-                VALUES
-                (
-                    @TeacherID,
-                    @UserID,
-                    @DepartmentID
-                )
-            `);
+        VALUES
+        (
+          @TeacherID,
+          @UserID,
+          @DepartmentID
+        )
+      `);
 
     await transaction.commit();
 
     res.json({
       success: true,
+
       message: "Add teacher successfully",
     });
-  } catch (error) {
+  } catch (err) {
     await transaction.rollback();
 
-    console.log(error);
+    console.log(err);
 
     res.status(500).json({
       success: false,
-      message: error.message,
+
+      message: err.message,
     });
   }
 });

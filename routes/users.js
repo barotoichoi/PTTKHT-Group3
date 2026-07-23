@@ -1,22 +1,26 @@
 const express = require("express");
 const router = express.Router();
-const sql = require("../config/db");
+
+const { poolPromise } = require("../config/db");
 
 // =========================
 // GET ALL USERS
 // =========================
 router.get("/users", async (req, res) => {
   try {
-    const result = await sql.query(`
-      SELECT UserID,
-             FullName,
-             Email,
-             Phone,
-             Role,
-             Status
-      FROM Users
-      ORDER BY UserID
-    `);
+    const pool = await poolPromise;
+
+    const result = await pool.request().query(`
+        SELECT 
+            UserID,
+            FullName,
+            Email,
+            Phone,
+            Role,
+            Status
+        FROM Users
+        ORDER BY UserID
+      `);
 
     res.json(result.recordset);
   } catch (err) {
@@ -30,11 +34,16 @@ router.get("/users", async (req, res) => {
 // =========================
 router.get("/users/:id", async (req, res) => {
   try {
-    const result = await sql.query`
-      SELECT *
-      FROM Users
-      WHERE UserID=${req.params.id}
-    `;
+    const pool = await poolPromise;
+
+    const result = await pool
+      .request()
+
+      .input("UserID", req.params.id).query(`
+        SELECT *
+        FROM Users
+        WHERE UserID = @UserID
+      `);
 
     if (result.recordset.length === 0) {
       return res.status(404).json({
@@ -54,21 +63,33 @@ router.get("/users/:id", async (req, res) => {
 // =========================
 router.put("/users/:id", async (req, res) => {
   try {
+    const pool = await poolPromise;
+
     const u = req.body;
 
-    await sql.query`
+    await pool
+      .request()
+
+      .input("UserID", req.params.id)
+      .input("FullName", u.FullName)
+      .input("Email", u.Email)
+      .input("Phone", u.Phone)
+      .input("Role", u.Role)
+      .input("Status", u.Status).query(`
         UPDATE Users
         SET
-            FullName=${u.FullName},
-            Email=${u.Email},
-            Phone=${u.Phone},
-            Role=${u.Role},
-            Status=${u.Status}
-        WHERE UserID=${req.params.id}
-    `;
+            FullName = @FullName,
+            Email = @Email,
+            Phone = @Phone,
+            Role = @Role,
+            Status = @Status
+
+        WHERE UserID = @UserID
+      `);
 
     res.json({
       success: true,
+
       message: "User updated successfully",
     });
   } catch (err) {
@@ -82,13 +103,19 @@ router.put("/users/:id", async (req, res) => {
 // =========================
 router.delete("/users/:id", async (req, res) => {
   try {
-    await sql.query`
-      DELETE FROM Users
-      WHERE UserID=${req.params.id}
-    `;
+    const pool = await poolPromise;
+
+    await pool
+      .request()
+
+      .input("UserID", req.params.id).query(`
+        DELETE FROM Users
+        WHERE UserID = @UserID
+      `);
 
     res.json({
       success: true,
+
       message: "User deleted successfully",
     });
   } catch (err) {
@@ -102,15 +129,19 @@ router.delete("/users/:id", async (req, res) => {
 // =========================
 router.get("/api/users/random", async (req, res) => {
   try {
-    const result = await sql.query(`
+    const pool = await poolPromise;
+
+    const result = await pool.request().query(`
         SELECT TOP 4
             UserID,
             FullName,
             Role,
             Status
+
         FROM Users
+
         ORDER BY NEWID()
-    `);
+      `);
 
     res.json(result.recordset);
   } catch (err) {
