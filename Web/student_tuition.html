@@ -547,7 +547,6 @@
       </main>
     </div>
 <script>
-  // Các hàm tiện ích format tiền tệ và ngày tháng
   const formatCurrency = (amount) => {
     return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
   };
@@ -559,36 +558,27 @@
   };
 
   document.addEventListener('DOMContentLoaded', async () => {
-    // 1. Lấy UserID từ localStorage giống như bên trang Dashboard
     const userId = localStorage.getItem('userId');
 
-    // Nếu chưa đăng nhập thì đẩy về trang login
     if (!userId) {
       window.location.href = 'login.html';
       return;
     }
 
     try {
-      // 2. Gọi API để lấy thông tin chung của sinh viên (để lấy Tên và Mã SV)
-      const studentRes = await fetch(`http://localhost:3000/api/student/dashboard/${userId}`);
+      const studentRes = await fetch(`http://localhost:3000/students/dashboard/${userId}`);
       if (!studentRes.ok) throw new Error('Không thể tải thông tin sinh viên');
       const student = await studentRes.json();
 
-      // Cập nhật tên sinh viên lên thẻ sidebar
       const nameEl = document.getElementById('sidebar-name');
-      if (nameEl) {
-        nameEl.textContent = student.FullName;
-      }
+      if (nameEl) nameEl.textContent = student.FullName;
 
-      // 3. Dùng StudentID lấy được để gọi API Học phí
-      // Lấy chính xác StudentID (VD: 'SV001') tương ứng với UserID (VD: 'US001') đang đăng nhập
       const tuitionRes = await fetch(`http://localhost:3000/api/tuition/${student.StudentID}`);
       if (!tuitionRes.ok) throw new Error('API học phí lỗi hoặc không tìm thấy dữ liệu');
       
       const data = await tuitionRes.json();
       const { currentTuition, history } = data;
 
-      // 4. Cập nhật các thông số học phí
       const balanceEl = document.getElementById('current-balance');
       const paidEl = document.getElementById('paid-amount');
       const totalEl = document.getElementById('total-fees');
@@ -601,7 +591,6 @@
       if (dateEl) dateEl.textContent = formatDate(currentTuition.DueDate);
       if (progressEl) progressEl.style.width = `${currentTuition.Progress}%`;
 
-      // 5. Cập nhật Bảng lịch sử thanh toán
       const tbody = document.getElementById('payment-history-body');
       if (tbody) {
         tbody.innerHTML = ''; 

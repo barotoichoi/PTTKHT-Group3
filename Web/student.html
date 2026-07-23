@@ -299,11 +299,6 @@
                     </p>
                   </div>
                 </div>
-                <button
-                  class="w-full mt-md bg-primary-container text-on-primary py-2 rounded-lg font-label-md text-label-md hover:bg-primary transition-colors shadow-sm"
-                >
-                  View Profile
-                </button>
               </div>
             </div>
             <!-- Right Column: Stats & Content (Takes 3 cols on desktop) -->
@@ -623,124 +618,103 @@
       </main>
     </div>
     <script>
-      document.addEventListener('DOMContentLoaded', async () => {
-        // 1. Lấy UserID từ localStorage
-        const userId = localStorage.getItem('userId');
+  document.addEventListener('DOMContentLoaded', async () => {
+    const userId = localStorage.getItem('userId');
+    if (!userId) {
+      window.location.href = 'login.html';
+      return;
+    }
 
-        // Nếu không có userId (người dùng chưa đăng nhập) thì đẩy về trang login
-        if (!userId) {
-          window.location.href = 'login.html';
-          return;
-        }
+    try {
+      const response = await fetch(`http://localhost:3000/students/dashboard/${userId}`);
+      if (response.ok) {
+        const student = await response.json();
 
-        try {
-          // 2. Gọi API để lấy thông tin của sinh viên đang đăng nhập
-          const response = await fetch(`http://localhost:3000/api/student/dashboard/${userId}`);
+        document.getElementById('sidebar-name').innerText = student.FullName;
+        document.getElementById('top-welcome-msg').innerText = `Welcome back! ${student.FullName}. Here's a quick overview of your classes and assignments.`;
+        document.getElementById('profile-name').innerText = student.FullName;
+        document.getElementById('profile-student-id').innerText = `Student ID: ${student.StudentID}`;
+        document.getElementById('profile-major').innerText = student.Major;
+        document.getElementById('profile-email').innerText = student.Email;
+        document.getElementById('profile-phone').innerText = student.Phone;
+        document.getElementById('stat-gpa').innerText = student.GPA ? student.GPA.toFixed(2) : "0.00";
+
+        // FETCH MY CLASSES
+        const classesRes = await fetch(`http://localhost:3000/students/${userId}/classes`);
+        if (classesRes.ok) {
+          const classes = await classesRes.json();
+          document.getElementById('stat-classes-count').innerText = classes.length;
+          const tbody = document.querySelector('tbody');
+          tbody.innerHTML = ''; 
           
-          if (response.ok) {
-            const student = await response.json();
-
-            // 3. Đổ dữ liệu từ API vào các thẻ HTML thông qua ID đã gắn
-            document.getElementById('sidebar-name').innerText = student.FullName;
-            document.getElementById('top-welcome-msg').innerText = `Welcome back! ${student.FullName}. Here's a quick overview of your classes and assignments.`;
-            
-            document.getElementById('profile-name').innerText = student.FullName;
-            document.getElementById('profile-student-id').innerText = `Student ID: ${student.StudentID}`;
-            document.getElementById('profile-major').innerText = student.Major;
-            document.getElementById('profile-email').innerText = student.Email;
-            document.getElementById('profile-phone').innerText = student.Phone;
-            
-            // Format GPA lấy 2 chữ số thập phân
-            document.getElementById('stat-gpa').innerText = student.GPA ? student.GPA.toFixed(2) : "0.00";
-
-            // ... (Code gán dữ liệu profile cũ của bạn ở đây) ...
-
-            // --- TÍNH NĂNG MỚI: FETCH MY CLASSES ---
-            const classesRes = await fetch(`http://localhost:3000/api/student/${userId}/classes`);
-            // ... mã fetch dữ liệu My Classes ...
-            
-            if (classesRes.ok) {
-              const classes = await classesRes.json();
-              document.getElementById('stat-classes-count').innerText = classes.length;
-              
-              const tbody = document.querySelector('tbody');
-              tbody.innerHTML = ''; 
-              
-              classes.forEach(cls => {
-                // XÓA DÒNG NÀY: const progress = Math.floor(Math.random() * 40) + 60;
-                // THAY BẰNG DỮ LIỆU THẬT TỪ SQL:
-                const progress = cls.Progress; 
-                
-                tbody.innerHTML += `
-                  <tr class="hover:bg-surface-bright transition-colors">
-                    <td class="px-md py-sm font-medium text-on-surface">${cls.CourseName}</td>
-                    <td class="px-md py-sm text-on-surface-variant">${cls.StudentCount}</td>
-                    <td class="px-md py-sm text-on-surface-variant">${cls.Room || 'TBA'}</td>
-                    <td class="px-md py-sm">
-                      <div class="flex items-center gap-2">
-                        <div class="w-full h-2 bg-surface-variant rounded-full overflow-hidden">
-                          <div class="bg-primary h-full rounded-full" style="width: ${progress}%"></div>
-                        </div>
-                        <span class="text-label-sm text-outline">${progress}%</span>
-                      </div>
-                    </td>
-                  </tr>
-                `;
-              });
-            }
-
-            // --- TÍNH NĂNG MỚI: FETCH TODAY'S SCHEDULE ---
-            const scheduleRes = await fetch(`http://localhost:3000/api/student/${userId}/schedule/today`);
-            if (scheduleRes.ok) {
-              const schedules = await scheduleRes.json();
-              // Lấy element chứa các thẻ div lịch học
-              const scheduleContainer = document.querySelector('.xl\\:col-span-1 .space-y-sm');
-              scheduleContainer.innerHTML = ''; // Xóa dữ liệu tĩnh
-              
-              if (schedules.length === 0) {
-                scheduleContainer.innerHTML = '<p class="text-body-md text-on-surface-variant italic">No classes scheduled for today.</p>';
-              } else {
-                // Các màu ngẫu nhiên để UI sinh động giống bản gốc
-                const colorThemes = [
-                  { bg: 'bg-primary-fixed', text: 'text-on-primary-fixed-variant' },
-                  { bg: 'bg-[#D1FAE5]', text: 'text-[#065F46]' },
-                  { bg: 'bg-[#F3E8FF]', text: 'text-[#6B21A8]' }
-                ];
-
-                schedules.forEach((sched, index) => {
-                  const startTime = sched.TimeRange.split('-')[0]; // Tách lấy giờ bắt đầu từ chuỗi '07:30-09:30'
-                  const theme = colorThemes[index % colorThemes.length];
-                  
-                  scheduleContainer.innerHTML += `
-                    <div class="flex gap-sm items-start p-sm rounded-lg hover:bg-surface-container-low transition-colors border border-transparent hover:border-surface-variant">
-                      <div class="px-2 py-1 ${theme.bg} ${theme.text} rounded text-label-sm font-label-sm font-bold shrink-0 mt-1">
-                        ${startTime}
-                      </div>
-                      <div>
-                        <h4 class="text-body-md font-body-md font-semibold text-on-surface">${sched.CourseName}</h4>
-                        <p class="text-label-sm font-label-sm text-on-surface-variant">Room ${sched.Room}</p>
-                      </div>
+          classes.forEach(cls => {
+            const progress = cls.Progress; 
+            tbody.innerHTML += `
+              <tr class="hover:bg-surface-bright transition-colors">
+                <td class="px-md py-sm font-medium text-on-surface">${cls.CourseName}</td>
+                <td class="px-md py-sm text-on-surface-variant">${cls.StudentCount}</td>
+                <td class="px-md py-sm text-on-surface-variant">${cls.Room || 'TBA'}</td>
+                <td class="px-md py-sm">
+                  <div class="flex items-center gap-2">
+                    <div class="w-full h-2 bg-surface-variant rounded-full overflow-hidden">
+                      <div class="bg-primary h-full rounded-full" style="width: ${progress}%"></div>
                     </div>
-                  `;
-                });
-              }
-            }
-
-          } else {
-            console.error('Không thể lấy dữ liệu sinh viên');
-          }
-        } catch (error) {
-          console.error('Lỗi kết nối máy chủ:', error);
+                    <span class="text-label-sm text-outline">${progress}%</span>
+                  </div>
+                </td>
+              </tr>
+            `;
+          });
         }
-      });
 
-      // (Tùy chọn) Xử lý nút Đăng xuất
-      const logoutBtn = document.querySelector('a[href="login.html"]');
-      if (logoutBtn) {
-        logoutBtn.addEventListener('click', (e) => {
-          localStorage.removeItem('userId'); // Xóa session khi logout
-        });
+        // FETCH TODAY'S SCHEDULE
+        const scheduleRes = await fetch(`http://localhost:3000/students/${userId}/schedule/today`);
+        if (scheduleRes.ok) {
+          const schedules = await scheduleRes.json();
+          const scheduleContainer = document.querySelector('.xl\\:col-span-1 .space-y-sm');
+          scheduleContainer.innerHTML = '';
+          
+          if (schedules.length === 0) {
+            scheduleContainer.innerHTML = '<p class="text-body-md text-on-surface-variant italic">No classes scheduled for today.</p>';
+          } else {
+            const colorThemes = [
+              { bg: 'bg-primary-fixed', text: 'text-on-primary-fixed-variant' },
+              { bg: 'bg-[#D1FAE5]', text: 'text-[#065F46]' },
+              { bg: 'bg-[#F3E8FF]', text: 'text-[#6B21A8]' }
+            ];
+
+            schedules.forEach((sched, index) => {
+              const startTime = sched.TimeRange.split('-')[0];
+              const theme = colorThemes[index % colorThemes.length];
+              
+              scheduleContainer.innerHTML += `
+                <div class="flex gap-sm items-start p-sm rounded-lg hover:bg-surface-container-low transition-colors border border-transparent hover:border-surface-variant">
+                  <div class="px-2 py-1 ${theme.bg} ${theme.text} rounded text-label-sm font-label-sm font-bold shrink-0 mt-1">
+                    ${startTime}
+                  </div>
+                  <div>
+                    <h4 class="text-body-md font-body-md font-semibold text-on-surface">${sched.CourseName}</h4>
+                    <p class="text-label-sm font-label-sm text-on-surface-variant">Room ${sched.Room}</p>
+                  </div>
+                </div>
+              `;
+            });
+          }
+        }
+      } else {
+        console.error('Không thể lấy dữ liệu sinh viên');
       }
-    </script>
+    } catch (error) {
+      console.error('Lỗi kết nối máy chủ:', error);
+    }
+  });
+
+  const logoutBtn = document.querySelector('a[href="login.html"]');
+  if (logoutBtn) {
+    logoutBtn.addEventListener('click', () => {
+      localStorage.removeItem('userId'); 
+    });
+  }
+</script>
   </body>
 </html>

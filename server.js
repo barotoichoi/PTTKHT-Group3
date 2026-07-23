@@ -12,7 +12,7 @@ app.use(require("./routes/dashboard"));
 app.use(require("./routes/auth"));
 
 const studentRoutes = require("./routes/students");
-app.use("/api/students", studentRoutes);
+app.use("/students", studentRoutes);
 
 const teacherRoutes = require("./routes/teachers");
 app.use("/teachers", teacherRoutes);
