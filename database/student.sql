@@ -203,7 +203,7 @@ VALUES
 (N'US197', N'sv197', N'123456', N'Student', N'Active', GETDATE(), N'Nguyễn Quang Khang', N'khangnq0197@student.edu.vn', N'0812696048', N'Nam', '2008-04-28'),
 (N'US198', N'sv198', N'123456', N'Student', N'Suspended', GETDATE(), N'Trần Đức Hoàng', N'hoangtd0198@student.edu.vn', N'0703696872', N'Nam', '2006-11-08'),
 (N'US199', N'sv199', N'123456', N'Student', N'Active', GETDATE(), N'Hoàng Diễm Mai', N'maihd0199@student.edu.vn', N'0993177571', N'Nữ', '2008-11-08'),
-(N'US200', N'sv200', N'123456', N'Student', N'Active', GETDATE(), N'Vũ Hữu Kiên', N'kienvh0200@student.edu.vn', N'0589491433', N'Nam', '2003-06-24'),
+(N'US200', N'sv200', N'123456', N'Student', N'Active', GETDATE(), N'Vũ Hữu Kiên', N'kienvh0200@student.edu.vn', N'0589491433', N'Nam', '2003-06-24')
 GO
 
 INSERT INTO dbo.Students
