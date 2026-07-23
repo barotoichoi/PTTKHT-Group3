@@ -1,8 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const sql = require("../config/db");
 
-router.get("/api/student/dashboard/:userId", async (req, res) => {
+const { sql, poolPromise } = require("../config/db");
+
+router.get("/api/student/:userId", async (req, res) => {
   try {
     const result = await sql.query`
       SELECT
@@ -122,6 +123,40 @@ router.get("/api/student/:userId/course-details", async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).send(err.message);
+  }
+});
+
+router.get("/", async (req, res) => {
+  try {
+    const result = await sql.query`
+
+        SELECT
+            S.StudentID,
+            U.FullName AS Name,
+            S.Major,
+            S.GPA,
+            U.Email,
+            U.Phone,
+            U.Gender,
+            U.DOB,
+            U.Status
+
+        FROM Students S
+
+        JOIN Users U
+        ON S.UserID = U.UserID
+
+        ORDER BY S.StudentID
+
+        `;
+
+    res.json(result.recordset);
+  } catch (err) {
+    console.error(err);
+
+    res.status(500).json({
+      message: err.message,
+    });
   }
 });
 

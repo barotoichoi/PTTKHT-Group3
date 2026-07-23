@@ -6,14 +6,19 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Kết nối Database
+// Database
 require("./config/db");
 
 // Routes
 app.use(require("./routes/users"));
-app.use(require("./routes/teachers"));
 app.use(require("./routes/dashboard"));
 app.use(require("./routes/auth"));
+
+const studentRoutes = require("./routes/students");
+app.use("/api/students", studentRoutes);
+
+const teacherRoutes = require("./routes/teachers");
+app.use("/teachers", teacherRoutes);
 app.use(require("./routes/students"));
 app.use(require("./routes/student_grades"));
 app.use(require("./routes/student_tuition"));
