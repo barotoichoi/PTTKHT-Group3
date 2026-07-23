@@ -19,6 +19,9 @@ app.use("/api/students", studentRoutes);
 
 const teacherRoutes = require("./routes/teachers");
 app.use("/teachers", teacherRoutes);
+app.use(require("./routes/students"));
+app.use(require("./routes/student_grades"));
+app.use(require("./routes/student_tuition"));
 
 app.listen(3000, () => {
   console.log("Server running at http://localhost:3000");
