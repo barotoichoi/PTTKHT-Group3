@@ -275,130 +275,95 @@
       </main>
     </div>
 <script>
-      document.addEventListener('DOMContentLoaded', async () => {
-        // 1. Lấy ID của sinh viên từ Local Storage
-        const userId = localStorage.getItem('userId');
-        
-        if (!userId) {
-          window.location.href = 'login.html'; // Chuyển hướng nếu chưa đăng nhập
+  document.addEventListener('DOMContentLoaded', async () => {
+    const userId = localStorage.getItem('userId');
+    if (!userId) {
+      window.location.href = 'login.html'; 
+      return;
+    }
+
+    try {
+      const profileRes = await fetch(`http://localhost:3000/students/dashboard/${userId}`);
+      if (profileRes.ok) {
+        const student = await profileRes.json();
+        document.getElementById('sidebar-name').innerText = student.FullName;
+      }
+    } catch (error) {
+      console.error('Lỗi khi tải thông tin sinh viên:', error);
+    }
+
+    try {
+      const response = await fetch(`http://localhost:3000/students/${userId}/course-details`);
+      if (response.ok) {
+        const courses = await response.json();
+        const gridContainer = document.getElementById('courses-grid');
+        gridContainer.innerHTML = ''; 
+
+        if (courses.length === 0) {
+          gridContainer.innerHTML = '<p class="text-on-surface-variant font-body-md col-span-full">You are not enrolled in any courses.</p>';
           return;
         }
 
-        // ==========================================
-        // 2. GỌI API LẤY THÔNG TIN SINH VIÊN (Cho Sidebar)
-        // ==========================================
-        try {
-          const profileRes = await fetch(`http://localhost:3000/api/student/dashboard/${userId}`);
-          if (profileRes.ok) {
-            const student = await profileRes.json();
-            // Gắn tên sinh viên vào Sidebar
-            document.getElementById('sidebar-name').innerText = student.FullName;
-          }
-        } catch (error) {
-          console.error('Lỗi khi tải thông tin sinh viên:', error);
-        }
+        const themes = [
+          { badgeBg: 'bg-primary-fixed', badgeText: 'text-on-primary-fixed', iconBg: 'bg-surface-container-high', iconColor: 'text-primary', icon: 'database', barBg: 'bg-primary' },
+          { badgeBg: 'bg-secondary-fixed', badgeText: 'text-on-secondary-fixed', iconBg: 'bg-secondary-container', iconColor: 'text-secondary', icon: 'code', barBg: 'bg-secondary' },
+          { badgeBg: 'bg-primary-fixed-dim', badgeText: 'text-on-primary-fixed', iconBg: 'bg-surface-container', iconColor: 'text-primary', icon: 'language', barBg: 'bg-primary-container' },
+          { badgeBg: 'bg-tertiary-fixed', badgeText: 'text-on-tertiary-fixed', iconBg: 'bg-tertiary-fixed-dim', iconColor: 'text-tertiary', icon: 'calculate', barBg: 'bg-tertiary' }
+        ];
 
-        // ==========================================
-        // 3. GỌI API LẤY DANH SÁCH KHÓA HỌC
-        // ==========================================
-        try {
-          const response = await fetch(`http://localhost:3000/api/student/${userId}/course-details`);
+        courses.forEach((course, index) => {
+          const theme = themes[index % themes.length];
+          const scheduleText = course.ScheduleDays && course.StartTime ? `${course.ScheduleDays} ${course.StartTime}` : 'TBA';
+          const teacherName = course.TeacherName || 'TBA';
+          const room = course.Room || 'TBA';
           
-          if (response.ok) {
-            const courses = await response.json();
-            const gridContainer = document.getElementById('courses-grid');
-            
-            gridContainer.innerHTML = ''; // Xóa nội dung tĩnh cũ
-
-            if (courses.length === 0) {
-              gridContainer.innerHTML = '<p class="text-on-surface-variant font-body-md col-span-full">You are not enrolled in any courses.</p>';
-              return;
-            }
-
-            const themes = [
-              {
-                badgeBg: 'bg-primary-fixed', badgeText: 'text-on-primary-fixed',
-                iconBg: 'bg-surface-container-high', iconColor: 'text-primary', icon: 'database',
-                barBg: 'bg-primary'
-              },
-              {
-                badgeBg: 'bg-secondary-fixed', badgeText: 'text-on-secondary-fixed',
-                iconBg: 'bg-secondary-container', iconColor: 'text-secondary', icon: 'code',
-                barBg: 'bg-secondary'
-              },
-              {
-                badgeBg: 'bg-primary-fixed-dim', badgeText: 'text-on-primary-fixed',
-                iconBg: 'bg-surface-container', iconColor: 'text-primary', icon: 'language',
-                barBg: 'bg-primary-container'
-              },
-              {
-                badgeBg: 'bg-tertiary-fixed', badgeText: 'text-on-tertiary-fixed',
-                iconBg: 'bg-tertiary-fixed-dim', iconColor: 'text-tertiary', icon: 'calculate',
-                barBg: 'bg-tertiary'
-              }
-            ];
-
-            courses.forEach((course, index) => {
-              const theme = themes[index % themes.length];
-              const scheduleText = course.ScheduleDays && course.StartTime ? `${course.ScheduleDays} ${course.StartTime}` : 'TBA';
-              const teacherName = course.TeacherName || 'TBA';
-              const room = course.Room || 'TBA';
-              
-              const cardHTML = `
-                <div class="bg-surface-container-lowest rounded-xl p-md shadow-sm border border-outline-variant/50 flex flex-col hover:shadow-md transition-shadow">
-                  <div class="flex justify-between items-start mb-md">
-                    <div>
-                      <span class="inline-block ${theme.badgeBg} ${theme.badgeText} text-label-sm font-label-sm px-xs py-base rounded uppercase mb-xs tracking-wide">
-                        ${course.CourseID}
-                      </span>
-                      <h3 class="font-headline-md text-headline-md text-on-surface">
-                        ${course.CourseName}
-                      </h3>
-                    </div>
-                    <div class="w-10 h-10 rounded-full ${theme.iconBg} flex items-center justify-center ${theme.iconColor}">
-                      <span class="material-symbols-outlined">${theme.icon}</span>
-                    </div>
-                  </div>
-                  
-                  <div class="space-y-xs mb-md">
-                    <div class="flex items-center text-on-surface-variant font-body-md text-body-md">
-                      <span class="material-symbols-outlined text-[18px] mr-xs">person</span>
-                      ${teacherName}
-                    </div>
-                    <div class="flex items-center text-on-surface-variant font-body-md text-body-md">
-                      <span class="material-symbols-outlined text-[18px] mr-xs">room</span>
-                      Room ${room}
-                    </div>
-                    <div class="flex items-center text-on-surface-variant font-body-md text-body-md">
-                      <span class="material-symbols-outlined text-[18px] mr-xs">schedule</span>
-                      ${scheduleText}
-                    </div>
-                  </div>
-                  
-                  <div class="mt-auto pt-md border-t border-outline-variant/30">
-                    <div class="flex justify-between text-label-md font-label-md text-on-surface mb-xs">
-                      <span>Course Progress</span>
-                      <span>${course.Progress}%</span>
-                    </div>
-                    <div class="w-full bg-surface-container-highest rounded-full h-2 mb-md">
-                      <div class="${theme.barBg} h-2 rounded-full" style="width: ${course.Progress}%"></div>
-                    </div>
-                    <button class="w-full bg-surface border border-outline-variant text-on-surface font-label-md text-label-md py-sm rounded-lg hover:bg-surface-container-low transition-colors">
-                      View Details
-                    </button>
-                  </div>
+          const cardHTML = `
+            <div class="bg-surface-container-lowest rounded-xl p-md shadow-sm border border-outline-variant/50 flex flex-col hover:shadow-md transition-shadow">
+              <div class="flex justify-between items-start mb-md">
+                <div>
+                  <span class="inline-block ${theme.badgeBg} ${theme.badgeText} text-label-sm font-label-sm px-xs py-base rounded uppercase mb-xs tracking-wide">
+                    ${course.CourseID}
+                  </span>
+                  <h3 class="font-headline-md text-headline-md text-on-surface">${course.CourseName}</h3>
                 </div>
-              `;
+                <div class="w-10 h-10 rounded-full ${theme.iconBg} flex items-center justify-center ${theme.iconColor}">
+                  <span class="material-symbols-outlined">${theme.icon}</span>
+                </div>
+              </div>
               
-              gridContainer.innerHTML += cardHTML;
-            });
-          }
-        } catch (error) {
-          console.error('Lỗi khi tải dữ liệu khóa học:', error);
-        }
-      });
-    </script>
-  </body>
-</html>
+              <div class="space-y-xs mb-md">
+                <div class="flex items-center text-on-surface-variant font-body-md text-body-md">
+                  <span class="material-symbols-outlined text-[18px] mr-xs">person</span>${teacherName}
+                </div>
+                <div class="flex items-center text-on-surface-variant font-body-md text-body-md">
+                  <span class="material-symbols-outlined text-[18px] mr-xs">room</span>Room ${room}
+                </div>
+                <div class="flex items-center text-on-surface-variant font-body-md text-body-md">
+                  <span class="material-symbols-outlined text-[18px] mr-xs">schedule</span>${scheduleText}
+                </div>
+              </div>
+              
+              <div class="mt-auto pt-md border-t border-outline-variant/30">
+                <div class="flex justify-between text-label-md font-label-md text-on-surface mb-xs">
+                  <span>Course Progress</span>
+                  <span>${course.Progress}%</span>
+                </div>
+                <div class="w-full bg-surface-container-highest rounded-full h-2 mb-md">
+                  <div class="${theme.barBg} h-2 rounded-full" style="width: ${course.Progress}%"></div>
+                </div>
+                <button class="w-full bg-surface border border-outline-variant text-on-surface font-label-md text-label-md py-sm rounded-lg hover:bg-surface-container-low transition-colors">
+                  View Details
+                </button>
+              </div>
+            </div>
+          `;
+          gridContainer.innerHTML += cardHTML;
+        });
+      }
+    } catch (error) {
+      console.error('Lỗi khi tải dữ liệu khóa học:', error);
+    }
+  });
+</script>
   </body>
 </html>

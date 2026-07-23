@@ -530,145 +530,124 @@
       </div>
     </main>
     <script>
-      document.addEventListener('DOMContentLoaded', async () => {
-        const userId = localStorage.getItem('userId');
-        if (!userId) {
-          window.location.href = 'login.html';
-          return;
+  document.addEventListener('DOMContentLoaded', async () => {
+    const userId = localStorage.getItem('userId');
+    if (!userId) {
+      window.location.href = 'login.html';
+      return;
+    }
+
+    try {
+      const userRes = await fetch(`http://localhost:3000/students/dashboard/${userId}`);
+      if (userRes.ok) {
+        const student = await userRes.json();
+        const sidebarName = document.getElementById('sidebar-name');
+        if (sidebarName) sidebarName.innerText = student.FullName;
+      }
+
+      const summaryRes = await fetch(`http://localhost:3000/api/student/${userId}/grades/summary`);
+      if (summaryRes.ok) {
+        const summary = await summaryRes.json();
+        const currentGPA = summary.CurrentGPA;
+        
+        const gpaElement = document.getElementById('current-gpa');
+        if (gpaElement) gpaElement.innerText = currentGPA.toFixed(2);
+        
+        const classificationElement = document.getElementById('gpa-classification');
+        if (classificationElement) {
+          let label = "Chưa xếp loại";
+          let colorClasses = "bg-surface-container text-on-surface-variant"; 
+
+          if (currentGPA >= 3.6) { label = "Xuất sắc"; colorClasses = "bg-[#D1FAE5] text-[#065F46]"; } 
+          else if (currentGPA >= 3.2) { label = "Giỏi"; colorClasses = "bg-primary-fixed text-on-primary-fixed-variant"; } 
+          else if (currentGPA >= 2.5) { label = "Khá"; colorClasses = "bg-[#FFF3E0] text-[#E65100]"; } 
+          else if (currentGPA >= 2.0) { label = "Trung bình"; colorClasses = "bg-[#F3E5F5] text-[#8E24AA]"; } 
+          else { label = "Cảnh báo"; colorClasses = "bg-error-container text-error"; }
+
+          classificationElement.innerText = `Xếp loại ${label}`;
+          classificationElement.className = `font-label-md text-label-md px-2 py-1 rounded-full ${colorClasses}`;
         }
 
-        try {
-          // --- 1. LẤY THÔNG TIN USER (ĐỔI TÊN SIDEBAR) ---
-          const userRes = await fetch(`http://localhost:3000/api/student/dashboard/${userId}`);
-          if (userRes.ok) {
-            const student = await userRes.json();
-            const sidebarName = document.getElementById('sidebar-name');
-            if (sidebarName) sidebarName.innerText = student.FullName;
-          }
-
-          // --- 2. LẤY TỔNG QUAN (GPA & CREDITS) ---
-          const summaryRes = await fetch(`http://localhost:3000/api/student/${userId}/grades/summary`);
-          if (summaryRes.ok) {
-            const summary = await summaryRes.json();
-            const currentGPA = summary.CurrentGPA;
-            
-            // Current GPA
-            const gpaElement = document.getElementById('current-gpa');
-            if (gpaElement) gpaElement.innerText = currentGPA.toFixed(2);
-            
-            // Xếp loại học lực
-            const classificationElement = document.getElementById('gpa-classification');
-            if (classificationElement) {
-              let label = "Chưa xếp loại";
-              let colorClasses = "bg-surface-container text-on-surface-variant"; 
-
-              if (currentGPA >= 3.6) {
-                label = "Xuất sắc";
-                colorClasses = "bg-[#D1FAE5] text-[#065F46]";
-              } else if (currentGPA >= 3.2) { 
-                label = "Giỏi";
-                colorClasses = "bg-primary-fixed text-on-primary-fixed-variant";
-              } else if (currentGPA >= 2.5) {
-                label = "Khá";
-                colorClasses = "bg-[#FFF3E0] text-[#E65100]";
-              } else if (currentGPA >= 2.0) {
-                label = "Trung bình";
-                colorClasses = "bg-[#F3E5F5] text-[#8E24AA]";
-              } else {
-                label = "Cảnh báo";
-                colorClasses = "bg-error-container text-error";
-              }
-
-              classificationElement.innerText = `Xếp loại ${label}`;
-              classificationElement.className = `font-label-md text-label-md px-2 py-1 rounded-full ${colorClasses}`;
-            }
-
-            // Total Credits & Progress Bar
-            const requiredCredits = 120; // Mục tiêu là 120 tín chỉ
-            const currentCredits = summary.TotalCredits || 0; 
-            
-            const creditsElement = document.getElementById('total-credits');
-            if (creditsElement) {
-              creditsElement.innerHTML = `${currentCredits} <span class="font-body-md text-body-md text-outline font-normal">/ ${requiredCredits}</span>`;
-            }
-            
-            const progressBar = document.getElementById('credits-progress-bar');
-            if (progressBar) {
-              const progressPercent = Math.min((currentCredits / requiredCredits) * 100, 100);
-              progressBar.style.width = `${progressPercent}%`;
-            }
-          }
-
-          // --- 3. LẤY DỮ LIỆU GPA TREND (BIỂU ĐỒ) ---
-          const trendRes = await fetch(`http://localhost:3000/api/student/${userId}/grades/trend`);
-          if (trendRes.ok) {
-            const trends = await trendRes.json();
-            const trendContainer = document.getElementById('gpa-trend-container'); 
-            
-            if (trendContainer) {
-              // Giữ lại 4 đường line kẻ ngang của UI
-              let htmlContent = `
-                <div class="absolute left-0 bottom-0 w-full h-[1px] bg-outline-variant/30 bottom-8"></div>
-                <div class="absolute left-0 bottom-0 w-full h-[1px] bg-outline-variant/30 bottom-16"></div>
-                <div class="absolute left-0 bottom-0 w-full h-[1px] bg-outline-variant/30 bottom-24"></div>
-                <div class="absolute left-0 bottom-0 w-full h-[1px] bg-outline-variant/30 bottom-32"></div>
-              `;
-              
-              trends.forEach(trend => {
-                // Điểm chi tiết lưu theo thang 10, tính % chiều cao cột
-                const heightPercent = (trend.SemesterGPA / 10) * 100; 
-                
-                htmlContent += `
-                  <div class="flex flex-col items-center gap-2 z-10 group">
-                    <div class="w-3 h-32 bg-primary/20 rounded-t-sm relative group-hover:bg-primary/40 transition-colors">
-                      <div class="absolute bottom-0 w-full bg-primary rounded-t-sm" style="height: ${heightPercent}%"></div>
-                      <span class="absolute -top-8 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 bg-inverse-surface text-inverse-on-surface text-xs py-1 px-2 rounded transition-opacity">
-                        ${trend.SemesterGPA}
-                      </span>
-                    </div>
-                    <span class="font-label-sm text-label-sm text-on-surface-variant">${trend.Semester}</span>
-                  </div>
-                `;
-              });
-              trendContainer.innerHTML = htmlContent;
-            }
-          }
-
-          // --- 4. LẤY DỮ LIỆU BẢNG ĐIỂM CHI TIẾT ---
-          const detailsRes = await fetch(`http://localhost:3000/api/student/${userId}/grades/details`);
-          if (detailsRes.ok) {
-            const details = await detailsRes.json();
-            const tableBody = document.getElementById('grades-table-body');
-            
-            if (tableBody) {
-              tableBody.innerHTML = ''; 
-              details.forEach(detail => {
-                let letterGrade = 'F';
-                let colorClass = 'bg-error-container text-on-error-container';
-                
-                if (detail.AverageScore >= 8.5) { letterGrade = 'A'; colorClass = 'bg-surface-container-highest text-primary'; }
-                else if (detail.AverageScore >= 7.0) { letterGrade = 'B'; colorClass = 'bg-secondary-container text-on-secondary-container'; }
-                else if (detail.AverageScore >= 5.5) { letterGrade = 'C'; colorClass = 'bg-tertiary-fixed text-tertiary'; }
-                
-                tableBody.innerHTML += `
-                  <tr class="border-b border-surface-container-highest hover:bg-surface transition-colors">
-                    <td class="p-sm text-outline">${detail.CourseID}</td>
-                    <td class="p-sm font-medium">${detail.CourseName}</td>
-                    <td class="p-sm text-center">${detail.Credits}</td>
-                    <td class="p-sm text-center">
-                      <span class="inline-flex items-center justify-center w-8 h-8 rounded ${colorClass} font-bold text-sm">
-                        ${letterGrade}
-                      </span>
-                    </td>
-                  </tr>
-                `;
-              });
-            }
-          }
-        } catch (error) {
-          console.error('Lỗi khi tải dữ liệu trang điểm:', error);
+        const requiredCredits = 120;
+        const currentCredits = summary.TotalCredits || 0; 
+        
+        const creditsElement = document.getElementById('total-credits');
+        if (creditsElement) {
+          creditsElement.innerHTML = `${currentCredits} <span class="font-body-md text-body-md text-outline font-normal">/ ${requiredCredits}</span>`;
         }
-      });
-    </script>
+        
+        const progressBar = document.getElementById('credits-progress-bar');
+        if (progressBar) {
+          const progressPercent = Math.min((currentCredits / requiredCredits) * 100, 100);
+          progressBar.style.width = `${progressPercent}%`;
+        }
+      }
+
+      const trendRes = await fetch(`http://localhost:3000/api/student/${userId}/grades/trend`);
+      if (trendRes.ok) {
+        const trends = await trendRes.json();
+        const trendContainer = document.getElementById('gpa-trend-container'); 
+        
+        if (trendContainer) {
+          let htmlContent = `
+            <div class="absolute left-0 bottom-0 w-full h-[1px] bg-outline-variant/30 bottom-8"></div>
+            <div class="absolute left-0 bottom-0 w-full h-[1px] bg-outline-variant/30 bottom-16"></div>
+            <div class="absolute left-0 bottom-0 w-full h-[1px] bg-outline-variant/30 bottom-24"></div>
+            <div class="absolute left-0 bottom-0 w-full h-[1px] bg-outline-variant/30 bottom-32"></div>
+          `;
+          
+          trends.forEach(trend => {
+            const heightPercent = (trend.SemesterGPA / 10) * 100; 
+            htmlContent += `
+              <div class="flex flex-col items-center gap-2 z-10 group">
+                <div class="w-3 h-32 bg-primary/20 rounded-t-sm relative group-hover:bg-primary/40 transition-colors">
+                  <div class="absolute bottom-0 w-full bg-primary rounded-t-sm" style="height: ${heightPercent}%"></div>
+                  <span class="absolute -top-8 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 bg-inverse-surface text-inverse-on-surface text-xs py-1 px-2 rounded transition-opacity">
+                    ${trend.SemesterGPA}
+                  </span>
+                </div>
+                <span class="font-label-sm text-label-sm text-on-surface-variant">${trend.Semester}</span>
+              </div>
+            `;
+          });
+          trendContainer.innerHTML = htmlContent;
+        }
+      }
+
+      const detailsRes = await fetch(`http://localhost:3000/api/student/${userId}/grades/details`);
+      if (detailsRes.ok) {
+        const details = await detailsRes.json();
+        const tableBody = document.getElementById('grades-table-body');
+        
+        if (tableBody) {
+          tableBody.innerHTML = ''; 
+          details.forEach(detail => {
+            let letterGrade = 'F';
+            let colorClass = 'bg-error-container text-on-error-container';
+            
+            if (detail.AverageScore >= 8.5) { letterGrade = 'A'; colorClass = 'bg-surface-container-highest text-primary'; }
+            else if (detail.AverageScore >= 7.0) { letterGrade = 'B'; colorClass = 'bg-secondary-container text-on-secondary-container'; }
+            else if (detail.AverageScore >= 5.5) { letterGrade = 'C'; colorClass = 'bg-tertiary-fixed text-tertiary'; }
+            
+            tableBody.innerHTML += `
+              <tr class="border-b border-surface-container-highest hover:bg-surface transition-colors">
+                <td class="p-sm text-outline">${detail.CourseID}</td>
+                <td class="p-sm font-medium">${detail.CourseName}</td>
+                <td class="p-sm text-center">${detail.Credits}</td>
+                <td class="p-sm text-center">
+                  <span class="inline-flex items-center justify-center w-8 h-8 rounded ${colorClass} font-bold text-sm">
+                    ${letterGrade}
+                  </span>
+                </td>
+              </tr>
+            `;
+          });
+        }
+      }
+    } catch (error) {
+      console.error('Lỗi khi tải dữ liệu trang điểm:', error);
+    }
+  });
+</script>
   </body>
 </html>
