@@ -155,7 +155,7 @@
           Welcome Back
           <br />EduSync Academy<br />
         </h1>
-        <p class="text-slate-400 text-[10px] font-caption mt-1">Mr.Bao</p>
+        <p id="sidebar-name" class="text-slate-400 text-[10px] font-caption mt-1">...</p>
       </div>
       <nav class="flex-1 px-2 space-y-1 overflow-y-auto custom-scroll">
         <a
@@ -292,9 +292,7 @@
                   </div>
                 </div>
                 <div class="relative z-10">
-                  <span class="text-4xl font-display font-bold text-on-surface"
-                    >25,500,000 ₫</span
-                  >
+                  <span id="current-balance" class="text-4xl font-display font-bold text-on-surface">0 ₫</span>
                 </div>
               </div>
               <div
@@ -306,7 +304,7 @@
                   <span class="material-symbols-outlined text-sm"
                     >schedule</span
                   >
-                  Due Date: <span class="font-bold">Oct 15, 2024</span>
+                  Due Date: <span id="due-date" class="font-bold">...</span>
                 </div>
                 <button
                   class="w-full sm:w-auto px-6 py-3 bg-primary text-on-primary rounded-lg font-label-md text-label-md font-bold hover:bg-primary-container transition-transform hover:-translate-y-0.5 shadow-md active:translate-y-0"
@@ -335,28 +333,19 @@
                     class="font-body-md text-body-md text-on-surface-variant"
                     >Paid</span
                   >
-                  <span
-                    class="font-label-md text-label-md font-bold text-on-surface"
-                    >15,000,000 ₫</span
-                  >
+                  <span id="paid-amount" class="font-label-md text-label-md font-bold text-on-surface">0 ₫</span>
                 </div>
                 <div
                   class="w-full h-2 bg-surface-container-highest rounded-full overflow-hidden mb-4"
                 >
-                  <div
-                    class="h-full bg-primary rounded-full"
-                    style="width: 37%"
-                  ></div>
+                  <div id="progress-bar" class="h-full bg-primary rounded-full" style="width: 0%"></div>
                 </div>
                 <div class="flex justify-between items-end">
                   <span
                     class="font-body-md text-body-md text-on-surface-variant"
                     >Total Fees</span
                   >
-                  <span
-                    class="font-label-md text-label-md font-bold text-on-surface"
-                    >40,500,000 ₫</span
-                  >
+                  <span id="total-fees" class="font-label-md text-label-md font-bold text-on-surface">0 ₫</span>
                 </div>
               </div>
               <div class="mt-6 pt-4 border-t border-outline-variant/20">
@@ -422,7 +411,7 @@
                   </tr>
                 </thead>
                 <tbody
-                  class="divide-y divide-outline-variant/10 font-body-md text-body-md text-on-surface"
+                  id="payment-history-body" class="divide-y divide-outline-variant/10 font-body-md text-body-md text-on-surface"
                 >
                   <tr
                     class="hover:bg-surface-container-lowest/50 transition-colors group"
@@ -557,5 +546,91 @@
         </div>
       </main>
     </div>
+<script>
+  // Các hàm tiện ích format tiền tệ và ngày tháng
+  const formatCurrency = (amount) => {
+    return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
+  };
+
+  const formatDate = (dateString) => {
+    if (!dateString) return "N/A";
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' });
+  };
+
+  document.addEventListener('DOMContentLoaded', async () => {
+    // 1. Lấy UserID từ localStorage giống như bên trang Dashboard
+    const userId = localStorage.getItem('userId');
+
+    // Nếu chưa đăng nhập thì đẩy về trang login
+    if (!userId) {
+      window.location.href = 'login.html';
+      return;
+    }
+
+    try {
+      // 2. Gọi API để lấy thông tin chung của sinh viên (để lấy Tên và Mã SV)
+      const studentRes = await fetch(`http://localhost:3000/api/student/dashboard/${userId}`);
+      if (!studentRes.ok) throw new Error('Không thể tải thông tin sinh viên');
+      const student = await studentRes.json();
+
+      // Cập nhật tên sinh viên lên thẻ sidebar
+      const nameEl = document.getElementById('sidebar-name');
+      if (nameEl) {
+        nameEl.textContent = student.FullName;
+      }
+
+      // 3. Dùng StudentID lấy được để gọi API Học phí
+      // Lấy chính xác StudentID (VD: 'SV001') tương ứng với UserID (VD: 'US001') đang đăng nhập
+      const tuitionRes = await fetch(`http://localhost:3000/api/tuition/${student.StudentID}`);
+      if (!tuitionRes.ok) throw new Error('API học phí lỗi hoặc không tìm thấy dữ liệu');
+      
+      const data = await tuitionRes.json();
+      const { currentTuition, history } = data;
+
+      // 4. Cập nhật các thông số học phí
+      const balanceEl = document.getElementById('current-balance');
+      const paidEl = document.getElementById('paid-amount');
+      const totalEl = document.getElementById('total-fees');
+      const dateEl = document.getElementById('due-date');
+      const progressEl = document.getElementById('progress-bar');
+
+      if (balanceEl) balanceEl.textContent = formatCurrency(currentTuition.Balance);
+      if (paidEl) paidEl.textContent = formatCurrency(currentTuition.PaidAmount);
+      if (totalEl) totalEl.textContent = formatCurrency(currentTuition.Amount);
+      if (dateEl) dateEl.textContent = formatDate(currentTuition.DueDate);
+      if (progressEl) progressEl.style.width = `${currentTuition.Progress}%`;
+
+      // 5. Cập nhật Bảng lịch sử thanh toán
+      const tbody = document.getElementById('payment-history-body');
+      if (tbody) {
+        tbody.innerHTML = ''; 
+        history.forEach(item => {
+          let statusBadge = '';
+          if (item.PaymentStatus === 'Paid') {
+            statusBadge = `<span class="inline-flex items-center px-2.5 py-1 rounded-md bg-[#e6f4ea] text-[#137333] font-label-sm text-label-sm gap-1"><span class="material-symbols-outlined text-[12px]">check_circle</span>Paid</span>`;
+          } else if (item.PaymentStatus === 'Unpaid') {
+            statusBadge = `<span class="inline-flex items-center px-2.5 py-1 rounded-md bg-error-container text-on-error-container font-label-sm text-label-sm gap-1"><span class="material-symbols-outlined text-[12px]">cancel</span>Unpaid</span>`;
+          } else {
+            statusBadge = `<span class="inline-flex items-center px-2.5 py-1 rounded-md bg-yellow-100 text-yellow-800 font-label-sm text-label-sm gap-1"><span class="material-symbols-outlined text-[12px]">pending</span>Partial</span>`;
+          }
+
+          const tr = document.createElement('tr');
+          tr.className = 'hover:bg-surface-container-lowest/50 transition-colors group';
+          tr.innerHTML = `
+            <td class="p-4 font-medium text-primary cursor-pointer group-hover:underline">#TRX-${item.TuitionID}</td>
+            <td class="p-4 text-on-surface-variant">${item.Semester}</td>
+            <td class="p-4 font-semibold">${formatCurrency(item.PaidAmount)}</td>
+            <td class="p-4"><div class="flex items-center gap-2"><span class="material-symbols-outlined text-sm text-outline">account_balance</span>System DB</div></td>
+            <td class="p-4">${statusBadge}</td>
+          `;
+          tbody.appendChild(tr);
+        });
+      }
+    } catch (error) {
+      console.error('Lỗi khi tải dữ liệu:', error);
+    }
+  });
+</script>
   </body>
 </html>
