@@ -241,33 +241,6 @@
           </p>
         </div>
         <!-- Filters -->
-        <div class="flex flex-col md:flex-row gap-sm mb-lg">
-          <div class="relative">
-            <select
-              class="appearance-none bg-surface border border-outline-variant rounded-lg py-sm pl-sm pr-xl text-body-md text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none"
-            >
-              <option>Fall Semester 2023</option>
-              <option>Spring Semester 2023</option>
-            </select>
-            <span
-              class="material-symbols-outlined absolute right-sm top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none"
-              >expand_more</span
-            >
-          </div>
-          <div class="relative">
-            <select
-              class="appearance-none bg-surface border border-outline-variant rounded-lg py-sm pl-sm pr-xl text-body-md text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none"
-            >
-              <option>All Subjects</option>
-              <option>Computer Science</option>
-              <option>Mathematics</option>
-            </select>
-            <span
-              class="material-symbols-outlined absolute right-sm top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none"
-              >expand_more</span
-            >
-          </div>
-        </div>
         <!-- Class Grid -->
         <div id="courses-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-md">
 
@@ -351,9 +324,6 @@
                 <div class="w-full bg-surface-container-highest rounded-full h-2 mb-md">
                   <div class="${theme.barBg} h-2 rounded-full" style="width: ${course.Progress}%"></div>
                 </div>
-                <button class="w-full bg-surface border border-outline-variant text-on-surface font-label-md text-label-md py-sm rounded-lg hover:bg-surface-container-low transition-colors">
-                  View Details
-                </button>
               </div>
             </div>
           `;
