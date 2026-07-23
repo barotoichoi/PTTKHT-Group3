@@ -572,21 +572,24 @@ ${user.Status}
 <td class="table-header text-sm font-medium">
 
 <button
-class="text-gray-400 hover:text-green-600 mx-2 transition-colors"
-onclick="viewUser('${user.UserID}')">
-<i class="fa-solid fa-eye"></i>
+    onclick="viewUser('${user.UserID}')"
+    class="text-gray-400 hover:text-green-600 mx-2 transition-colors"
+    title="View">
+    <i class="fa-solid fa-eye"></i>
 </button>
 
 <button
-class="text-gray-400 hover:text-blue-600 mx-2 transition-colors"
-onclick="editUser('${user.UserID}')">
-<i class="fa-solid fa-pen"></i>
+    onclick="editUser('${user.UserID}')"
+    class="text-gray-400 hover:text-blue-600 mx-2 transition-colors"
+    title="Edit">
+    <i class="fa-solid fa-pen"></i>
 </button>
 
 <button
-class="text-gray-400 hover:text-red-600 mx-2 transition-colors"
-onclick="deleteUser('${user.UserID}')">
-<i class="fa-solid fa-trash"></i>
+    onclick="deleteUser('${user.UserID}')"
+    class="text-gray-400 hover:text-red-600 mx-2 transition-colors"
+    title="Delete">
+    <i class="fa-solid fa-trash"></i>
 </button>
 
 </td>
@@ -640,14 +643,73 @@ onclick="deleteUser('${user.UserID}')">
           renderTable();
         }
       }
-
-      //================ ACTION ================
-      const viewUser = (id) => console.log("View", id);
-      const editUser = (id) => console.log("Edit", id);
-      const deleteUser = (id) => console.log("Delete", id);
-
       //================ START ================
       loadUsers();
+
+      //================ ACTION ================
+      // view user function
+      async function viewUser(id) {
+        const res = await fetch(`http://localhost:3000/users/${id}`);
+        const user = await res.json();
+
+        document.getElementById("viewName").innerText = user.FullName;
+        document.getElementById("viewID").innerText = user.UserID;
+        document.getElementById("viewEmail").innerText = user.Email;
+        document.getElementById("viewRole").innerText = user.Role;
+        document.getElementById("viewStatus").innerText = user.Status;
+        document.getElementById("viewPhone").innerText = user.Phone;
+        document.getElementById("viewGender").innerText = user.Gender;
+        document.getElementById("viewDOB").innerText = user.DOB;
+
+        document.getElementById("viewModal").classList.remove("hidden");
+      }
+
+      // edit user function
+      async function editUser(id) {
+        const res = await fetch(`http://localhost:3000/users/${id}`);
+        const user = await res.json();
+
+        document.getElementById("editID").value = user.UserID;
+        document.getElementById("editName").value = user.FullName;
+        document.getElementById("editEmail").value = user.Email;
+        document.getElementById("editPhone").value = user.Phone;
+        document.getElementById("editRole").value = user.Role;
+        document.getElementById("editStatus").value = user.Status;
+
+        document.getElementById("editModal").classList.remove("hidden");
+      }
+
+      // save edited user function
+      async function saveUser() {
+        const data = {
+          UserID: editID.value,
+          FullName: editName.value,
+          Email: editEmail.value,
+          Phone: editPhone.value,
+          Role: editRole.value,
+          Status: editStatus.value,
+        };
+        await fetch(`http://localhost:3000/users/${data.UserID}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        });
+        loadUsers();
+        editModal.classList.add("hidden");
+      }
+
+      // delete user function
+      async function deleteUser(id) {
+        if (!confirm("Delete this user?")) return;
+
+        await fetch(`http://localhost:3000/users/${id}`, {
+          method: "DELETE",
+        });
+
+        loadUsers();
+      }
     </script>
   </body>
 </html>
