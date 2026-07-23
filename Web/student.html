@@ -155,7 +155,7 @@
           Welcome Back
           <br />EduSync Academy<br />
         </h1>
-        <p class="text-slate-400 text-[10px] font-caption mt-1">Mr.Bao</p>
+        <p id="sidebar-name" class="text-slate-400 text-[10px] font-caption mt-1">...</p>
       </div>
       <nav class="flex-1 px-2 space-y-1 overflow-y-auto custom-scroll">
         <a
@@ -240,10 +240,7 @@
               <h2 class="text-display font-display text-on-surface mb-base">
                 Student Dashboard
               </h2>
-              <p class="text-body-md font-body-md text-on-surface-variant">
-                Welcome back! Mr. Bao. Here's a quick overview of your classes
-                and assignments.
-              </p>
+              <p id="top-welcome-msg" class="text-body-md font-body-md text-on-surface-variant">...</p>
             </div>
             <div
               class="text-label-sm font-label-sm text-outline uppercase tracking-wider"
@@ -267,18 +264,9 @@
                     src="https://lh3.googleusercontent.com/aida-public/AB6AXuDeQDI3mxLzkFHhFWdMv-y8YXT7VYEXlPn-MeLp8-juTNNScRGf2RCROzn3xYUojuf6TyQ-MRL3f2PI405EOMpga3Py9Yf4fY9lOYKz9JIvlaICRolVfkIVANVBoSTd_sd8xLdgSy7Nl9rn7e73vkSa6cO5EU6VOSOsKuI97O39pyd4XVKYqb6elEfok7M7Raafk3JoeL1FjDMskHuidXzT6s0TIDziztMbedDn9kgn0GZvPEJbKBg0Ww"
                   />
                 </div>
-                <h3 class="text-headline-md font-headline-md text-on-surface">
-                  Hà Văn Bảo
-                </h3>
-                <p
-                  class="text-body-md font-body-md text-on-surface-variant mb-xs"
-                >
-                  Student ID: 22110234
-                </p>
-                <span
-                  class="px-3 py-1 bg-primary-fixed text-on-primary-fixed-variant rounded-full text-label-sm font-label-sm mb-md uppercase tracking-wide"
-                  >Computer Science</span
-                >
+                <h3 id="profile-name" class="text-headline-md font-headline-md text-on-surface">...</h3>
+                <p id="profile-student-id" class="text-body-md font-body-md text-on-surface-variant mb-xs">...</p>
+                <span id="profile-major" class="px-3 py-1 bg-primary-fixed text-on-primary-fixed-variant rounded-full text-label-sm font-label-sm mb-md uppercase tracking-wide">...</span>
                 <div
                   class="w-full text-left space-y-sm pt-sm border-t border-surface-variant"
                 >
@@ -286,17 +274,13 @@
                     <p class="text-label-sm font-label-sm text-outline mb-1">
                       Email
                     </p>
-                    <p class="text-body-md font-body-md text-on-surface">
-                      bao@student.edu.vn
-                    </p>
+                    <p id="profile-email" class="text-body-md font-body-md text-on-surface">...</p>
                   </div>
                   <div>
                     <p class="text-label-sm font-label-sm text-outline mb-1">
                       Phone
                     </p>
-                    <p class="text-body-md font-body-md text-on-surface">
-                      0123 456 789
-                    </p>
+                    <p id="profile-phone" class="text-body-md font-body-md text-on-surface">...</p>
                   </div>
                   <div>
                     <p class="text-label-sm font-label-sm text-outline mb-1">
@@ -346,12 +330,10 @@
                       >
                     </div>
                   </div>
-                  <div class="text-display font-display text-on-surface mb-xs">
-                    5
-                  </div>
+                  <div id="stat-classes-count" class="text-display font-display text-on-surface mb-xs">0</div>
                   <a
                     class="text-label-sm font-label-sm text-primary hover:underline flex items-center"
-                    href="#"
+                    href="student_courses.html"
                   >
                     View all courses
                     <span class="material-symbols-outlined text-[14px] ml-1"
@@ -379,9 +361,7 @@
                       >
                     </div>
                   </div>
-                  <div class="text-display font-display text-on-surface mb-xs">
-                    3.45
-                  </div>
+                  <div id="stat-gpa" class="text-display font-display text-on-surface mb-xs">...</div>
                   <p class="text-label-sm font-label-sm text-primary">
                     Good standing
                   </p>
@@ -457,7 +437,7 @@
                     </h3>
                     <a
                       class="text-label-md font-label-md text-primary hover:underline"
-                      href="#"
+                      href="student_courses.html"
                       >View All</a
                     >
                   </div>
@@ -637,74 +617,130 @@
                   </div>
                 </div>
               </div>
-              <!-- Announcements Row -->
-              <div
-                class="bg-surface-container-lowest rounded-xl shadow-[0px_2px_4px_rgba(0,0,0,0.05)] border border-[#E2E8F0] overflow-hidden"
-              >
-                <div
-                  class="p-md border-b border-surface-variant flex justify-between items-center"
-                >
-                  <h3 class="text-headline-md font-headline-md text-on-surface">
-                    Recent Announcements
-                  </h3>
-                  <a
-                    class="text-label-md font-label-md text-primary hover:underline"
-                    href="#"
-                    >View All</a
-                  >
-                </div>
-                <div class="divide-y divide-surface-variant">
-                  <div
-                    class="p-md hover:bg-surface-bright transition-colors cursor-pointer"
-                  >
-                    <h4
-                      class="text-body-lg font-body-lg font-medium text-on-surface mb-xs"
-                    >
-                      Final Exam Schedule Published
-                    </h4>
-                    <p
-                      class="text-body-md font-body-md text-on-surface-variant"
-                    >
-                      The final examination timetable has been released. Please
-                      check your student portal for exact times and locations.
-                    </p>
-                  </div>
-                  <div
-                    class="p-md hover:bg-surface-bright transition-colors cursor-pointer"
-                  >
-                    <h4
-                      class="text-body-lg font-body-lg font-medium text-on-surface mb-xs"
-                    >
-                      Grade Submission Deadline
-                    </h4>
-                    <p
-                      class="text-body-md font-body-md text-on-surface-variant"
-                    >
-                      Please submit all remaining assignments and project grades
-                      before June 30th to ensure processing.
-                    </p>
-                  </div>
-                  <div
-                    class="p-md hover:bg-surface-bright transition-colors cursor-pointer"
-                  >
-                    <h4
-                      class="text-body-lg font-body-lg font-medium text-on-surface mb-xs"
-                    >
-                      Faculty Meeting - IT Department
-                    </h4>
-                    <p
-                      class="text-body-md font-body-md text-on-surface-variant"
-                    >
-                      Friday 09:00 AM - Meeting Room A. Attendance is mandatory
-                      for all senior year students presenting their capstone.
-                    </p>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </div>
       </main>
     </div>
+    <script>
+      document.addEventListener('DOMContentLoaded', async () => {
+        // 1. Lấy UserID từ localStorage
+        const userId = localStorage.getItem('userId');
+
+        // Nếu không có userId (người dùng chưa đăng nhập) thì đẩy về trang login
+        if (!userId) {
+          window.location.href = 'login.html';
+          return;
+        }
+
+        try {
+          // 2. Gọi API để lấy thông tin của sinh viên đang đăng nhập
+          const response = await fetch(`http://localhost:3000/api/student/dashboard/${userId}`);
+          
+          if (response.ok) {
+            const student = await response.json();
+
+            // 3. Đổ dữ liệu từ API vào các thẻ HTML thông qua ID đã gắn
+            document.getElementById('sidebar-name').innerText = student.FullName;
+            document.getElementById('top-welcome-msg').innerText = `Welcome back! ${student.FullName}. Here's a quick overview of your classes and assignments.`;
+            
+            document.getElementById('profile-name').innerText = student.FullName;
+            document.getElementById('profile-student-id').innerText = `Student ID: ${student.StudentID}`;
+            document.getElementById('profile-major').innerText = student.Major;
+            document.getElementById('profile-email').innerText = student.Email;
+            document.getElementById('profile-phone').innerText = student.Phone;
+            
+            // Format GPA lấy 2 chữ số thập phân
+            document.getElementById('stat-gpa').innerText = student.GPA ? student.GPA.toFixed(2) : "0.00";
+
+            // ... (Code gán dữ liệu profile cũ của bạn ở đây) ...
+
+            // --- TÍNH NĂNG MỚI: FETCH MY CLASSES ---
+            const classesRes = await fetch(`http://localhost:3000/api/student/${userId}/classes`);
+            // ... mã fetch dữ liệu My Classes ...
+            
+            if (classesRes.ok) {
+              const classes = await classesRes.json();
+              document.getElementById('stat-classes-count').innerText = classes.length;
+              
+              const tbody = document.querySelector('tbody');
+              tbody.innerHTML = ''; 
+              
+              classes.forEach(cls => {
+                // XÓA DÒNG NÀY: const progress = Math.floor(Math.random() * 40) + 60;
+                // THAY BẰNG DỮ LIỆU THẬT TỪ SQL:
+                const progress = cls.Progress; 
+                
+                tbody.innerHTML += `
+                  <tr class="hover:bg-surface-bright transition-colors">
+                    <td class="px-md py-sm font-medium text-on-surface">${cls.CourseName}</td>
+                    <td class="px-md py-sm text-on-surface-variant">${cls.StudentCount}</td>
+                    <td class="px-md py-sm text-on-surface-variant">${cls.Room || 'TBA'}</td>
+                    <td class="px-md py-sm">
+                      <div class="flex items-center gap-2">
+                        <div class="w-full h-2 bg-surface-variant rounded-full overflow-hidden">
+                          <div class="bg-primary h-full rounded-full" style="width: ${progress}%"></div>
+                        </div>
+                        <span class="text-label-sm text-outline">${progress}%</span>
+                      </div>
+                    </td>
+                  </tr>
+                `;
+              });
+            }
+
+            // --- TÍNH NĂNG MỚI: FETCH TODAY'S SCHEDULE ---
+            const scheduleRes = await fetch(`http://localhost:3000/api/student/${userId}/schedule/today`);
+            if (scheduleRes.ok) {
+              const schedules = await scheduleRes.json();
+              // Lấy element chứa các thẻ div lịch học
+              const scheduleContainer = document.querySelector('.xl\\:col-span-1 .space-y-sm');
+              scheduleContainer.innerHTML = ''; // Xóa dữ liệu tĩnh
+              
+              if (schedules.length === 0) {
+                scheduleContainer.innerHTML = '<p class="text-body-md text-on-surface-variant italic">No classes scheduled for today.</p>';
+              } else {
+                // Các màu ngẫu nhiên để UI sinh động giống bản gốc
+                const colorThemes = [
+                  { bg: 'bg-primary-fixed', text: 'text-on-primary-fixed-variant' },
+                  { bg: 'bg-[#D1FAE5]', text: 'text-[#065F46]' },
+                  { bg: 'bg-[#F3E8FF]', text: 'text-[#6B21A8]' }
+                ];
+
+                schedules.forEach((sched, index) => {
+                  const startTime = sched.TimeRange.split('-')[0]; // Tách lấy giờ bắt đầu từ chuỗi '07:30-09:30'
+                  const theme = colorThemes[index % colorThemes.length];
+                  
+                  scheduleContainer.innerHTML += `
+                    <div class="flex gap-sm items-start p-sm rounded-lg hover:bg-surface-container-low transition-colors border border-transparent hover:border-surface-variant">
+                      <div class="px-2 py-1 ${theme.bg} ${theme.text} rounded text-label-sm font-label-sm font-bold shrink-0 mt-1">
+                        ${startTime}
+                      </div>
+                      <div>
+                        <h4 class="text-body-md font-body-md font-semibold text-on-surface">${sched.CourseName}</h4>
+                        <p class="text-label-sm font-label-sm text-on-surface-variant">Room ${sched.Room}</p>
+                      </div>
+                    </div>
+                  `;
+                });
+              }
+            }
+
+          } else {
+            console.error('Không thể lấy dữ liệu sinh viên');
+          }
+        } catch (error) {
+          console.error('Lỗi kết nối máy chủ:', error);
+        }
+      });
+
+      // (Tùy chọn) Xử lý nút Đăng xuất
+      const logoutBtn = document.querySelector('a[href="login.html"]');
+      if (logoutBtn) {
+        logoutBtn.addEventListener('click', (e) => {
+          localStorage.removeItem('userId'); // Xóa session khi logout
+        });
+      }
+    </script>
   </body>
 </html>

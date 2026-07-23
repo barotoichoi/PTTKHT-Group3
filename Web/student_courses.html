@@ -155,7 +155,7 @@
           Welcome Back
           <br />EduSync Academy<br />
         </h1>
-        <p class="text-slate-400 text-[10px] font-caption mt-1">Mr.Bao</p>
+        <p id="sidebar-name" class="text-slate-400 text-[10px] font-caption mt-1">...</p>
       </div>
       <nav class="flex-1 px-2 space-y-1 overflow-y-auto custom-scroll">
         <a
@@ -269,281 +269,136 @@
           </div>
         </div>
         <!-- Class Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-md">
-          <!-- Card 1 -->
-          <div
-            class="bg-surface-container-lowest rounded-xl p-md shadow-sm border border-outline-variant/50 flex flex-col hover:shadow-md transition-shadow"
-          >
-            <div class="flex justify-between items-start mb-md">
-              <div>
-                <span
-                  class="inline-block bg-primary-fixed text-on-primary-fixed text-label-sm font-label-sm px-xs py-base rounded uppercase mb-xs tracking-wide"
-                  >CS101</span
-                >
-                <h3 class="font-headline-md text-headline-md text-on-surface">
-                  Database Systems
-                </h3>
-              </div>
-              <div
-                class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center text-primary"
-              >
-                <span class="material-symbols-outlined">database</span>
-              </div>
-            </div>
-            <div class="space-y-xs mb-md">
-              <div
-                class="flex items-center text-on-surface-variant font-body-md text-body-md"
-              >
-                <span class="material-symbols-outlined text-[18px] mr-xs"
-                  >person</span
-                >
-                Prof. Nguyen Van A
-              </div>
-              <div
-                class="flex items-center text-on-surface-variant font-body-md text-body-md"
-              >
-                <span class="material-symbols-outlined text-[18px] mr-xs"
-                  >room</span
-                >
-                Room A203
-              </div>
-              <div
-                class="flex items-center text-on-surface-variant font-body-md text-body-md"
-              >
-                <span class="material-symbols-outlined text-[18px] mr-xs"
-                  >schedule</span
-                >
-                Mon, Wed 09:30 AM
-              </div>
-            </div>
-            <div class="mt-auto pt-md border-t border-outline-variant/30">
-              <div
-                class="flex justify-between text-label-md font-label-md text-on-surface mb-xs"
-              >
-                <span>Course Progress</span>
-                <span>82%</span>
-              </div>
-              <div
-                class="w-full bg-surface-container-highest rounded-full h-2 mb-md"
-              >
-                <div
-                  class="bg-primary h-2 rounded-full"
-                  style="width: 82%"
-                ></div>
-              </div>
-              <button
-                class="w-full bg-surface border border-outline-variant text-on-surface font-label-md text-label-md py-sm rounded-lg hover:bg-surface-container-low transition-colors"
-              >
-                View Details
-              </button>
-            </div>
-          </div>
-          <!-- Card 2 -->
-          <div
-            class="bg-surface-container-lowest rounded-xl p-md shadow-sm border border-outline-variant/50 flex flex-col hover:shadow-md transition-shadow"
-          >
-            <div class="flex justify-between items-start mb-md">
-              <div>
-                <span
-                  class="inline-block bg-secondary-fixed text-on-secondary-fixed text-label-sm font-label-sm px-xs py-base rounded uppercase mb-xs tracking-wide"
-                  >CS205</span
-                >
-                <h3 class="font-headline-md text-headline-md text-on-surface">
-                  Object Oriented Programming
-                </h3>
-              </div>
-              <div
-                class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center text-secondary"
-              >
-                <span class="material-symbols-outlined">code</span>
-              </div>
-            </div>
-            <div class="space-y-xs mb-md">
-              <div
-                class="flex items-center text-on-surface-variant font-body-md text-body-md"
-              >
-                <span class="material-symbols-outlined text-[18px] mr-xs"
-                  >person</span
-                >
-                Dr. Tran Thi B
-              </div>
-              <div
-                class="flex items-center text-on-surface-variant font-body-md text-body-md"
-              >
-                <span class="material-symbols-outlined text-[18px] mr-xs"
-                  >room</span
-                >
-                Room B105
-              </div>
-              <div
-                class="flex items-center text-on-surface-variant font-body-md text-body-md"
-              >
-                <span class="material-symbols-outlined text-[18px] mr-xs"
-                  >schedule</span
-                >
-                Tue, Thu 14:00 PM
-              </div>
-            </div>
-            <div class="mt-auto pt-md border-t border-outline-variant/30">
-              <div
-                class="flex justify-between text-label-md font-label-md text-on-surface mb-xs"
-              >
-                <span>Course Progress</span>
-                <span>68%</span>
-              </div>
-              <div
-                class="w-full bg-surface-container-highest rounded-full h-2 mb-md"
-              >
-                <div
-                  class="bg-secondary h-2 rounded-full"
-                  style="width: 68%"
-                ></div>
-              </div>
-              <button
-                class="w-full bg-surface border border-outline-variant text-on-surface font-label-md text-label-md py-sm rounded-lg hover:bg-surface-container-low transition-colors"
-              >
-                View Details
-              </button>
-            </div>
-          </div>
-          <!-- Card 3 -->
-          <div
-            class="bg-surface-container-lowest rounded-xl p-md shadow-sm border border-outline-variant/50 flex flex-col hover:shadow-md transition-shadow"
-          >
-            <div class="flex justify-between items-start mb-md">
-              <div>
-                <span
-                  class="inline-block bg-primary-fixed-dim text-on-primary-fixed text-label-sm font-label-sm px-xs py-base rounded uppercase mb-xs tracking-wide"
-                  >CS302</span
-                >
-                <h3 class="font-headline-md text-headline-md text-on-surface">
-                  Web Development
-                </h3>
-              </div>
-              <div
-                class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-primary"
-              >
-                <span class="material-symbols-outlined">language</span>
-              </div>
-            </div>
-            <div class="space-y-xs mb-md">
-              <div
-                class="flex items-center text-on-surface-variant font-body-md text-body-md"
-              >
-                <span class="material-symbols-outlined text-[18px] mr-xs"
-                  >person</span
-                >
-                Prof. Le Van C
-              </div>
-              <div
-                class="flex items-center text-on-surface-variant font-body-md text-body-md"
-              >
-                <span class="material-symbols-outlined text-[18px] mr-xs"
-                  >room</span
-                >
-                Lab C302
-              </div>
-              <div
-                class="flex items-center text-on-surface-variant font-body-md text-body-md"
-              >
-                <span class="material-symbols-outlined text-[18px] mr-xs"
-                  >schedule</span
-                >
-                Fri 13:00 PM
-              </div>
-            </div>
-            <div class="mt-auto pt-md border-t border-outline-variant/30">
-              <div
-                class="flex justify-between text-label-md font-label-md text-on-surface mb-xs"
-              >
-                <span>Course Progress</span>
-                <span>91%</span>
-              </div>
-              <div
-                class="w-full bg-surface-container-highest rounded-full h-2 mb-md"
-              >
-                <div
-                  class="bg-primary-container h-2 rounded-full"
-                  style="width: 91%"
-                ></div>
-              </div>
-              <button
-                class="w-full bg-surface border border-outline-variant text-on-surface font-label-md text-label-md py-sm rounded-lg hover:bg-surface-container-low transition-colors"
-              >
-                View Details
-              </button>
-            </div>
-          </div>
-          <!-- Card 4 -->
-          <div
-            class="bg-surface-container-lowest rounded-xl p-md shadow-sm border border-outline-variant/50 flex flex-col hover:shadow-md transition-shadow"
-          >
-            <div class="flex justify-between items-start mb-md">
-              <div>
-                <span
-                  class="inline-block bg-tertiary-fixed text-on-tertiary-fixed text-label-sm font-label-sm px-xs py-base rounded uppercase mb-xs tracking-wide"
-                  >MATH201</span
-                >
-                <h3 class="font-headline-md text-headline-md text-on-surface">
-                  Discrete Mathematics
-                </h3>
-              </div>
-              <div
-                class="w-10 h-10 rounded-full bg-tertiary-fixed-dim flex items-center justify-center text-tertiary"
-              >
-                <span class="material-symbols-outlined">calculate</span>
-              </div>
-            </div>
-            <div class="space-y-xs mb-md">
-              <div
-                class="flex items-center text-on-surface-variant font-body-md text-body-md"
-              >
-                <span class="material-symbols-outlined text-[18px] mr-xs"
-                  >person</span
-                >
-                Dr. Pham Thi D
-              </div>
-              <div
-                class="flex items-center text-on-surface-variant font-body-md text-body-md"
-              >
-                <span class="material-symbols-outlined text-[18px] mr-xs"
-                  >room</span
-                >
-                Room D401
-              </div>
-              <div
-                class="flex items-center text-on-surface-variant font-body-md text-body-md"
-              >
-                <span class="material-symbols-outlined text-[18px] mr-xs"
-                  >schedule</span
-                >
-                Mon, Wed 15:30 PM
-              </div>
-            </div>
-            <div class="mt-auto pt-md border-t border-outline-variant/30">
-              <div
-                class="flex justify-between text-label-md font-label-md text-on-surface mb-xs"
-              >
-                <span>Course Progress</span>
-                <span>45%</span>
-              </div>
-              <div
-                class="w-full bg-surface-container-highest rounded-full h-2 mb-md"
-              >
-                <div
-                  class="bg-tertiary h-2 rounded-full"
-                  style="width: 45%"
-                ></div>
-              </div>
-              <button
-                class="w-full bg-surface border border-outline-variant text-on-surface font-label-md text-label-md py-sm rounded-lg hover:bg-surface-container-low transition-colors"
-              >
-                View Details
-              </button>
-            </div>
-          </div>
+        <div id="courses-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-md">
+
         </div>
       </main>
     </div>
+<script>
+      document.addEventListener('DOMContentLoaded', async () => {
+        // 1. Lấy ID của sinh viên từ Local Storage
+        const userId = localStorage.getItem('userId');
+        
+        if (!userId) {
+          window.location.href = 'login.html'; // Chuyển hướng nếu chưa đăng nhập
+          return;
+        }
+
+        // ==========================================
+        // 2. GỌI API LẤY THÔNG TIN SINH VIÊN (Cho Sidebar)
+        // ==========================================
+        try {
+          const profileRes = await fetch(`http://localhost:3000/api/student/dashboard/${userId}`);
+          if (profileRes.ok) {
+            const student = await profileRes.json();
+            // Gắn tên sinh viên vào Sidebar
+            document.getElementById('sidebar-name').innerText = student.FullName;
+          }
+        } catch (error) {
+          console.error('Lỗi khi tải thông tin sinh viên:', error);
+        }
+
+        // ==========================================
+        // 3. GỌI API LẤY DANH SÁCH KHÓA HỌC
+        // ==========================================
+        try {
+          const response = await fetch(`http://localhost:3000/api/student/${userId}/course-details`);
+          
+          if (response.ok) {
+            const courses = await response.json();
+            const gridContainer = document.getElementById('courses-grid');
+            
+            gridContainer.innerHTML = ''; // Xóa nội dung tĩnh cũ
+
+            if (courses.length === 0) {
+              gridContainer.innerHTML = '<p class="text-on-surface-variant font-body-md col-span-full">You are not enrolled in any courses.</p>';
+              return;
+            }
+
+            const themes = [
+              {
+                badgeBg: 'bg-primary-fixed', badgeText: 'text-on-primary-fixed',
+                iconBg: 'bg-surface-container-high', iconColor: 'text-primary', icon: 'database',
+                barBg: 'bg-primary'
+              },
+              {
+                badgeBg: 'bg-secondary-fixed', badgeText: 'text-on-secondary-fixed',
+                iconBg: 'bg-secondary-container', iconColor: 'text-secondary', icon: 'code',
+                barBg: 'bg-secondary'
+              },
+              {
+                badgeBg: 'bg-primary-fixed-dim', badgeText: 'text-on-primary-fixed',
+                iconBg: 'bg-surface-container', iconColor: 'text-primary', icon: 'language',
+                barBg: 'bg-primary-container'
+              },
+              {
+                badgeBg: 'bg-tertiary-fixed', badgeText: 'text-on-tertiary-fixed',
+                iconBg: 'bg-tertiary-fixed-dim', iconColor: 'text-tertiary', icon: 'calculate',
+                barBg: 'bg-tertiary'
+              }
+            ];
+
+            courses.forEach((course, index) => {
+              const theme = themes[index % themes.length];
+              const scheduleText = course.ScheduleDays && course.StartTime ? `${course.ScheduleDays} ${course.StartTime}` : 'TBA';
+              const teacherName = course.TeacherName || 'TBA';
+              const room = course.Room || 'TBA';
+              
+              const cardHTML = `
+                <div class="bg-surface-container-lowest rounded-xl p-md shadow-sm border border-outline-variant/50 flex flex-col hover:shadow-md transition-shadow">
+                  <div class="flex justify-between items-start mb-md">
+                    <div>
+                      <span class="inline-block ${theme.badgeBg} ${theme.badgeText} text-label-sm font-label-sm px-xs py-base rounded uppercase mb-xs tracking-wide">
+                        ${course.CourseID}
+                      </span>
+                      <h3 class="font-headline-md text-headline-md text-on-surface">
+                        ${course.CourseName}
+                      </h3>
+                    </div>
+                    <div class="w-10 h-10 rounded-full ${theme.iconBg} flex items-center justify-center ${theme.iconColor}">
+                      <span class="material-symbols-outlined">${theme.icon}</span>
+                    </div>
+                  </div>
+                  
+                  <div class="space-y-xs mb-md">
+                    <div class="flex items-center text-on-surface-variant font-body-md text-body-md">
+                      <span class="material-symbols-outlined text-[18px] mr-xs">person</span>
+                      ${teacherName}
+                    </div>
+                    <div class="flex items-center text-on-surface-variant font-body-md text-body-md">
+                      <span class="material-symbols-outlined text-[18px] mr-xs">room</span>
+                      Room ${room}
+                    </div>
+                    <div class="flex items-center text-on-surface-variant font-body-md text-body-md">
+                      <span class="material-symbols-outlined text-[18px] mr-xs">schedule</span>
+                      ${scheduleText}
+                    </div>
+                  </div>
+                  
+                  <div class="mt-auto pt-md border-t border-outline-variant/30">
+                    <div class="flex justify-between text-label-md font-label-md text-on-surface mb-xs">
+                      <span>Course Progress</span>
+                      <span>${course.Progress}%</span>
+                    </div>
+                    <div class="w-full bg-surface-container-highest rounded-full h-2 mb-md">
+                      <div class="${theme.barBg} h-2 rounded-full" style="width: ${course.Progress}%"></div>
+                    </div>
+                    <button class="w-full bg-surface border border-outline-variant text-on-surface font-label-md text-label-md py-sm rounded-lg hover:bg-surface-container-low transition-colors">
+                      View Details
+                    </button>
+                  </div>
+                </div>
+              `;
+              
+              gridContainer.innerHTML += cardHTML;
+            });
+          }
+        } catch (error) {
+          console.error('Lỗi khi tải dữ liệu khóa học:', error);
+        }
+      });
+    </script>
+  </body>
+</html>
   </body>
 </html>
